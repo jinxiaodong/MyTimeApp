@@ -1,4 +1,4 @@
-package com.project.xiaodong.mytimeapp.network;
+package com.project.xiaodong.mytimeapp.frame.network;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -10,8 +10,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by xiaodong.jin on 2017/9/20.
  */
 
-public class ApiManager {
-    private BaseApiService mApiService;
+public class ApiManager{
+    private ApiService mApiService;
     private static ApiManager mApiManager;
 
     public synchronized static ApiManager getInstance() {
@@ -22,14 +22,11 @@ public class ApiManager {
         return mApiManager;
     }
 
-    public BaseApiService getApiService(String baseurl) {
+    public ApiService getApiService(String baseurl) {
         if (mApiService == null) {
-            OkHttpClient okClient = new OkHttpClient.Builder().build();
 
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-
             logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
-            okClient.interceptors().add(logging);
             /* 可以通过 setLevel 改变日志级别
                 共包含四个级别：NONE、BASIC、HEADER、BODY
 
@@ -59,6 +56,7 @@ public class ApiManager {
             //                    Timber.tag("okhttp").d(message);
             //                }
             //            });
+            OkHttpClient okClient = new OkHttpClient.Builder().addInterceptor(logging).build();
 
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(baseurl)
@@ -67,7 +65,7 @@ public class ApiManager {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 
-            mApiService = retrofit.create(BaseApiService.class);
+            mApiService =  retrofit.create(ApiService.class);
         }
 
         return mApiService;
