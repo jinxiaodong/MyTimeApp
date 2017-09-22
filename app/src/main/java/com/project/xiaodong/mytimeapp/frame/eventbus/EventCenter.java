@@ -1,6 +1,6 @@
 package com.project.xiaodong.mytimeapp.frame.eventbus;
 
-import com.project.xiaodong.mytimeapp.frame.base.BaseBean;
+import com.project.xiaodong.mytimeapp.frame.bean.BaseBean;
 
 /**
  * Created by xiaodong.jin on 2017/9/21.

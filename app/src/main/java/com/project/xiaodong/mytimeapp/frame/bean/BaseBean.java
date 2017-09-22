@@ -1,4 +1,4 @@
-package com.project.xiaodong.mytimeapp.frame.base;
+package com.project.xiaodong.mytimeapp.frame.bean;
 
 import com.project.xiaodong.mytimeapp.frame.utils.JsonUtil;
 

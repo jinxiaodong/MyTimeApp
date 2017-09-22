@@ -1,34 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-
-    <color name="header_bg_color">#ffffff</color>
-    <color name="transparent">#00000000</color>
-    <!--主色白-->
-    <color name="main_white">#ffffff</color>
-
-    <!--各种灰-->
-    <color name="gray_999999">#999999</color>
-    <color name="gray_777777">#777777</color>
-    <color name="gray_f5f5f5">#f5f5f5</color>
-    <color name="gray_e4e4e4">#e4e4e4</color>
-    <color name="gray_C9C9C9">#C9C9C9</color>
-    <color name="gray_C4C4C4">#C4C4C4</color>
-    <color name="gray_333333">#333333</color>
-
-    <color name="gray_3D3D3D">#3D3D3D</color>
-    <color name="gray_444444">#444444</color>
-    <color name="gray_BB000000">#BB000000</color>
-    <color name="gray_eeeeee">#EEEEEE</color>
-    <color name="gray_FCFCFC">#FCFCFC</color>
-
-
-
-
-
-
     <color name="notification_action_color_filter">#ffffffff</color>
     <color name="abc_input_method_navigation_guard">@android:color/black</color>
     <color name="abc_search_url_text_normal">#ff7fa87f</color>
@@ -76,7 +47,9 @@
     <color name="category4_bg_pressed">#ff006daf</color>
     <color name="circle_image_boder">#ffdddddd</color>
     <color name="circle_image_boder_person">#2dffffff</color>
-
+    <color name="colorAccent">#ffff4081</color>
+    <color name="colorPrimary">#ff3f51b5</color>
+    <color name="colorPrimaryDark">#ff303f9f</color>
     <color name="color_005d98">#ff005d98</color>
     <color name="color_0075C4">#ff0075c4</color>
     <color name="color_0075c4">#ff0075c4</color>
@@ -350,6 +323,7 @@
     <color name="text_orange">#ffff8600</color>
     <color name="text_red">#fff15353</color>
     <color name="translate">#00000000</color>
+    <color name="transparent">#00000000</color>
     <color name="transparent_black">#db000000</color>
     <color name="transparent_dark_30">#b2000000</color>
     <color name="transparent_white">#64ffffff</color>
