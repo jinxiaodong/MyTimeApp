@@ -39,9 +39,9 @@ dependencies {
     //6.0后动态权限
     compile 'pub.devrel:easypermissions:0.2.1'
     compile files('libs/jackson-all-1.9.11.jar')
-
     compile 'com.orhanobut:logger:2.1.1'
+    //eventbus
     compile 'org.greenrobot:eventbus:3.0.0'
-
-
+    //butterknife
+    compile 'com.jakewharton:butterknife:5.1.1'
 }

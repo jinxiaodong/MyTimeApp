@@ -13,7 +13,9 @@
     <string name="title_settings_dialog">权限要求</string>
     <string name="setting">设置</string>
     <string name="settings_dialog_canceled">设置对话框取消</string>
-    <string name="returned_from_app_settings_to_activity">Returned from app settings to MainActivity</string>
+    <string name="returned_from_app_settings_to_activity">Returned from app settings to
+        MainActivity
+    </string>
     <string name="has_read_sms_permission">已读短信权限: %b</string>
     <string name="rationale_storage">这个程序需要读写权限。</string>
     <string name="rationale">我们需要访问您的.......</string>
@@ -24,4 +26,11 @@
     <string name="scan">扫一扫</string>
     <string name="album">相册</string>
     <string name="scan_empty">未发现二维码/条形码</string>
+
+
+    <string name="tab_home">首页</string>
+    <string name="tab_payticket">购票</string>
+    <string name="tab_mall">商城</string>
+    <string name="tab_live">直播</string>
+    <string name="tab_mine">我的</string>
 </resources>

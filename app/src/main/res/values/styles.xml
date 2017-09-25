@@ -33,4 +33,24 @@
         <item name="android:windowBackground">@color/transparent</item><!--背景透明-->
         <item name="android:backgroundDimEnabled">false</item><!--模糊-->
     </style>
+
+
+
+
+    <!--V1.0-->
+    <style name="main_page_tab_txt_style">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@drawable/main_page_tab_color_select</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">@dimen/padding_3dp</item>
+        <item name="android:paddingBottom">@dimen/padding_3dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+
+    <style name="main_page_tab_icon_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
 </resources>

@@ -40,4 +40,7 @@
     <dimen name="padding_18dp">18dp</dimen>
     <dimen name="padding_19dp">19dp</dimen>
     <dimen name="padding_20dp">20dp</dimen>
+
+    <dimen name="tab_height">49dp</dimen>
+
 </resources>

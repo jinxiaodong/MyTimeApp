@@ -1,4 +1,4 @@
-package com.project.xiaodong.mytimeapp.frame.base;
+package com.project.xiaodong.mytimeapp.frame.base.activity;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -22,6 +22,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import butterknife.ButterKnife;
+
 import static com.project.xiaodong.mytimeapp.frame.utils.NetworkUtil.NETWORK_CHANGE_ACTION;
 
 /**
@@ -43,7 +45,7 @@ public abstract class BaseActivity extends BasePermissionsActivity {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
-
+        ButterKnife.reset(this);
     }
 
     @Override
@@ -71,11 +73,13 @@ public abstract class BaseActivity extends BasePermissionsActivity {
         if (!NetworkUtil.isNetworkAvailable(this)) {
             onNetworkInvalid();
         }
+        ButterKnife.inject(this);
         initValue(savedInstanceState);
         initWidget(savedInstanceState);
         initListener(savedInstanceState);
         initData(savedInstanceState);
     }
+
     protected final View inflate(int resLayoutId) {
         return getInflater().inflate(resLayoutId, null);
     }
@@ -120,14 +124,14 @@ public abstract class BaseActivity extends BasePermissionsActivity {
     }
 
     public void showHeaderView() {
-        if(this.mHeaderView != null) {
+        if (this.mHeaderView != null) {
             this.mHeaderView.setVisibility(View.VISIBLE);
         }
 
     }
 
     public void hideHeaderView() {
-        if(this.mHeaderView != null) {
+        if (this.mHeaderView != null) {
             this.mHeaderView.setVisibility(View.GONE);
         }
 
@@ -140,7 +144,6 @@ public abstract class BaseActivity extends BasePermissionsActivity {
     public void close() {
         this.finish();
     }
-
 
 
     private final static BroadcastReceiver mNetworkMonitorReceiver = new BroadcastReceiver() {
@@ -196,6 +199,7 @@ public abstract class BaseActivity extends BasePermissionsActivity {
     protected void onEventCallback(EventCenter event) {
         // handle event
     }
+
     /**
      * 注册event bus
      *
@@ -219,7 +223,6 @@ public abstract class BaseActivity extends BasePermissionsActivity {
             TaskManager.getInstance().excute(task);
         }
     }
-
 
 
 }
