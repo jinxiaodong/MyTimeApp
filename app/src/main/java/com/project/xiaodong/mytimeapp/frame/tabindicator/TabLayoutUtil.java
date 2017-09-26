@@ -34,6 +34,7 @@ public class TabLayoutUtil {
         tabIndicatorLayout.setBackgroundResource(R.color.main_white);
         CommonNavigator commonNavigator = new CommonNavigator(mContext);
         commonNavigator.setScrollPivotX(0.65f);//滚动中心点
+        commonNavigator.setAdjustMode(true);
         commonNavigator.setAdapter(new CommonNavigatorAdapter() {
             @Override
             public int getCount() {
