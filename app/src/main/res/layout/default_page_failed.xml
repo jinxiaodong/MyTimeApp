@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/main_white"
+              android:gravity="center_horizontal"
+              android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="167dp"
+        android:layout_height="133dp"
+        android:layout_marginTop="96dp"
+        android:src="@drawable/icon_default_not_search_result"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="加载失败"
+        android:textColor="@color/gray_999999"/>
+
+    <Button
+        android:id="@+id/bt_refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_status"
+        android:text="刷新"
+        android:textSize="12sp"/>
+</LinearLayout>

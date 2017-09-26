@@ -1,35 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="com.project.xiaodong.mytimeapp.MainActivity">
+    android:layout_height="match_parent">
 
-    <android.support.design.widget.AppBarLayout
+    <com.project.xiaodong.mytimeapp.frame.view.APSTSViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </com.project.xiaodong.mytimeapp.frame.view.APSTSViewPager>
+
+
+    <FrameLayout
+        android:id="@+id/fl_main_page_tab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_alignParentBottom="true">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <LinearLayout
+            android:id="@+id/ll_main_page_tab"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay"/>
+            android:layout_height="@dimen/tab_height"
+            android:layout_gravity="bottom"
+            android:background="@color/main_white"
+            android:orientation="horizontal">
 
-    </android.support.design.widget.AppBarLayout>
+            <RelativeLayout
+                android:id="@+id/rl_tab_home"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
-    <include layout="@layout/content_main"/>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email"/>
+                <ImageView
+                    android:id="@+id/iv_tab_home"
+                    style="@style/main_page_tab_icon_style"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/tab_home_selector">
+                </ImageView>
+                <TextView
+                    android:id="@+id/tv_tab_home"
+                    style="@style/main_page_tab_txt_style"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/tab_home"/>
 
-</android.support.design.widget.CoordinatorLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_tab_payticket"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/iv_tab_payticket"
+                    style="@style/main_page_tab_icon_style"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/tab_paytickets_selector"/>
+
+                <TextView
+                    android:id="@+id/tv_tab_payticket"
+                    style="@style/main_page_tab_txt_style"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/tab_payticket"/>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_tab_mall"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+
+                <ImageView
+                    android:id="@+id/iv_tab_mall"
+                    style="@style/main_page_tab_icon_style"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/tab_mall_selector">
+                </ImageView>
+                <TextView
+                    android:id="@+id/tv_tab_mall"
+                    style="@style/main_page_tab_txt_style"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/tab_home"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_tab_live"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/iv_tab_live"
+                    style="@style/main_page_tab_icon_style"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/tab_live_selector"/>
+
+                <TextView
+                    android:id="@+id/tv_tab_live"
+                    style="@style/main_page_tab_txt_style"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/tab_payticket"/>
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/rl_tab_mine"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+
+                <ImageView
+                    android:id="@+id/iv_tab_mine"
+                    style="@style/main_page_tab_icon_style"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/tab_mine_selector"/>
+
+                <TextView
+                    android:id="@+id/tv_tab_mine"
+                    style="@style/main_page_tab_txt_style"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/tab_mine"/>
+                <ImageView
+                    android:visibility="visible"
+                    android:id="@+id/point"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginTop="@dimen/padding_8dp"
+                    android:layout_toRightOf="@id/tv_tab_mine"
+                    android:src="@drawable/red_icon"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+    </FrameLayout>
+
+
+</RelativeLayout>
