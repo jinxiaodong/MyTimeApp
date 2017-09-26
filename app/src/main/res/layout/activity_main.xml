@@ -132,7 +132,7 @@
                     android:layout_centerHorizontal="true"
                     android:text="@string/tab_mine"/>
                 <ImageView
-                    android:visibility="invisible"
+                    android:visibility="visible"
                     android:id="@+id/point"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

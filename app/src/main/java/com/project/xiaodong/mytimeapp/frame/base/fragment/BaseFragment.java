@@ -103,7 +103,7 @@ public abstract class BaseFragment extends Fragment {
         if (mContext == null) {
             mContext = getActivity();
         }
-        ButterKnife.inject(mContext, mRootView);
+        ButterKnife.inject(this, mRootView);
 
         isOnCreated = true;
         initValue();
