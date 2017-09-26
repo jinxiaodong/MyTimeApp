@@ -137,8 +137,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/main_white"
-            app:layout_behavior="com.project.xiaodong.mytimeapp.frame.view.behavior.RecyclerViewAppBarBehavior">
-
+          >
+            <!--app:layout_behavior="com.project.xiaodong.mytimeapp.frame.view.behavior.RecyclerViewAppBarBehavior"-->
             <android.support.design.widget.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

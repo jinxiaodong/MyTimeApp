@@ -60,9 +60,9 @@ public class HomeFragment extends BaseFragment {
     APSTSViewPager mViewpager;
     private List<BaseFragment> mFragments = new ArrayList<>();
 
-    private String[] title = new String[]{"精选", "资讯"};//, "选电影", "预告片", "影评"
-    private Integer[] colors = new Integer[]{Color.parseColor("#FF9100"), Color.parseColor("#F15353")};
-//, Color.parseColor("#1E7DD7"), Color.parseColor("#FFBD2F"), Color.parseColor("#8DC635")
+    private String[] title = new String[]{"精选", "资讯", "选电影", "预告片", "影评"};//
+    private Integer[] colors = new Integer[]{Color.parseColor("#FF9100"), Color.parseColor("#F15353"), Color.parseColor("#1E7DD7"), Color.parseColor("#FFBD2F"), Color.parseColor("#8DC635")};
+//
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_home;
@@ -74,9 +74,9 @@ public class HomeFragment extends BaseFragment {
 
         mFragments.add(new TestFragment("精选"));
         mFragments.add(new TestFragment("资讯"));
-//        mFragments.add(new TestFragment("选电影"));
-//        mFragments.add(new TestFragment("预告片"));
-//        mFragments.add(new TestFragment("影评"));
+        mFragments.add(new TestFragment("选电影"));
+        mFragments.add(new TestFragment("预告片"));
+        mFragments.add(new TestFragment("影评"));
     }
 
     @Override
