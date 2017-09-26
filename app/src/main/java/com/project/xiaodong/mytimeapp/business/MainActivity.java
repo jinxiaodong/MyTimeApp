@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.project.xiaodong.mytimeapp.R;
 import com.project.xiaodong.mytimeapp.TestFragment;
+import com.project.xiaodong.mytimeapp.business.home.HomeFragment;
 import com.project.xiaodong.mytimeapp.frame.base.activity.TBaseActivity;
 import com.project.xiaodong.mytimeapp.frame.base.fragment.BaseFragment;
 import com.project.xiaodong.mytimeapp.frame.view.APSTSViewPager;
@@ -95,7 +96,7 @@ public class MainActivity extends TBaseActivity {
     @Override
     protected void initValue(Bundle savedInstanceState) {
         super.initValue(savedInstanceState);
-        mFragments.add(new TestFragment("首页"));
+        mFragments.add(new HomeFragment());
         mFragments.add(new TestFragment("购票"));
         mFragments.add(new TestFragment("商城"));
         mFragments.add(new TestFragment("直播"));
@@ -106,7 +107,7 @@ public class MainActivity extends TBaseActivity {
     @Override
     protected void initWidget(Bundle savedInstanceState) {
         super.initWidget(savedInstanceState);
-        mViewpager.setNoFocus(false);
+        mViewpager.setNoFocus(true);
         mViewpager.setOffscreenPageLimit(VIEW_SIZE);
         mViewpager.setAdapter(new FragmentAdapter(getSupportFragmentManager(), mFragments));
     }

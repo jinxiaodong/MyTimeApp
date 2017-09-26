@@ -258,5 +258,23 @@ public abstract class BaseFragment extends Fragment {
             }
         });
     }
-
+    /**
+     * 根据id查找view
+     *
+     * @param res
+     * @return
+     */
+    public View findViewById(int res) {
+        try {
+            if (mRootView != null) {
+                View view = mRootView.findViewById(res);
+                return view;
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

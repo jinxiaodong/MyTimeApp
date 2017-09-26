@@ -47,7 +47,7 @@ public class TabLayoutUtil {
                 View inflate = LayoutInflater.from(context).inflate(R.layout.tab_home_indicator, null);
                 ImageView tabImg = (ImageView) inflate.findViewById(R.id.tab_img);
                 final TextView tabName = (TextView) inflate.findViewById(R.id.tab_name);
-                tabImg.setImageResource(R.mipmap.ic_launcher);
+                tabImg.setImageResource(R.drawable.tab_user01);
                 tabName.setText(titles.get(index));
                 commonPagerTitleView.setContentView(inflate);
 
