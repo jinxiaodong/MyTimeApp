@@ -43,15 +43,36 @@ public class TabLayoutUtil {
 
             @Override
             public IPagerTitleView getTitleView(Context context, final int index) {
-                CommonPagerTitleView commonPagerTitleView = new CommonPagerTitleView(context);
+                final CommonPagerTitleView commonPagerTitleView = new CommonPagerTitleView(context);
 
-                View inflate = LayoutInflater.from(context).inflate(R.layout.tab_home_indicator, null);
+                final View inflate = LayoutInflater.from(context).inflate(R.layout.tab_home_indicator, null);
                 ImageView tabImg = (ImageView) inflate.findViewById(R.id.tab_img);
                 final TextView tabName = (TextView) inflate.findViewById(R.id.tab_name);
                 tabImg.setImageResource(R.drawable.tab_user01);
                 tabName.setText(titles.get(index));
                 commonPagerTitleView.setContentView(inflate);
+                //设置指示器按照哪一个View进行宽度测量
+                commonPagerTitleView.setContentPositionDataProvider(new CommonPagerTitleView.ContentPositionDataProvider() {
+                    @Override
+                    public int getContentLeft() {
+                        return (int) (tabName.getX() + commonPagerTitleView.getLeft());
+                    }
 
+                    @Override
+                    public int getContentTop() {
+                        return commonPagerTitleView.getTop();
+                    }
+
+                    @Override
+                    public int getContentRight() {
+                        return (int) (commonPagerTitleView.getRight() - tabName.getX());
+                    }
+
+                    @Override
+                    public int getContentBottom() {
+                        return commonPagerTitleView.getBottom();
+                    }
+                });
                 commonPagerTitleView.setOnPagerTitleChangeListener(new CommonPagerTitleView.OnPagerTitleChangeListener() {
 
                     @Override

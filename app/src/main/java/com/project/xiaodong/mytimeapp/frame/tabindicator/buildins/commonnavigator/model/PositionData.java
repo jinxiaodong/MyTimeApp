@@ -12,6 +12,9 @@ public class PositionData {
     public int mContentTop;
     public int mContentRight;
     public int mContentBottom;
+    public int linewidth;
+
+
 
     public int width() {
         return mRight - mLeft;
