@@ -17,6 +17,7 @@ import com.project.xiaodong.mytimeapp.business.FragmentAdapter;
 import com.project.xiaodong.mytimeapp.frame.base.fragment.BaseFragment;
 import com.project.xiaodong.mytimeapp.frame.constants.DeviceInfo;
 import com.project.xiaodong.mytimeapp.frame.network.RetrofitClient;
+import com.project.xiaodong.mytimeapp.frame.network.TimeBaseEntity;
 import com.project.xiaodong.mytimeapp.frame.tabindicator.TabIndicatorLayout;
 import com.project.xiaodong.mytimeapp.frame.tabindicator.TabLayoutUtil;
 import com.project.xiaodong.mytimeapp.frame.view.APSTSViewPager;
@@ -33,7 +34,6 @@ import butterknife.InjectView;
 import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
-import okhttp3.ResponseBody;
 
 
 /**
@@ -116,9 +116,9 @@ public class HomeFragment extends BaseFragment {
 
         Log.e("TAG", "好吧不知道有没有成功啊1");
         Map<String, String> map = new HashMap<>();
-        map.put("locationId", "292");
+//        map.put("locationId", "292");
 
-        RetrofitClient.getInstance(mContext).createBaseApi().get("Showtime/LocationMovies.api", map, new Observer<ResponseBody>() {
+        RetrofitClient.getInstance(mContext).createBaseApi().get("index/topModule.api", map, new Observer<TimeBaseEntity<TomModuleBean>>() {
 
             @Override
             public void onSubscribe(@NonNull Disposable d) {
@@ -126,9 +126,15 @@ public class HomeFragment extends BaseFragment {
             }
 
             @Override
-            public void onNext(@NonNull ResponseBody tomModuleBean) {
+            public void onNext(@NonNull TimeBaseEntity<TomModuleBean> tomModuleBeanTimeBaseEntity) {
+
+                if (tomModuleBeanTimeBaseEntity != null) {
+
+                    Log.e("TAG", tomModuleBeanTimeBaseEntity.toString());
+                }
                 Log.e("TAG", "好吧不知道有没有成功啊6");
             }
+
 
             @Override
             public void onError(@NonNull Throwable e) {

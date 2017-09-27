@@ -5,5 +5,5 @@ package com.project.xiaodong.mytimeapp.frame.network;
  */
 
 public class ConstantUrl {
-    public static final String Base_URL = "https://api-m.mtime.cn/";
+    public static final String Base_URL = "https://comm-api-m.mtime.cn/";
 }

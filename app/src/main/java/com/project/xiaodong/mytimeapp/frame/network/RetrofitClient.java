@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.project.xiaodong.mytimeapp.business.home.TomModuleBean;
 import com.project.xiaodong.mytimeapp.frame.base.BaseApplication;
 import com.project.xiaodong.mytimeapp.frame.utils.LogUtil;
 import com.project.xiaodong.mytimeapp.frame.utils.NetworkUtil;
@@ -225,7 +226,7 @@ public class RetrofitClient {
         return this;
     }
 
-    public void get(String url,Map map,Observer observer) {
+    public void get(String url,Map map,Observer<TimeBaseEntity<TomModuleBean>> observer) {
         Log.e("TAG", "好吧不知道有没有成功啊4");
         mApiService
                 .get(url,map)

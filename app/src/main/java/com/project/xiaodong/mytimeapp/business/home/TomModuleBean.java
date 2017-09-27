@@ -1,6 +1,6 @@
 package com.project.xiaodong.mytimeapp.business.home;
 
-import com.project.xiaodong.mytimeapp.frame.network.TimeBaseEntEntity;
+import com.project.xiaodong.mytimeapp.frame.network.TimeBaseEntity;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import java.util.List;
  * Created by xiaodong.jin on 2017/9/27.
  */
 
-public class TomModuleBean extends TimeBaseEntEntity<TomModuleBean> {
+public class TomModuleBean extends TimeBaseEntity<TomModuleBean> {
 
     public String searchBarDescribe;
     public List<CategoryListBean> categoryList;

@@ -26,8 +26,8 @@ public interface ApiService {
      * Get
      */
     @GET("{url}")
-    Observable<ResponseBody> get(@Path(value = "url",encoded = true) String url,
-                                 @QueryMap Map<String, String> maps);
+    Observable<TimeBaseEntity> get(@Path(value = "url",encoded = true) String url,
+                                   @QueryMap Map<String, String> maps);
 
     /**
      * Post
