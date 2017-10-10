@@ -2,7 +2,6 @@ package com.project.xiaodong.mytimeapp.business.home;
 
 import android.graphics.Color;
 import android.support.design.widget.AppBarLayout;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -14,33 +13,30 @@ import android.widget.TextView;
 import com.project.xiaodong.mytimeapp.R;
 import com.project.xiaodong.mytimeapp.TestFragment;
 import com.project.xiaodong.mytimeapp.business.FragmentAdapter;
+import com.project.xiaodong.mytimeapp.business.home.adapter.NetworkImageHolderView;
+import com.project.xiaodong.mytimeapp.business.home.bean.TopModuleBean;
 import com.project.xiaodong.mytimeapp.frame.base.fragment.BaseFragment;
 import com.project.xiaodong.mytimeapp.frame.constants.DeviceInfo;
-import com.project.xiaodong.mytimeapp.frame.network.RetrofitClient;
-import com.project.xiaodong.mytimeapp.frame.network.TimeBaseEntity;
+import com.project.xiaodong.mytimeapp.frame.presenter.home.HomeTopModulePresenter;
+import com.project.xiaodong.mytimeapp.frame.presenter.view.IBaseView;
 import com.project.xiaodong.mytimeapp.frame.tabindicator.TabIndicatorLayout;
 import com.project.xiaodong.mytimeapp.frame.tabindicator.TabLayoutUtil;
 import com.project.xiaodong.mytimeapp.frame.view.APSTSViewPager;
 import com.project.xiaodong.mytimeapp.frame.view.banner.ConvenientBanner;
+import com.project.xiaodong.mytimeapp.frame.view.banner.holder.CBViewHolderCreator;
 import com.project.xiaodong.mytimeapp.frame.view.banner.listener.OnItemClickListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.InjectView;
-import io.reactivex.Observer;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
 
 
 /**
  * Created by xiaodong.jin on 2017/9/26.
  */
 
-public class HomeFragment extends BaseFragment {
+public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBean> {
     @InjectView(R.id.tv_city_name)
     TextView mTvCityName;
     @InjectView(R.id.rl_city)
@@ -69,10 +65,18 @@ public class HomeFragment extends BaseFragment {
     AppBarLayout mAppbar;
     @InjectView(R.id.viewpager)
     APSTSViewPager mViewpager;
-    private List<BaseFragment> mFragments = new ArrayList<>();
 
-    private String[] title = new String[]{"精选", "资讯", "选电影", "预告片", "影评"};//
-    private Integer[] colors = new Integer[]{Color.parseColor("#FF9100"), Color.parseColor("#F15353"), Color.parseColor("#1E7DD7"), Color.parseColor("#FFBD2F"), Color.parseColor("#8DC635")};
+    private final int START_TURNING = 5000; //轮播图时间
+
+    private List<BaseFragment> mFragments = new ArrayList<>();
+    private List<String> networkImages = new ArrayList<String>();
+
+    //    private String[] title = new String[]{"精选", "资讯", "选电影", "预告片", "影评"};//
+    private List<String> title = new ArrayList<>();//
+    //    private Integer[] colors = new Integer[]{Color.parseColor("#FF9100"), Color.parseColor("#F15353"), Color.parseColor("#1E7DD7"), Color.parseColor("#FFBD2F"), Color.parseColor("#8DC635")};
+    private List<Integer> colors = new ArrayList<>();
+    private List<String> images = new ArrayList<>();
+    HomeTopModulePresenter mHomeTopModulePresenter;
 
     //
     @Override
@@ -83,7 +87,7 @@ public class HomeFragment extends BaseFragment {
     @Override
     protected void initValue() {
         super.initValue();
-
+        mHomeTopModulePresenter = new HomeTopModulePresenter(mContext, this);
         mFragments.add(new TestFragment("精选"));
         mFragments.add(new TestFragment("资讯"));
         mFragments.add(new TestFragment("选电影"));
@@ -107,45 +111,13 @@ public class HomeFragment extends BaseFragment {
     @Override
     protected void initListener() {
         super.initListener();
+
     }
 
     @Override
     public void initData() {
         super.initData();
-        TabLayoutUtil.initTabLayout(mTabIndicator, mViewpager, Arrays.asList(title), Arrays.asList(colors), mContext);
-
-        Log.e("TAG", "好吧不知道有没有成功啊1");
-        Map<String, String> map = new HashMap<>();
-//        map.put("locationId", "292");
-
-        RetrofitClient.getInstance(mContext).createBaseApi().get("index/topModule.api", map, new Observer<TimeBaseEntity<TomModuleBean>>() {
-
-            @Override
-            public void onSubscribe(@NonNull Disposable d) {
-                Log.e("TAG", "好吧不知道有没有成功啊5");
-            }
-
-            @Override
-            public void onNext(@NonNull TimeBaseEntity<TomModuleBean> tomModuleBeanTimeBaseEntity) {
-
-                if (tomModuleBeanTimeBaseEntity != null) {
-
-                    Log.e("TAG", tomModuleBeanTimeBaseEntity.toString());
-                }
-                Log.e("TAG", "好吧不知道有没有成功啊6");
-            }
-
-
-            @Override
-            public void onError(@NonNull Throwable e) {
-                Log.e("TAG", "好吧不知道有没有成功啊7" + e.toString());
-            }
-
-            @Override
-            public void onComplete() {
-                Log.e("TAG", "好吧不知道有没有成功啊8");
-            }
-        });
+        mHomeTopModulePresenter.getData();
     }
 
     private void initBanner() {
@@ -170,23 +142,87 @@ public class HomeFragment extends BaseFragment {
 
                     }
                 })
-                .setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                    @Override
-                    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-                    }
-
-                    @Override
-                    public void onPageSelected(int position) {
-
-                    }
-
-                    @Override
-                    public void onPageScrollStateChanged(int state) {
-
-                    }
-                })
                 .setOffscreenPageLimit(10);
     }
 
+    @Override
+    public void initData(TopModuleBean data) {
+        Log.e("tag", "成功");
+        //分类tab集合数据
+        List<TopModuleBean.CategoryListBean> categoryList = data.categoryList;
+
+        //banner
+        List<TopModuleBean.GalleryListBean> galleryList = data.galleryList;
+
+
+        if (galleryList != null && galleryList.size() > 0) {
+            setBanner(galleryList);
+        }
+
+        if (categoryList != null && categoryList.size() > 0) {
+            setTable(categoryList);
+        }
+
+    }
+
+
+    @Override
+    public void addData(TopModuleBean data) {
+
+    }
+
+    @Override
+    public void onEmpty() {
+
+    }
+
+    @Override
+    public void onFailure(String msg) {
+
+    }
+
+
+    private void setTable(List<TopModuleBean.CategoryListBean> categoryList) {
+        for (TopModuleBean.CategoryListBean categoryListBean : categoryList) {
+            if (categoryListBean != null) {
+                title.add(categoryListBean.name);
+                colors.add(Color.parseColor(categoryListBean.selectColor));
+                images.add(categoryListBean.img);
+            }
+        }
+        TabLayoutUtil.initTabLayout(mTabIndicator, mViewpager, title, colors, images, mContext);
+
+    }
+
+    private void setBanner(List<TopModuleBean.GalleryListBean> galleryList) {
+        for (TopModuleBean.GalleryListBean galleryListBean : galleryList) {
+            if (galleryListBean != null && galleryListBean.img != null) {
+                networkImages.add(galleryListBean.img);
+            }
+        }
+
+        //只有一张图片时，不轮播，指示器不显示
+        if (networkImages.size() == 1) {
+            mCbBanner.setCanLoop(false);
+            mCbBanner.setPointViewVisible(false);
+        } else {
+            mCbBanner.setCanLoop(true);
+            mCbBanner.setPointViewVisible(true);
+        }
+        if (networkImages.size() > 0) {
+            mCbBanner.setPages(new CBViewHolderCreator<NetworkImageHolderView>() {
+                @Override
+                public NetworkImageHolderView createHolder() {
+                    return new NetworkImageHolderView();
+                }
+            }, networkImages);
+        }
+        startTurn();
+    }
+
+    private void startTurn() {
+        if (mCbBanner != null && !mCbBanner.isTurning() && networkImages != null && networkImages.size() > 1) {
+            mCbBanner.startTurning(START_TURNING);
+        }
+    }
 }

@@ -1,6 +1,6 @@
-package com.project.xiaodong.mytimeapp.business.home;
+package com.project.xiaodong.mytimeapp.business.home.bean;
 
-import com.project.xiaodong.mytimeapp.frame.network.TimeBaseEntity;
+import com.project.xiaodong.mytimeapp.frame.bean.TimeBaseEntity;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import java.util.List;
  * Created by xiaodong.jin on 2017/9/27.
  */
 
-public class TomModuleBean extends TimeBaseEntity<TomModuleBean> {
+public class TopModuleBean extends TimeBaseEntity<TopModuleBean> {
 
     public String searchBarDescribe;
     public List<CategoryListBean> categoryList;
@@ -22,7 +22,6 @@ public class TomModuleBean extends TimeBaseEntity<TomModuleBean> {
         public String img;
         public String name;
         public String selectColor;
-
 
 
     }
@@ -48,7 +47,6 @@ public class TomModuleBean extends TimeBaseEntity<TomModuleBean> {
         public int relatedId;
         public String relatedTypeUrl;
         public String url;
-
 
 
         public static class ParametersBean {

@@ -7,9 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.project.xiaodong.mytimeapp.R;
 import com.project.xiaodong.mytimeapp.frame.tabindicator.buildins.UIUtil;
 import com.project.xiaodong.mytimeapp.frame.tabindicator.buildins.commonnavigator.CommonNavigator;
@@ -23,12 +23,14 @@ import java.util.List;
 
 /**
  * Created by xiaodong.jin on 2017/9/26.
+ * <p>
+ * 作用：扩展适应自己app的tablayout
  */
 
 public class TabLayoutUtil {
 
     public static void initTabLayout(TabIndicatorLayout tabIndicatorLayout, final ViewPager mViewPager,
-                                     final List<String> titles, final List<Integer> colors, final Context mContext) {
+                                     final List<String> titles, final List<Integer> colors, final List<String> images, final Context mContext) {
 
 
         tabIndicatorLayout.setBackgroundResource(R.color.main_white);
@@ -46,9 +48,16 @@ public class TabLayoutUtil {
                 final CommonPagerTitleView commonPagerTitleView = new CommonPagerTitleView(context);
 
                 final View inflate = LayoutInflater.from(context).inflate(R.layout.tab_home_indicator, null);
-                ImageView tabImg = (ImageView) inflate.findViewById(R.id.tab_img);
+                SimpleDraweeView tabImg = (SimpleDraweeView) inflate.findViewById(R.id.tab_img);
                 final TextView tabName = (TextView) inflate.findViewById(R.id.tab_name);
-                tabImg.setImageResource(R.drawable.tab_user01);
+                tabImg.setImageURI(images.get(index));
+//                Glide.with(context)
+//                        .load(images.get(index))
+//                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                        .placeholder(R.drawable.video_default)
+//                        .error(R.drawable.video_default)
+//                        .into(tabImg);
+
                 tabName.setText(titles.get(index));
                 commonPagerTitleView.setContentView(inflate);
                 //设置指示器按照哪一个View进行宽度测量

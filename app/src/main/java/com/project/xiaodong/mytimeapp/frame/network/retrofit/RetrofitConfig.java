@@ -1,4 +1,10 @@
-package com.project.xiaodong.mytimeapp.frame.network;
+package com.project.xiaodong.mytimeapp.frame.network.retrofit;
+
+import android.content.Context;
+
+import com.project.xiaodong.mytimeapp.frame.application.BaseApplication;
+
+import java.net.CookieManager;
 
 /**
  * Created by xiaodong.jin on 2017/9/27.
@@ -9,7 +15,7 @@ public class RetrofitConfig {
     /**
      * 默认读取超时时间--30s
      */
-    public  static final int DEFAULT_READTIMEOUT = 60;
+    public static final int DEFAULT_READTIMEOUT = 60;
     /**
      * 默认写超时时间--15s
      */
@@ -18,7 +24,27 @@ public class RetrofitConfig {
      * 默认连接超时时间--15s
      */
     public static final int DEFAULT_CONNECTTIMEOUT = 60;
+    /**
+     * cookie管理策略
+     */
+    public CookieManager cookieHandler = null;
+    /**
+     * 是否支持cookie
+     */
+    public boolean supportCookie;
+    /**
+     * 是否设置缓存大小
+     */
+    public boolean isSetCacheSize;
 
+    /**
+     * 缓存目录，默认为系统给应用分配的缓存目录
+     */
+    public String cacheDirectory;
+    /**
+     * 缓存默认大小
+     */
+    public long cacheSize = 50 * 1024 * 1024;
 
     /*************************缓存设置*********************/
 /*
@@ -53,4 +79,10 @@ public class RetrofitConfig {
      */
     public static final String CACHE_CONTROL_AGE = "max-age=0";
 
+    public RetrofitConfig(Context context) {
+//        cookieHandler =  new CookieManager(new PersistentCookieStore(context),
+//                CookiePolicy.ACCEPT_ORIGINAL_SERVER);
+//        cookieJarManager = new CookieJarManager(context);
+        cacheDirectory = BaseApplication.getContext().getCacheDir() + "mtime_cache";
+    }
 }

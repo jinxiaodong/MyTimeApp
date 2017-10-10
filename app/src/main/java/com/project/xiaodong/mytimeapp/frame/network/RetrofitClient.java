@@ -1,22 +1,21 @@
 package com.project.xiaodong.mytimeapp.frame.network;
 
 import android.content.Context;
-import android.text.TextUtils;
-import android.util.Log;
 
-import com.project.xiaodong.mytimeapp.business.home.TomModuleBean;
-import com.project.xiaodong.mytimeapp.frame.base.BaseApplication;
+import com.project.xiaodong.mytimeapp.business.home.apiserveice.ApiService;
+import com.project.xiaodong.mytimeapp.frame.application.BaseApplication;
+import com.project.xiaodong.mytimeapp.frame.constants.ConstantUrl;
+import com.project.xiaodong.mytimeapp.frame.network.interceptor.RewriteCacheControlInterceptor;
+import com.project.xiaodong.mytimeapp.frame.network.retrofit.RetrofitConfig;
 import com.project.xiaodong.mytimeapp.frame.utils.LogUtil;
-import com.project.xiaodong.mytimeapp.frame.utils.NetworkUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Observer;
 import okhttp3.Cache;
-import okhttp3.CacheControl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -32,208 +31,152 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
 
-    private static Context mcontext;
+    private static Context mContext;
     private static Retrofit mRetrofit;
-    public static String baseUrl = ConstantUrl.Base_URL;
-    private static OkHttpClient mOkHttpClient;
-    private Cache mCache;
+
+    /*
+     * 请求host——url
+     */
+    private String mBaseUrl = ConstantUrl.BASE_URL_TYPE1;
+    /**
+     *
+     */
+    private String mUrl;
+
+    /**
+     * 请求头
+     */
+    private Map<String, String> mHeaders;
+    /**
+     * 请求参数
+     */
+    private Map<String, String> mParams = new HashMap<>();
+    /**
+     * 缓存目录，默认为系统给应用分配的缓存目录
+     */
+    private String cacheDirectory;
+
+    private long cacheSize = 50 * 1024 * 1024;
+    /**
+     * 返回数据的实体类
+     */
+    private Class clazz;
     private ApiService mApiService;
-    private Class mClass;
+    private Interceptor mHeaderInterceptor;
 
-
-    public static RetrofitClient getInstance(Context context) {
-        if (context != null) {
-            mcontext = context;
+    private void appendHeaders() {
+        if (mHeaders == null) {
+            mHeaders = new HashMap<String, String>();
         }
-        return new RetrofitClient(context);
+        mHeaders.put("Content-Type", "application/json");
+        mHeaders.put("Content-Type", "charset=UTF-8");
+        //增加头部信息
+        mHeaderInterceptor = new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+
+                Request.Builder builder = chain.request().newBuilder();
+                for (String key : mHeaders.keySet()) {
+                    builder.addHeader(key, mHeaders.get(key));
+                }
+
+
+                Request build = builder.build();
+                return chain.proceed(build);
+            }
+        };
     }
 
-    public static RetrofitClient getInstance(Context context, String url) {
-        if (context != null) {
-            mcontext = context;
-        }
-        Log.e("TAG", "好吧不知道有没有成功啊2");
-        return new RetrofitClient(context, url);
+    private void addCookie() {
+
     }
 
-    public static RetrofitClient getInstance(Context context, String url, Map<String, String> headers) {
-        if (context != null) {
-            mcontext = context;
-        }
-        return new RetrofitClient(context, url, headers);
-    }
-
-    private RetrofitClient(Context context) {
-
-        this(context, baseUrl, null);
-    }
-
-    private RetrofitClient(Context context, String url) {
-
-        this(context, url, null);
-    }
-
-    public RetrofitClient(Context context, String url, Map<String, String> headers) {
-
-        if (TextUtils.isEmpty(url)) {
-            url = baseUrl;
-        }
-
-
+    private void initRequest() {
         //开启log
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-        //缓存
-        File cacheFile = new File(BaseApplication.getContext().getCacheDir(), "mtime_cache");
-        try {
-            if (mCache == null) {
-                //100Mb
-                mCache = new Cache(cacheFile, 1024 * 1024 * 100);
-            }
-        } catch (Exception e) {
-            Log.e("OKHttp", "Could not create http cache", e);
-        }
-        //增加头部信息
-        Interceptor headerInterceptor = new Interceptor() {
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-                Request build = chain.request().newBuilder()
-                        .addHeader("Content-Type", "application/json")
-                        .addHeader("Content-Type", "charset=UTF-8")
-                        .build();
+        appendHeaders();
 
-                return chain.proceed(build);
-            }
-        };
-
-
-        mOkHttpClient = new OkHttpClient.Builder()
+        Interceptor mRewriteCacheControlInterceptor = new RewriteCacheControlInterceptor();
+        cacheDirectory = BaseApplication.getContext().getCacheDir() + "mtime_cache";
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+//
+//                .cookieJar(new NovateCookieManger(context))
                 .readTimeout(RetrofitConfig.DEFAULT_READTIMEOUT, TimeUnit.SECONDS)
                 .writeTimeout(RetrofitConfig.DEFAULT_WRITETIMEOUT, TimeUnit.SECONDS)
                 .connectTimeout(RetrofitConfig.DEFAULT_WRITETIMEOUT, TimeUnit.SECONDS)
                 .addInterceptor(mRewriteCacheControlInterceptor)
-                .addNetworkInterceptor(mRewriteCacheControlInterceptor)
-                .addInterceptor(headerInterceptor)
+                .addInterceptor(mRewriteCacheControlInterceptor)
                 .addInterceptor(logging)
-                .cache(mCache)
+                .addInterceptor(mHeaderInterceptor)
+                .cache(new Cache(new File(cacheDirectory), cacheSize))
                 .build();
 
 
         mRetrofit = new Retrofit.Builder()
-                .baseUrl(url)
-                .client(mOkHttpClient)
+                .baseUrl(mBaseUrl)
+                .client(okHttpClient)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         LogUtil.e("retrofit创建");
+
+//        mApiService = mRetrofit.create(ApiService.class);
     }
 
 
-    /**
-     * 云端响应头拦截器，用来配置缓存策略
-     * Dangerous interceptor that rewrites the server's cache-control header.
-     */
-    private final Interceptor mRewriteCacheControlInterceptor = new Interceptor() {
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            Request request = chain.request();
-            String cacheControl = request.cacheControl().toString();
-            if (!NetworkUtil.isNetworkAvailable(BaseApplication.getContext())) {
-                request = request.newBuilder()
-                        .cacheControl(TextUtils.isEmpty(cacheControl) ? CacheControl.FORCE_NETWORK : CacheControl.FORCE_CACHE)
-                        .build();
-            }
-            Response originalResponse = chain.proceed(request);
-            if (NetworkUtil.isNetworkAvailable(BaseApplication.getContext())) {
-                //有网的时候读接口上的@Headers里的配置，你可以在这里进行统一的设置
-                return originalResponse.newBuilder()
-                        .header("Cache-Control", cacheControl)
-                        .removeHeader("Pragma")
-                        .build();
-            } else {
-                return originalResponse.newBuilder()
-                        .header("Cache-Control", "public, only-if-cached, max-stale=" + RetrofitConfig.CACHE_STALE_SEC)
-                        .removeHeader("Pragma")
-                        .build();
-            }
-        }
-    };
-
-
-    private static Retrofit.Builder builder =
-            new Retrofit.Builder()
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .baseUrl(baseUrl);
-
-    /**
-     * ApiBaseUrl
-     *
-     * @param newApiBaseUrl
-     */
-    public static void changeApiBaseUrl(String newApiBaseUrl) {
-        baseUrl = newApiBaseUrl;
-        builder = new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .baseUrl(baseUrl);
+    public RetrofitClient() {
     }
 
-    /**
-     * addcookieJar
-     */
-    public static void addCookie() {
-//        mOkHttpClient.newBuilder().cookieJar(new NovateCookieManger(mContext)).build();
-//        retrofit = builder.client(okHttpClient).build();
-    }
 
-    /**
-     * ApiBaseUrl
-     *
-     * @param newApiHeaders
-     */
-    public static void changeApiHeader(Map<String, String> newApiHeaders) {
-
-//        mOkHttpClient.newBuilder().addInterceptor(new BaseInterceptor(newApiHeaders)).build();
-        builder.client(mOkHttpClient).build();
-    }
-
-    /**
-     * create BaseApi  defalte ApiManager
-     *
-     * @return ApiManager
-     */
-    public RetrofitClient createBaseApi() {
-        Log.e("TAG", "好吧不知道有没有成功啊3");
-        mApiService = create(ApiService.class);
+    public RetrofitClient mBaseUrl(String baseUrl) {
+        this.mBaseUrl = baseUrl;
         return this;
     }
+//
+//    public RetrofitClient url(String url) {
+//        mBaseUrl = ConstantUrl.BASE_URL_TYPE1;
+//        mUrl = url;
+//        return this;
+//    }
+//
+//    public RetrofitClient headers(Map<String, String> headers) {
+//        this.mHeaders = headers;
+//        return this;
+//    }
+//
+//    public RetrofitClient params(Map params) {
+//        mParams = params;
+//        return this;
+//    }
 
-    /**
-     * create you ApiService
-     * Create an implementation of the API endpoints defined by the {@code service} interface.
-     */
     public <T> T create(final Class<T> service) {
+        initRequest();
         if (service == null) {
             throw new RuntimeException("Api service is null!");
         }
         return mRetrofit.create(service);
     }
 
-    public RetrofitClient clazz(Class clazz) {
-        mClass = clazz;
-        return this;
-    }
+//    /**
+//     * get
+//     *
+//     * @param observer
+//     */
+//    public void get(Observer observer) {
+//        initRequest();
+//        Log.e("TAG", "好吧不知道有没有成功啊4");
+//        mApiService
+//                .get(mUrl, mParams)
+//                .compose(RxSchedulers.compose())
+//                .subscribe(observer);
+//    }
 
-    public void get(String url,Map map,Observer<TimeBaseEntity<TomModuleBean>> observer) {
-        Log.e("TAG", "好吧不知道有没有成功啊4");
-        mApiService
-                .get(url,map)
-                .compose(RxSchedulers.compose())
-                .subscribe(observer);
 
-    }
-
-
+//    public void post(Observer observer) {
+//        mApiService.post(mUrl, mParams)
+//                .compose(RxSchedulers.compose())
+//                .subscribe(observer);
+//    }
 }

@@ -12,7 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.project.xiaodong.mytimeapp.frame.base.BaseApplication;
+import com.project.xiaodong.mytimeapp.frame.application.BaseApplication;
 import com.project.xiaodong.mytimeapp.frame.view.dialog.DialogUtil;
 
 import butterknife.ButterKnife;

@@ -154,7 +154,7 @@
                         android:id="@+id/cb_banner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:minHeight="190dp"
+                        android:minHeight="180dp"
                         app:canLoop="true">
 
                     </com.project.xiaodong.mytimeapp.frame.view.banner.ConvenientBanner>
