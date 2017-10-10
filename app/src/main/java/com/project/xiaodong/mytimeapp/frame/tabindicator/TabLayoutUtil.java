@@ -36,7 +36,7 @@ public class TabLayoutUtil {
         tabIndicatorLayout.setBackgroundResource(R.color.main_white);
         CommonNavigator commonNavigator = new CommonNavigator(mContext);
         commonNavigator.setScrollPivotX(0.65f);//滚动中心点
-        commonNavigator.setAdjustMode(true);
+//        commonNavigator.setAdjustMode(true);
         commonNavigator.setAdapter(new CommonNavigatorAdapter() {
             @Override
             public int getCount() {
@@ -51,12 +51,7 @@ public class TabLayoutUtil {
                 SimpleDraweeView tabImg = (SimpleDraweeView) inflate.findViewById(R.id.tab_img);
                 final TextView tabName = (TextView) inflate.findViewById(R.id.tab_name);
                 tabImg.setImageURI(images.get(index));
-//                Glide.with(context)
-//                        .load(images.get(index))
-//                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                        .placeholder(R.drawable.video_default)
-//                        .error(R.drawable.video_default)
-//                        .into(tabImg);
+
 
                 tabName.setText(titles.get(index));
                 commonPagerTitleView.setContentView(inflate);
@@ -91,7 +86,7 @@ public class TabLayoutUtil {
 
                     @Override
                     public void onDeselected(int index, int totalCount) {
-                        tabName.setTextColor(Color.BLACK); //未选中颜色
+                        tabName.setTextColor(Color.parseColor("#777777")); //未选中颜色
                     }
 
                     @Override
