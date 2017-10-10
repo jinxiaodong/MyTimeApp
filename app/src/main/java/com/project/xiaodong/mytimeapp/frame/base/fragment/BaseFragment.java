@@ -12,7 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.project.xiaodong.mytimeapp.frame.base.BaseApplication;
+import com.project.xiaodong.mytimeapp.frame.application.BaseApplication;
 import com.project.xiaodong.mytimeapp.frame.view.dialog.DialogUtil;
 
 import butterknife.ButterKnife;
@@ -258,5 +258,23 @@ public abstract class BaseFragment extends Fragment {
             }
         });
     }
-
+    /**
+     * 根据id查找view
+     *
+     * @param res
+     * @return
+     */
+    public View findViewById(int res) {
+        try {
+            if (mRootView != null) {
+                View view = mRootView.findViewById(res);
+                return view;
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

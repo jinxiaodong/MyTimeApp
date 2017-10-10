@@ -7,9 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.project.xiaodong.mytimeapp.R;
 import com.project.xiaodong.mytimeapp.frame.tabindicator.buildins.UIUtil;
 import com.project.xiaodong.mytimeapp.frame.tabindicator.buildins.commonnavigator.CommonNavigator;
@@ -23,17 +23,20 @@ import java.util.List;
 
 /**
  * Created by xiaodong.jin on 2017/9/26.
+ * <p>
+ * 作用：扩展适应自己app的tablayout
  */
 
 public class TabLayoutUtil {
 
     public static void initTabLayout(TabIndicatorLayout tabIndicatorLayout, final ViewPager mViewPager,
-                                     final List<String> titles, final List<Integer> colors, final Context mContext) {
+                                     final List<String> titles, final List<Integer> colors, final List<String> images, final Context mContext) {
 
 
         tabIndicatorLayout.setBackgroundResource(R.color.main_white);
         CommonNavigator commonNavigator = new CommonNavigator(mContext);
         commonNavigator.setScrollPivotX(0.65f);//滚动中心点
+        commonNavigator.setAdjustMode(true);
         commonNavigator.setAdapter(new CommonNavigatorAdapter() {
             @Override
             public int getCount() {
@@ -42,15 +45,43 @@ public class TabLayoutUtil {
 
             @Override
             public IPagerTitleView getTitleView(Context context, final int index) {
-                CommonPagerTitleView commonPagerTitleView = new CommonPagerTitleView(context);
+                final CommonPagerTitleView commonPagerTitleView = new CommonPagerTitleView(context);
 
-                View inflate = LayoutInflater.from(context).inflate(R.layout.tab_home_indicator, null);
-                ImageView tabImg = (ImageView) inflate.findViewById(R.id.tab_img);
+                final View inflate = LayoutInflater.from(context).inflate(R.layout.tab_home_indicator, null);
+                SimpleDraweeView tabImg = (SimpleDraweeView) inflate.findViewById(R.id.tab_img);
                 final TextView tabName = (TextView) inflate.findViewById(R.id.tab_name);
-                tabImg.setImageResource(R.mipmap.ic_launcher);
+                tabImg.setImageURI(images.get(index));
+//                Glide.with(context)
+//                        .load(images.get(index))
+//                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                        .placeholder(R.drawable.video_default)
+//                        .error(R.drawable.video_default)
+//                        .into(tabImg);
+
                 tabName.setText(titles.get(index));
                 commonPagerTitleView.setContentView(inflate);
+                //设置指示器按照哪一个View进行宽度测量
+                commonPagerTitleView.setContentPositionDataProvider(new CommonPagerTitleView.ContentPositionDataProvider() {
+                    @Override
+                    public int getContentLeft() {
+                        return (int) (tabName.getX() + commonPagerTitleView.getLeft());
+                    }
 
+                    @Override
+                    public int getContentTop() {
+                        return commonPagerTitleView.getTop();
+                    }
+
+                    @Override
+                    public int getContentRight() {
+                        return (int) (commonPagerTitleView.getRight() - tabName.getX());
+                    }
+
+                    @Override
+                    public int getContentBottom() {
+                        return commonPagerTitleView.getBottom();
+                    }
+                });
                 commonPagerTitleView.setOnPagerTitleChangeListener(new CommonPagerTitleView.OnPagerTitleChangeListener() {
 
                     @Override

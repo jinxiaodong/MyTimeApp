@@ -1,15 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/content_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <com.project.xiaodong.mytimeapp.frame.view.APSTSViewPager
-        android:id="@+id/viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </com.project.xiaodong.mytimeapp.frame.view.APSTSViewPager>
 
 
     <FrameLayout
@@ -37,14 +30,14 @@
                     android:id="@+id/iv_tab_home"
                     style="@style/main_page_tab_icon_style"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/tab_home_selector">
-                </ImageView>
+                    android:src="@drawable/tab_home_selector"></ImageView>
+
                 <TextView
                     android:id="@+id/tv_tab_home"
                     style="@style/main_page_tab_txt_style"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:text="@string/tab_home"/>
+                    android:text="@string/tab_home" />
 
             </RelativeLayout>
 
@@ -58,16 +51,17 @@
                     android:id="@+id/iv_tab_payticket"
                     style="@style/main_page_tab_icon_style"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/tab_paytickets_selector"/>
+                    android:src="@drawable/tab_paytickets_selector" />
 
                 <TextView
                     android:id="@+id/tv_tab_payticket"
                     style="@style/main_page_tab_txt_style"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:text="@string/tab_payticket"/>
+                    android:text="@string/tab_payticket" />
 
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/rl_tab_mall"
                 android:layout_width="0dp"
@@ -79,14 +73,14 @@
                     android:id="@+id/iv_tab_mall"
                     style="@style/main_page_tab_icon_style"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/tab_mall_selector">
-                </ImageView>
+                    android:src="@drawable/tab_mall_selector"></ImageView>
+
                 <TextView
                     android:id="@+id/tv_tab_mall"
                     style="@style/main_page_tab_txt_style"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:text="@string/tab_home"/>
+                    android:text="@string/tab_home" />
 
             </RelativeLayout>
 
@@ -100,14 +94,14 @@
                     android:id="@+id/iv_tab_live"
                     style="@style/main_page_tab_icon_style"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/tab_live_selector"/>
+                    android:src="@drawable/tab_live_selector" />
 
                 <TextView
                     android:id="@+id/tv_tab_live"
                     style="@style/main_page_tab_txt_style"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:text="@string/tab_payticket"/>
+                    android:text="@string/tab_payticket" />
 
             </RelativeLayout>
 
@@ -123,27 +117,35 @@
                     android:id="@+id/iv_tab_mine"
                     style="@style/main_page_tab_icon_style"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/tab_mine_selector"/>
+                    android:src="@drawable/tab_mine_selector" />
 
                 <TextView
                     android:id="@+id/tv_tab_mine"
                     style="@style/main_page_tab_txt_style"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:text="@string/tab_mine"/>
+                    android:text="@string/tab_mine" />
+
                 <ImageView
-                    android:visibility="visible"
                     android:id="@+id/point"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="1dp"
                     android:layout_marginTop="@dimen/padding_8dp"
                     android:layout_toRightOf="@id/tv_tab_mine"
-                    android:src="@drawable/red_icon"/>
+                    android:src="@drawable/red_icon"
+                    android:visibility="visible" />
             </RelativeLayout>
         </LinearLayout>
 
     </FrameLayout>
+
+    <com.project.xiaodong.mytimeapp.frame.view.APSTSViewPager
+
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/fl_main_page_tab"></com.project.xiaodong.mytimeapp.frame.view.APSTSViewPager>
 
 
 </RelativeLayout>

@@ -2,7 +2,7 @@ package com.project.xiaodong.mytimeapp.frame.utils;
 
 import android.os.Environment;
 
-import com.project.xiaodong.mytimeapp.frame.base.BaseApplication;
+import com.project.xiaodong.mytimeapp.frame.application.BaseApplication;
 
 import java.io.File;
 

@@ -6,7 +6,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 
-import com.project.xiaodong.mytimeapp.frame.base.BaseApplication;
+import com.project.xiaodong.mytimeapp.frame.application.BaseApplication;
 
 import java.io.BufferedReader;
 import java.io.IOException;
