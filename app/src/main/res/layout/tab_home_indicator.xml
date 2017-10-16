@@ -7,8 +7,7 @@
     android:gravity="center"
     android:orientation="vertical"
     android:paddingLeft="@dimen/padding_23dp"
-    android:paddingRight="@dimen/padding_23dp"
-    >
+    android:paddingRight="@dimen/padding_23dp">
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/tab_img"
