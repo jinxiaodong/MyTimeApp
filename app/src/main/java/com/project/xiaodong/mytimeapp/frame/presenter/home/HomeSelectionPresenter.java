@@ -3,22 +3,24 @@ package com.project.xiaodong.mytimeapp.frame.presenter.home;
 import android.content.Context;
 
 import com.project.xiaodong.mytimeapp.business.home.apiserveice.ApiService;
-import com.project.xiaodong.mytimeapp.business.home.bean.TopModuleBean;
+import com.project.xiaodong.mytimeapp.business.home.bean.HotPlayMoviesBean;
 import com.project.xiaodong.mytimeapp.frame.constants.ConstantUrl;
 import com.project.xiaodong.mytimeapp.frame.network.RetrofitClient;
 import com.project.xiaodong.mytimeapp.frame.network.RxSchedulers;
 import com.project.xiaodong.mytimeapp.frame.presenter.Presenter;
 import com.project.xiaodong.mytimeapp.frame.presenter.view.IBaseView;
 
+import java.util.List;
+
 import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 
 /**
- * Created by xiaodong.jin on 2017/9/28.
+ * Created by xiaodong.jin on 2017/10/17.
  */
 
-public class HomeTopModulePresenter extends Presenter<IBaseView<TopModuleBean>> {
+public class HomeSelectionPresenter extends Presenter<IBaseView<HotPlayMoviesBean>> {
 
 
     RetrofitClient mRetrofitClient;
@@ -30,40 +32,36 @@ public class HomeTopModulePresenter extends Presenter<IBaseView<TopModuleBean>> 
      * @param context
      * @param mvpView
      */
-    public HomeTopModulePresenter(Context context, IBaseView mvpView) {
+    public HomeSelectionPresenter(Context context, IBaseView<HotPlayMoviesBean> mvpView) {
         super(context, mvpView);
         mRetrofitClient = new RetrofitClient();
     }
 
 
-    public void getData() {
+    public void getData(String locationId) {
 
-        mRetrofitClient.create(ApiService.class)
-                .getHome(ConstantUrl.HOME_TOP_MODULE, mParams)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-                .compose(RxSchedulers.<TopModuleBean>compose())
-                .subscribe(new Observer<TopModuleBean>() {
+        put("locationId","292");
+        mRetrofitClient.mBaseUrl(ConstantUrl.BASE_URL_TYPE2)
+                .create(ApiService.class)
+                .getHotplay(ConstantUrl.HOT_PLAY_MOVIES, mParams)
+                .compose(RxSchedulers.<HotPlayMoviesBean>compose())
+                .subscribe(new Observer<HotPlayMoviesBean>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(@NonNull TopModuleBean topModuleBean) {
-
-                        if (topModuleBean != null) {
-                            if ("1".equals(topModuleBean.code)) {
-                                if (topModuleBean.data == null) {
-                                    mvpView.onEmpty();
-                                } else {
-                                    mvpView.setData(topModuleBean.data);
-                                }
+                    public void onNext(@NonNull HotPlayMoviesBean hotPlayMoviesBean) {
+                        if (hotPlayMoviesBean != null) {
+                            List<HotPlayMoviesBean> movies = hotPlayMoviesBean.movies;
+                            if (movies != null && movies.size() > 0) {
+                                mvpView.setData(hotPlayMoviesBean);
                             } else {
-                                mvpView.onFailure(topModuleBean.showMsg);
+                                mvpView.onEmpty();
                             }
                         } else {
-                            mvpView.onFailure("请求失败");
+                            mvpView.onEmpty();
                         }
                     }
 
@@ -77,11 +75,6 @@ public class HomeTopModulePresenter extends Presenter<IBaseView<TopModuleBean>> 
 
                     }
                 });
-
-
-
     }
 
-
 }
-

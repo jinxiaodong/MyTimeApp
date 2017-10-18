@@ -4,6 +4,7 @@ import android.support.v7.widget.LinearLayoutManager;
 
 import com.project.xiaodong.mytimeapp.frame.base.fragment.BaseFragment;
 import com.project.xiaodong.mytimeapp.frame.view.recycleview.LoadMoreRecyclerView;
+import com.project.xiaodong.mytimeapp.frame.view.refresh.PullRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ public class TestFragment extends BaseFragment {
     String title;
 
     LoadMoreRecyclerView loadMoreRecyclerView;
+    PullRefreshLayout pullRefresh;
     private List<String> list;
 
     public TestFragment(String title) {
@@ -33,6 +35,8 @@ public class TestFragment extends BaseFragment {
     @Override
     protected void initWidget() {
         super.initWidget();
+        pullRefresh = (PullRefreshLayout) findViewById(R.id.pull_refresh);
+        pullRefresh.init();
         loadMoreRecyclerView = (LoadMoreRecyclerView) findViewById(R.id.loadMoreRecyclerView);
         loadMoreRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         loadMoreRecyclerView.setAdapter(new TestAdapter(mContext, list));

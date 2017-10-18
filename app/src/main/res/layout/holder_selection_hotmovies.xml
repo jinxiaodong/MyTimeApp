@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_marginLeft="@dimen/padding_15dp"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding_10dp">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="正在售票"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/font_16sp"/>
+
+
+        <TextView
+            android:id="@+id/tv_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/padding_15dp"
+            android:drawablePadding="@dimen/padding_5dp"
+            android:drawableRight="@drawable/arrow_to_right"
+            android:text="78部"
+            android:textColor="@color/gray_999999"
+            android:textSize="@dimen/font_16sp"/>
+
+    </RelativeLayout>
+
+    <com.project.xiaodong.mytimeapp.frame.view.recycleview.LoadMoreWithHorRecycleView
+        android:id="@+id/loadMoreRecyclerView"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+    </com.project.xiaodong.mytimeapp.frame.view.recycleview.LoadMoreWithHorRecycleView>
+</LinearLayout>

@@ -1,5 +1,6 @@
 package com.project.xiaodong.mytimeapp.business.home.apiserveice;
 
+import com.project.xiaodong.mytimeapp.business.home.bean.HotPlayMoviesBean;
 import com.project.xiaodong.mytimeapp.business.home.bean.TopModuleBean;
 import com.project.xiaodong.mytimeapp.frame.bean.TimeBaseEntity;
 
@@ -8,6 +9,7 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
+import okhttp3.Response;
 import retrofit2.http.FieldMap;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
@@ -28,9 +30,16 @@ public interface ApiService {
      * home
      */
     @GET("{url}")
-    Observable<TopModuleBean> get(@Path(value = "url", encoded = true) String url,
+    Observable<TopModuleBean> getHome(@Path(value = "url", encoded = true) String url,
                                                   @QueryMap HashMap<String, Object> maps);
 
+    @GET("{url}")
+    Observable<HotPlayMoviesBean> getHotplay(@Path(value = "url", encoded = true) String url,
+                                             @QueryMap HashMap<String, Object> maps);
+
+    @GET("{url}")
+    Observable<Response> getData(@Path(value = "url", encoded = true) String url,
+                                 @QueryMap HashMap<String, Object> maps);
     /**
      * Post
      */

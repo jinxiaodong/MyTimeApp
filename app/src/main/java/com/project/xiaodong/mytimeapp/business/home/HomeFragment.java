@@ -2,8 +2,6 @@ package com.project.xiaodong.mytimeapp.business.home;
 
 import android.graphics.Color;
 import android.support.design.widget.AppBarLayout;
-import android.util.Log;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -15,6 +13,7 @@ import com.project.xiaodong.mytimeapp.TestFragment;
 import com.project.xiaodong.mytimeapp.business.FragmentAdapter;
 import com.project.xiaodong.mytimeapp.business.home.adapter.NetworkImageHolderView;
 import com.project.xiaodong.mytimeapp.business.home.bean.TopModuleBean;
+import com.project.xiaodong.mytimeapp.business.home.fragment.SelectionFragment;
 import com.project.xiaodong.mytimeapp.frame.base.fragment.BaseFragment;
 import com.project.xiaodong.mytimeapp.frame.constants.DeviceInfo;
 import com.project.xiaodong.mytimeapp.frame.presenter.home.HomeTopModulePresenter;
@@ -53,8 +52,7 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
     TextView mTvTitle;
     @InjectView(R.id.rel_center)
     RelativeLayout mRelCenter;
-    @InjectView(R.id.driver)
-    View mDriver;
+
     @InjectView(R.id.rl_header)
     RelativeLayout mRlHeader;
     @InjectView(R.id.cb_banner)
@@ -78,6 +76,9 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
     private List<String> images = new ArrayList<>();
     HomeTopModulePresenter mHomeTopModulePresenter;
 
+
+    private boolean isRefrsh = true;
+
     //
     @Override
     protected int getLayoutId() {
@@ -88,7 +89,7 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
     protected void initValue() {
         super.initValue();
         mHomeTopModulePresenter = new HomeTopModulePresenter(mContext, this);
-        mFragments.add(new TestFragment("精选"));
+        mFragments.add(new SelectionFragment());
         mFragments.add(new TestFragment("资讯"));
         mFragments.add(new TestFragment("选电影"));
         mFragments.add(new TestFragment("预告片"));
@@ -99,7 +100,7 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
     protected void initWidget() {
         super.initWidget();
         mViewpager.setNoFocus(false);
-        mViewpager.setOffscreenPageLimit(2);
+        mViewpager.setOffscreenPageLimit(4);
         //这里要用getChildFragmentManager()
         mViewpager.setAdapter(new FragmentAdapter(getChildFragmentManager(), mFragments));
         mViewpager.setCurrentItem(0);
@@ -111,13 +112,73 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
     @Override
     protected void initListener() {
         super.initListener();
-
+        mAppbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                isRefrsh = verticalOffset >= 0;
+            }
+        });
     }
 
     @Override
     public void initData() {
         super.initData();
         mHomeTopModulePresenter.getData();
+    }
+
+    @Override
+    protected void onFragmentVisible() {
+        super.onFragmentVisible();
+        startTurn();
+    }
+
+    @Override
+    protected void onFragmentInVisible() {
+        super.onFragmentInVisible();
+        stopTurn();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopTurn();
+    }
+
+    @Override
+    public void setData(TopModuleBean data) {
+
+        //分类tab集合数据
+        List<TopModuleBean.CategoryListBean> categoryList = data.categoryList;
+
+        //banner
+        List<TopModuleBean.GalleryListBean> galleryList = data.galleryList;
+
+
+        if (galleryList != null && galleryList.size() > 0) {
+            setBanner(galleryList);
+        }
+
+        if (categoryList != null && categoryList.size() > 0) {
+            setTable(categoryList);
+        }
+
+    }
+
+
+    @Override
+    public void addData(TopModuleBean data) {
+
+    }
+
+
+    @Override
+    public void onEmpty() {
+
+    }
+
+    @Override
+    public void onFailure(String msg) {
+
     }
 
     private void initBanner() {
@@ -145,44 +206,10 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
                 .setOffscreenPageLimit(10);
     }
 
-    @Override
-    public void initData(TopModuleBean data) {
-        Log.e("tag", "成功");
-        //分类tab集合数据
-        List<TopModuleBean.CategoryListBean> categoryList = data.categoryList;
-
-        //banner
-        List<TopModuleBean.GalleryListBean> galleryList = data.galleryList;
-
-
-        if (galleryList != null && galleryList.size() > 0) {
-            setBanner(galleryList);
-        }
-
-        if (categoryList != null && categoryList.size() > 0) {
-            setTable(categoryList);
-        }
-
-    }
-
-
-    @Override
-    public void addData(TopModuleBean data) {
-
-    }
-
-    @Override
-    public void onEmpty() {
-
-    }
-
-    @Override
-    public void onFailure(String msg) {
-
-    }
-
-
     private void setTable(List<TopModuleBean.CategoryListBean> categoryList) {
+        title.clear();
+        colors.clear();
+        images.clear();
         for (TopModuleBean.CategoryListBean categoryListBean : categoryList) {
             if (categoryListBean != null) {
                 title.add(categoryListBean.name);
@@ -224,5 +251,15 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
         if (mCbBanner != null && !mCbBanner.isTurning() && networkImages != null && networkImages.size() > 1) {
             mCbBanner.startTurning(START_TURNING);
         }
+    }
+
+    private void stopTurn() {
+        if (mCbBanner != null && !mCbBanner.isTurning() && networkImages != null && networkImages.size() > 1) {
+            mCbBanner.stopTurning();
+        }
+    }
+
+    public boolean isRefrsh() {
+        return isRefrsh;
     }
 }

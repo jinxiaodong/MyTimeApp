@@ -118,14 +118,6 @@
                 android:visibility="gone"/>
 
         </RelativeLayout>
-
-        <View
-            android:id="@+id/driver"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_alignParentBottom="true"
-            android:background="@color/gray_e4e4e4"
-            />
     </RelativeLayout>
 
     <android.support.design.widget.CoordinatorLayout
@@ -137,12 +129,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/main_white"
-          >
+            >
             <!--app:layout_behavior="com.project.xiaodong.mytimeapp.frame.view.behavior.RecyclerViewAppBarBehavior"-->
             <android.support.design.widget.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:minHeight="80dp"
+                android:minHeight="70dp"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <LinearLayout
@@ -163,8 +155,15 @@
                     <com.project.xiaodong.mytimeapp.frame.tabindicator.TabIndicatorLayout
                         android:id="@+id/tab_indicator"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp">
+                        android:layout_height="70dp">
                     </com.project.xiaodong.mytimeapp.frame.tabindicator.TabIndicatorLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/padding_1dp"
+                        android:background="@color/gray_f5f5f5">
+
+                    </View>
                 </LinearLayout>
 
             </android.support.design.widget.CollapsingToolbarLayout>
