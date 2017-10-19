@@ -1,8 +1,10 @@
 package com.project.xiaodong.mytimeapp.business.home.fragment.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -42,11 +44,12 @@ public class HotPlayMoviesAdapter extends BaseRecyclerAdapter<HotPlayMoviesBean>
         TextView mTvMark;
         @InjectView(R.id.tv_movie_name)
         TextView mTvMovieName;
-
+        @InjectView(R.id.iv_status)
+        ImageView mIvStatus;
 
         public HotPlayMoviesVH(View view) {
             super(view);
-            ButterKnife.inject(this,view);
+            ButterKnife.inject(this, view);
 
         }
 
@@ -69,6 +72,17 @@ public class HotPlayMoviesAdapter extends BaseRecyclerAdapter<HotPlayMoviesBean>
                 isMax3D.append(" 3D");
             }
             mTvMax3d.setText(isMax3D);
+            if (hotPlayMoviesBean.ratingFinal > 0) {
+                mTvMark.setVisibility(View.VISIBLE);
+            } else {
+                mTvMark.setVisibility(View.INVISIBLE);
+
+            }
+            if (!TextUtils.isEmpty(isMax3D)) {
+                mTvMax3d.setVisibility(View.VISIBLE);
+            } else {
+                mTvMax3d.setVisibility(View.INVISIBLE);
+            }
         }
     }
 }

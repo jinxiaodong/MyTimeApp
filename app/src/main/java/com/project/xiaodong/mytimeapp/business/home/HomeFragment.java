@@ -77,7 +77,7 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
     HomeTopModulePresenter mHomeTopModulePresenter;
 
 
-    private boolean isRefrsh = true;
+    private boolean isRefrsh;
 
     //
     @Override
@@ -112,12 +112,7 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
     @Override
     protected void initListener() {
         super.initListener();
-        mAppbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                isRefrsh = verticalOffset >= 0;
-            }
-        });
+
     }
 
     @Override
@@ -261,5 +256,9 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
 
     public boolean isRefrsh() {
         return isRefrsh;
+    }
+
+    public AppBarLayout getAppbar() {
+        return mAppbar;
     }
 }

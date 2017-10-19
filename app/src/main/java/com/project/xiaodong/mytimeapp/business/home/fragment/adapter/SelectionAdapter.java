@@ -44,10 +44,10 @@ public class SelectionAdapter extends BaseRecyclerAdapter<BeanWrapper> {
                 break;
 
             case TYPE_LIVE_SHOP:
-
+                holder = new SelectionLiveAndShopVH(inflate(R.layout.holder_selection_live_shop,parent));
                 break;
             case TYPE_ADVANCE:
-
+                    holder = new SelectionAdvanceVH(inflate(R.layout.holder_selection_advance,parent));
                 break;
         }
         return holder;

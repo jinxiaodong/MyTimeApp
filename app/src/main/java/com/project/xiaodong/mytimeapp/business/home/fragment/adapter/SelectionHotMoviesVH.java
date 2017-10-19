@@ -36,6 +36,7 @@ public class SelectionHotMoviesVH extends BaseViewHold<BeanWrapper> {
         mLoadMoreRecyclerView = (LoadMoreWithHorRecycleView) view.findViewById(R.id.loadMoreRecyclerView);
         mList = new ArrayList<>();
         mAdapter = new HotPlayMoviesAdapter(mContext, mList);
+        mLoadMoreRecyclerView.setNestedScrollingEnabled(false);
         mLoadMoreRecyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
         mLoadMoreRecyclerView.setAdapter(mAdapter);
 

@@ -1,42 +1,63 @@
 package com.project.xiaodong.mytimeapp.business.home.fragment;
 
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
 
 import com.project.xiaodong.mytimeapp.R;
 import com.project.xiaodong.mytimeapp.business.home.HomeFragment;
 import com.project.xiaodong.mytimeapp.business.home.bean.HotPlayMoviesBean;
+import com.project.xiaodong.mytimeapp.business.home.bean.LiveAndShopBean;
+import com.project.xiaodong.mytimeapp.business.home.bean.SelectionAdvanceBean;
 import com.project.xiaodong.mytimeapp.business.home.fragment.adapter.SelectionAdapter;
 import com.project.xiaodong.mytimeapp.frame.base.fragment.BaseFragment;
 import com.project.xiaodong.mytimeapp.frame.bean.BeanWrapper;
+import com.project.xiaodong.mytimeapp.frame.presenter.home.HomeSelectionAdvacePresenter;
+import com.project.xiaodong.mytimeapp.frame.presenter.home.HomeSelectionLiveAndShopPresenter;
 import com.project.xiaodong.mytimeapp.frame.presenter.home.HomeSelectionPresenter;
+import com.project.xiaodong.mytimeapp.frame.presenter.home.view.IAdvanceView;
+import com.project.xiaodong.mytimeapp.frame.presenter.home.view.ILiveAndShopView;
 import com.project.xiaodong.mytimeapp.frame.presenter.view.IBaseView;
 import com.project.xiaodong.mytimeapp.frame.view.recycleview.LoadMoreWithHorRecycleView;
-import com.project.xiaodong.mytimeapp.frame.view.refresh.PullRefreshLayout;
+import com.project.xiaodong.mytimeapp.frame.view.recycleview.OnLoadMoreListener;
+import com.project.xiaodong.mytimeapp.frame.view.refresh.PullToRefreshWithHorFrameLayout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import butterknife.InjectView;
+import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrHandler;
 
 /**
  * Created by xiaodong.jin on 2017/10/17.
  */
 
-public class SelectionFragment extends BaseFragment implements IBaseView<HotPlayMoviesBean> {
+public class SelectionFragment extends BaseFragment implements IBaseView<HotPlayMoviesBean>, ILiveAndShopView, IAdvanceView {
 
 
     @InjectView(R.id.loadMoreRecyclerView)
     LoadMoreWithHorRecycleView mLoadMoreRecyclerView;
     @InjectView(R.id.pull_refresh)
-    PullRefreshLayout mPullRefresh;
+    PullToRefreshWithHorFrameLayout mPullRefresh;
 
+    /*
+     *正在热映
+     */
     HomeSelectionPresenter mHomeSelectionPresenter;
-
+    /**
+     * 直播商场
+     */
+    HomeSelectionLiveAndShopPresenter mHomeSelectionLiveAndShopPresenter;
+    /**
+     * 精彩预告
+     */
+    HomeSelectionAdvacePresenter mHomeSelectionAdvacePresenter;
     List<BeanWrapper> mData;
     private SelectionAdapter mAdapter;
     private HashMap mHashMapMenu;
     private boolean isRefresh;
+    private HomeFragment mParentFragment;
 
     @Override
     protected int getLayoutId() {
@@ -50,12 +71,15 @@ public class SelectionFragment extends BaseFragment implements IBaseView<HotPlay
         mHashMapMenu = new HashMap();
         mData = new ArrayList<>();
         mHomeSelectionPresenter = new HomeSelectionPresenter(mContext, this);
+        mHomeSelectionLiveAndShopPresenter = new HomeSelectionLiveAndShopPresenter(mContext, this);
+        mHomeSelectionAdvacePresenter = new HomeSelectionAdvacePresenter(mContext, this);
     }
 
     @Override
     protected void initWidget() {
         super.initWidget();
-        mPullRefresh.init();
+
+        mParentFragment = (HomeFragment) getParentFragment();
         mLoadMoreRecyclerView.setHasLoadMore(false);
         mLoadMoreRecyclerView.setNoLoadMoreHideView(true);
 
@@ -72,21 +96,26 @@ public class SelectionFragment extends BaseFragment implements IBaseView<HotPlay
     protected void initListener() {
         super.initListener();
 
-        mPullRefresh.setRefreshListener(new PullRefreshLayout.OnRefreshListener() {
+        mPullRefresh.setPtrHandler(new PtrHandler() {
             @Override
-            public void onRefresh() {
-                mPullRefresh.refreshComplete();
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+
+                return mParentFragment.isRefrsh();
             }
 
             @Override
-            public boolean isCandoRefresh() {
-                HomeFragment parentFragment = (HomeFragment) getParentFragment();
-                return parentFragment.isRefrsh();
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                mHomeSelectionPresenter.getData("");
             }
-
-
         });
 
+
+        mLoadMoreRecyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void loadMore() {
+                mHomeSelectionAdvacePresenter.getMoreAdvance();
+            }
+        });
     }
 
     @Override
@@ -96,23 +125,22 @@ public class SelectionFragment extends BaseFragment implements IBaseView<HotPlay
         mData.clear();
         //占位
         mData.add(getDataByType(SelectionAdapter.TYPE_HOT_MOVIES, null));
-        mData.add(getDataByType(SelectionAdapter.TYPE_HOT_MOVIES, null));
-        mData.add(getDataByType(SelectionAdapter.TYPE_HOT_MOVIES, null));
-        mData.add(getDataByType(SelectionAdapter.TYPE_HOT_MOVIES, null));
-        mData.add(getDataByType(SelectionAdapter.TYPE_HOT_MOVIES, null));
-        mData.add(getDataByType(SelectionAdapter.TYPE_HOT_MOVIES, null));
-        mData.add(getDataByType(SelectionAdapter.TYPE_HOT_MOVIES, null));
+        mData.add(getDataByType(SelectionAdapter.TYPE_LIVE_SHOP, null));
         mAdapter.getData().addAll(mData);
-//        data.add(getDataByType(SelectionAdapter.TYPE_LIVE_SHOP, null));
         mHomeSelectionPresenter.getData("");
+
     }
 
 
     @Override
     public void setData(HotPlayMoviesBean data) {
-        List<HotPlayMoviesBean> movies = data.movies;
+        mPullRefresh.refreshComplete();
 
+        mAdapter.getData().clear();
+        mAdapter.getData().addAll(mData);
+        List<HotPlayMoviesBean> movies = data.movies;
         mAdapter.getData().set(0, getDataByType(SelectionAdapter.TYPE_HOT_MOVIES, movies));
+        mHomeSelectionLiveAndShopPresenter.getLiveAndShop();
         mAdapter.notifyDataSetChanged();
     }
 
@@ -121,6 +149,40 @@ public class SelectionFragment extends BaseFragment implements IBaseView<HotPlay
 
     }
 
+    /**
+     * 精彩预告
+     *
+     * @param data
+     */
+    @Override
+    public void setData(SelectionAdvanceBean data) {
+        List<SelectionAdvanceBean.DataBean> data1 = data.data;
+        if (data1 != null) {
+            for (SelectionAdvanceBean.DataBean dataBean : data1) {
+                if (dataBean != null) {
+                    mAdapter.getData().add(getDataByType(SelectionAdapter.TYPE_ADVANCE, dataBean));
+                }
+            }
+            mAdapter.notifyDataSetChanged();
+        }
+
+    }
+
+    @Override
+    public void addData(SelectionAdvanceBean data) {
+
+        List<SelectionAdvanceBean.DataBean> data1 = data.data;
+        if (data1 != null) {
+            for (SelectionAdvanceBean.DataBean dataBean : data1) {
+                if (dataBean != null) {
+                    mAdapter.getData().add(getDataByType(SelectionAdapter.TYPE_ADVANCE, dataBean));
+                }
+            }
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
+
     @Override
     public void onEmpty() {
 
@@ -128,6 +190,19 @@ public class SelectionFragment extends BaseFragment implements IBaseView<HotPlay
 
     @Override
     public void onFailure(String msg) {
+
+    }
+
+    @Override
+    public void onLiveAndShopSuccess(LiveAndShopBean data) {
+        mPullRefresh.refreshComplete();
+        mAdapter.getData().set(1, getDataByType(SelectionAdapter.TYPE_LIVE_SHOP, data));
+        mAdapter.notifyDataSetChanged();
+        mHomeSelectionAdvacePresenter.getAdvanceData();
+    }
+
+    @Override
+    public void onLiveAndShopFailure(String msg) {
 
     }
 

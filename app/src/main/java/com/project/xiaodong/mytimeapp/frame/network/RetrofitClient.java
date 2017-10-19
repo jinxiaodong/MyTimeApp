@@ -1,6 +1,7 @@
 package com.project.xiaodong.mytimeapp.frame.network;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.project.xiaodong.mytimeapp.business.home.apiserveice.ApiService;
 import com.project.xiaodong.mytimeapp.frame.application.BaseApplication;
@@ -93,7 +94,13 @@ public class RetrofitClient {
 
     private void initRequest() {
         //开启log
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+            @Override
+            public void log(String message) {
+                //打印retrofit日志
+                Log.i("RetrofitLog", "retrofitBack ======================= " + message);
+            }
+        });
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         appendHeaders();
@@ -106,9 +113,9 @@ public class RetrofitClient {
                 .readTimeout(RetrofitConfig.DEFAULT_READTIMEOUT, TimeUnit.SECONDS)
                 .writeTimeout(RetrofitConfig.DEFAULT_WRITETIMEOUT, TimeUnit.SECONDS)
                 .connectTimeout(RetrofitConfig.DEFAULT_WRITETIMEOUT, TimeUnit.SECONDS)
-                .addInterceptor(mRewriteCacheControlInterceptor)
-                .addInterceptor(mRewriteCacheControlInterceptor)
                 .addInterceptor(logging)
+                .addInterceptor(mRewriteCacheControlInterceptor)
+                .addInterceptor(mRewriteCacheControlInterceptor)
                 .addInterceptor(mHeaderInterceptor)
                 .cache(new Cache(new File(cacheDirectory), cacheSize))
                 .build();

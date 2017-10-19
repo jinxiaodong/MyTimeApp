@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/padding_15dp"
+    android:orientation="vertical"
+    >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/padding_15dp"
+        android:background="@color/main_white"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/padding_25dp"
+        android:paddingLeft="@dimen/padding_13dp"
+        android:paddingRight="@dimen/padding_13dp"
+        android:paddingTop="@dimen/padding_15dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/padding_20dp"
+            >
+
+            <TextView
+                android:id="@+id/tv_live"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="精彩直播"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/font_18sp"/>
+
+
+            <TextView
+                android:id="@+id/tv_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:drawablePadding="@dimen/padding_5dp"
+                android:drawableRight="@drawable/arrow_to_right"
+                android:text="全部"
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/font_16sp"/>
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="189dp"
+            >
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/sdv_live"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                fresco:actualImageScaleType="fitCenter"/>
+
+            <ImageView
+                android:id="@+id/iv_paly_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/padding_3dp"
+                android:layout_marginTop="@dimen/padding_3dp"
+                android:background="@drawable/play_back"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_8dp"
+            android:layout_marginTop="@dimen/padding_15dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_17sp"
+            tool:text="《二代妖精》之【中国有妖精】发布会"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/padding_15dp"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/padding_13dp"
+        android:paddingRight="@dimen/padding_13dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/padding_20dp"
+            android:layout_marginTop="@dimen/padding_15dp">
+
+            <TextView
+                android:id="@+id/tv_shop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="精彩直播"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/font_16sp"/>
+
+
+            <TextView
+                android:id="@+id/tv_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:drawablePadding="@dimen/padding_5dp"
+                android:drawableRight="@drawable/arrow_to_right"
+                android:text="更多"
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/font_16sp"/>
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/sdv_position1"
+                android:layout_width="130dp"
+                android:layout_height="210dp"
+                android:background="@color/category1_bg"/>
+
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/sdv_position2"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_toRightOf="@id/sdv_position1"/>
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/sdv_position3"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_below="@+id/sdv_position2"
+                android:layout_toRightOf="@id/sdv_position1"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

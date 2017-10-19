@@ -9,7 +9,7 @@ package com.project.xiaodong.mytimeapp.frame.view;
 import android.content.Context;
 import android.util.AttributeSet;
 
-import com.project.xiaodong.mytimeapp.frame.view.ptrlayout.TimeRefreshView;
+import com.project.xiaodong.mytimeapp.frame.view.pulltorefresh.TimeRefreshView;
 
 import in.srain.cube.views.ptr.PtrFrameLayout;
 
@@ -49,6 +49,7 @@ public class PullToRefreshFrameLayout extends PtrFrameLayout {
         super(context, attrs, defStyle);
         init();
     }
+
     /*******************************************************************************
      *	Private Methods
      *******************************************************************************/
@@ -67,7 +68,7 @@ public class PullToRefreshFrameLayout extends PtrFrameLayout {
         //etHeaderView
         mTHerdview = new TimeRefreshView(getContext());
         mTHerdview.setLayoutParams(new PullToRefreshFrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-//        hxHerdview.setUp(this);
+        mTHerdview.setUp(this);
         setHeaderView(mTHerdview);
         addPtrUIHandler(mTHerdview);
 

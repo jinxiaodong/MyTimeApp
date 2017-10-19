@@ -1,6 +1,8 @@
 package com.project.xiaodong.mytimeapp.business.home.apiserveice;
 
 import com.project.xiaodong.mytimeapp.business.home.bean.HotPlayMoviesBean;
+import com.project.xiaodong.mytimeapp.business.home.bean.LiveAndShopBean;
+import com.project.xiaodong.mytimeapp.business.home.bean.SelectionAdvanceBean;
 import com.project.xiaodong.mytimeapp.business.home.bean.TopModuleBean;
 import com.project.xiaodong.mytimeapp.frame.bean.TimeBaseEntity;
 
@@ -31,15 +33,24 @@ public interface ApiService {
      */
     @GET("{url}")
     Observable<TopModuleBean> getHome(@Path(value = "url", encoded = true) String url,
-                                                  @QueryMap HashMap<String, Object> maps);
+                                      @QueryMap HashMap<String, Object> maps);
 
     @GET("{url}")
     Observable<HotPlayMoviesBean> getHotplay(@Path(value = "url", encoded = true) String url,
                                              @QueryMap HashMap<String, Object> maps);
 
     @GET("{url}")
+    Observable<LiveAndShopBean> getLiveAndShop(@Path(value = "url", encoded = true) String url);
+
+
+    @GET("{url}")
+    Observable<SelectionAdvanceBean> getSelectionAdvance(@Path(value = "url", encoded = true) String url,
+                                                         @QueryMap HashMap<String, Object> maps);
+
+    @GET("{url}")
     Observable<Response> getData(@Path(value = "url", encoded = true) String url,
                                  @QueryMap HashMap<String, Object> maps);
+
     /**
      * Post
      */

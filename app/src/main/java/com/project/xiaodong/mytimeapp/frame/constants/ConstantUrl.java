@@ -8,6 +8,7 @@ package com.project.xiaodong.mytimeapp.frame.constants;
 public class ConstantUrl {
     public static final String BASE_URL_TYPE1 = "https://comm-api-m.mtime.cn/";
     public static final String BASE_URL_TYPE2 = "https://api-m.mtime.cn/";
+    public static final String BASE_URL_TYPE3 = "https://ticket-api-m.mtime.cn/";
 
     /*
      *首页TopModule
@@ -19,5 +20,17 @@ public class ConstantUrl {
      */
 
     public static final String HOT_PLAY_MOVIES = "PageSubArea/HotPlayMovies.api";
+    /**
+     * 首页精选：商成
+     */
+    public static final String HOME_SELECTION_LIVE_AND_SHOP = "index/middleModule.api";
+
+
+    /**
+     * 首页精选：精彩预告
+     */
+    public static final String HOME_SELECTION_ADVANCE= "choice/feed.api";
+
+
 
 }
