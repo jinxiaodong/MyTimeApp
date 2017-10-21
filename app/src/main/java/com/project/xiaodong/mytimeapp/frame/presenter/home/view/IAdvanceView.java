@@ -7,11 +7,12 @@ import com.project.xiaodong.mytimeapp.business.home.bean.SelectionAdvanceBean;
  */
 
 public interface IAdvanceView {
-    void setData(SelectionAdvanceBean data);
+    void setData(SelectionAdvanceBean.AdvanceBean data);
 
-    void addData(SelectionAdvanceBean data);
+    void addData(SelectionAdvanceBean.AdvanceBean data);
 
-    void onEmpty();
+    void onAdvanceEmpty();
 
-    void onFailure(String msg);
+    void onAdvanceFailure(String msg);
+    void  onComplete(boolean hasMore);
 }

@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import com.project.xiaodong.mytimeapp.R;
 import com.project.xiaodong.mytimeapp.frame.base.adapter.BaseRecyclerAdapter;
 import com.project.xiaodong.mytimeapp.frame.base.adapter.BaseViewHold;
+import com.project.xiaodong.mytimeapp.frame.base.adapter.DefaultNothingHolder;
 import com.project.xiaodong.mytimeapp.frame.bean.BeanWrapper;
 
 import java.util.List;
@@ -44,11 +45,27 @@ public class SelectionAdapter extends BaseRecyclerAdapter<BeanWrapper> {
                 break;
 
             case TYPE_LIVE_SHOP:
-                holder = new SelectionLiveAndShopVH(inflate(R.layout.holder_selection_live_shop,parent));
+                holder = new SelectionLiveAndShopVH(inflate(R.layout.holder_selection_live_shop, parent));
                 break;
             case TYPE_ADVANCE:
-                    holder = new SelectionAdvanceVH(inflate(R.layout.holder_selection_advance,parent));
+
                 break;
+
+            /**
+             * 下面是推荐的类型分类
+             */
+            case 51:
+                holder = new SelectionAdvanceVH(inflate(R.layout.holder_selection_advance, parent));
+                break;
+            case 336:
+
+                break;
+            case 64:
+
+                break;
+
+            default:
+                holder = new DefaultNothingHolder(mInflater.inflate(NOTHING, parent, false));
         }
         return holder;
     }

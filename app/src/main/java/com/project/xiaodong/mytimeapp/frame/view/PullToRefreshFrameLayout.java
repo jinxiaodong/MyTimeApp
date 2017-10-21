@@ -55,7 +55,7 @@ public class PullToRefreshFrameLayout extends PtrFrameLayout {
      *******************************************************************************/
     private void init(){
         // the following are default settings
-        setResistance(1.7f);
+        setResistance(1.8f);
         setRatioOfHeaderHeightToRefresh(1.2f);
         setDurationToClose(200);
         setDurationToCloseHeader(500);

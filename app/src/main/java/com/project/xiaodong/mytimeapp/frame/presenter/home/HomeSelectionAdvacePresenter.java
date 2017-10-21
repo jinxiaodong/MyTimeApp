@@ -67,19 +67,30 @@ public class HomeSelectionAdvacePresenter extends Presenter<IAdvanceView> {
                     @Override
                     public void onNext(@NonNull SelectionAdvanceBean selectionAdvanceBean) {
                         if (selectionAdvanceBean != null) {
-                            if (!isLoadMore) {
-                                mvpView.setData(selectionAdvanceBean);
+                            if (selectionAdvanceBean.data != null) {
+                                if (selectionAdvanceBean.data.data != null) {
+                                    if (!isLoadMore) {
+                                        mvpView.setData(selectionAdvanceBean.data);
+                                    } else {
+                                        isLoadMore = false;
+                                        mvpView.addData(selectionAdvanceBean.data);
+                                    }
+                                    mvpView.onComplete(true);
+                                } else {
+                                    mvpView.onAdvanceEmpty();
+                                }
                             } else {
-                                mvpView.addData(selectionAdvanceBean);
+                                mvpView.onAdvanceEmpty();
                             }
+
                         } else {
-                            mvpView.onEmpty();
+                            mvpView.onAdvanceEmpty();
                         }
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        mvpView.onFailure("请求出错");
+                        mvpView.onAdvanceFailure("请求出错");
                     }
 
                     @Override

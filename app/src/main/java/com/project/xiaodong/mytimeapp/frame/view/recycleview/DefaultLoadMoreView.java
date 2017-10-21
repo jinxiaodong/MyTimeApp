@@ -43,7 +43,8 @@ public class DefaultLoadMoreView extends RelativeLayout implements ILoadMoreView
     public void showNormal() {
 /*        mPbLoading.setVisibility(View.GONE);
         mTvMessage.setText(R.string.loading_view_click_loading_more);*/
-        mPbLoading.setVisibility(View.VISIBLE);
+//        mPbLoading.setVisibility(View.VISIBLE);
+      mPbLoading.setVisibility(View.GONE);
         mTvMessage.setText(R.string.loading_view_loading);
     }
 
@@ -55,7 +56,8 @@ public class DefaultLoadMoreView extends RelativeLayout implements ILoadMoreView
 
     @Override
     public void showLoading() {
-        mPbLoading.setVisibility(View.VISIBLE);
+//        mPbLoading.setVisibility(View.VISIBLE);
+        mPbLoading.setVisibility(View.GONE);
         mTvMessage.setText(R.string.loading_view_loading);
     }
 

@@ -4,47 +4,182 @@
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tool="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/main_white"
     android:orientation="vertical"
     android:paddingLeft="@dimen/padding_13dp"
     android:paddingRight="@dimen/padding_13dp"
     android:paddingTop="@dimen/padding_20dp">
 
 
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/sdv_cover"
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:background="@color/category1_bg"
-        fresco:actualImageScaleType="fitCenter"/>
-
-    <TextView
-        android:id="@+id/title"
+    <LinearLayout
+        android:id="@+id/ll_type_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/padding_20dp"
-        android:layout_marginTop="@dimen/padding_8dp"
-        android:textColor="@color/black"
-        android:textSize="@dimen/font_17sp"
-        tool:text="《二代妖精》之【中国有妖精】发布会发布会发布会"/>
+        android:orientation="vertical"
+        android:visibility="visible">
 
-    <View
-        android:layout_width="@dimen/padding_15dp"
-        android:layout_height="@dimen/padding_1dp"
-        android:layout_marginBottom="@dimen/padding_10dp"
-        android:layout_marginTop="@dimen/padding_10dp"
-        android:background="@color/gray_999999"></View>
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/sdv_cover"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            fresco:actualImageScaleType="fitCenter"/>
 
-    <TextView
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/padding_20dp"
+            android:layout_marginTop="@dimen/padding_8dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_17sp"
+            tool:text="《二代妖精》之【中国有妖精】发布会发布会发布会"/>
+
+        <View
+            android:id="@+id/line_splite"
+            android:layout_width="@dimen/padding_20dp"
+            android:layout_height="@dimen/padding_1dp"
+            android:layout_marginBottom="@dimen/padding_10dp"
+            android:layout_marginTop="@dimen/padding_10dp"
+            android:background="@color/gray_999999"></View>
+
+        <TextView
+            android:id="@+id/movie_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray_999999"
+            android:textSize="@dimen/font_14sp"
+            tool:text="二代妖精》之【中国有妖精】发布会发布会发布会"/>
+
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_type0"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/gray_999999"
-        android:textSize="@dimen/font_14sp"
-        tool:text="二代妖精》之【中国有妖精】发布会发布会发布会"/>
+        android:visibility="visible">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/sdv_cover_0"
+            android:layout_width="180dp"
+            android:layout_height="130dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/padding_8dp"/>
+
+        <TextView
+            android:id="@+id/title0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/sdv_cover_0"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_17sp"
+            tool:text="布会发布会"/>
+
+        <View
+            android:id="@+id/line_splite0"
+            android:layout_width="@dimen/padding_20dp"
+            android:layout_height="@dimen/padding_1dp"
+            android:layout_below="@+id/title0"
+            android:layout_marginBottom="@dimen/padding_10dp"
+            android:layout_marginTop="@dimen/padding_10dp"
+            android:background="@color/gray_999999"></View>
+
+        <TextView
+            android:id="@+id/movie_desc0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/line_splite0"
+            android:layout_toLeftOf="@+id/sdv_cover_0"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@color/gray_999999"
+            android:textSize="@dimen/font_14sp"
+            tool:text="二代妖精》之【中国有妖精】发发发发布会发布会发布会"/>
+
+    </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/ll_like_comment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/padding_15dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/icon_from"
+            android:layout_width="@dimen/padding_15dp"
+            android:layout_height="@dimen/padding_15dp"
+            fresco:roundAsCircle="true"/>
+
+        <TextView
+            android:id="@+id/tv_from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_3dp"
+            android:singleLine="true"
+            android:textColor="@color/gray_999999"
+            android:textSize="12sp"
+            tool:text="时光快讯"/>
+
+        <View
+            android:id="@+id/view_splite"
+            android:layout_width="1dp"
+            android:layout_height="@dimen/padding_12dp"
+            android:layout_marginLeft="@dimen/padding_10dp"
+            android:background="@color/gray_999999"></View>
+
+        <TextView
+            android:id="@+id/tv_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_10dp"
+            android:drawableLeft="@drawable/icon_home_reply"
+            android:drawablePadding="@dimen/padding_5dp"
+            android:singleLine="true"
+            android:textColor="@color/gray_999999"
+            android:textSize="12sp"
+            tool:text="1"/>
+
+        <TextView
+            android:id="@+id/tv_like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_18dp"
+            android:drawableLeft="@drawable/icon_home_praise"
+            android:drawablePadding="@dimen/padding_5dp"
+            android:singleLine="true"
+            android:textColor="@color/gray_999999"
+            android:textSize="12sp"
+            tool:text="12"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|right">
+
+            <ImageView
+                android:id="@+id/iv_more"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingBottom="@dimen/padding_15dp"
+                android:paddingLeft="@dimen/padding_15dp"
+                android:paddingTop="@dimen/padding_15dp"
+                android:src="@drawable/icon_menu_officical_accounts_item"
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/padding_19dp"/>
+        </LinearLayout>
+
     </LinearLayout>
+
+    <View
+        android:id="@+id/draw_line"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="@dimen/padding_20dp"
+        android:background="@color/gray_999999"></View>
 </LinearLayout>

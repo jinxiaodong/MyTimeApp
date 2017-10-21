@@ -100,7 +100,7 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
     protected void initWidget() {
         super.initWidget();
         mViewpager.setNoFocus(false);
-        mViewpager.setOffscreenPageLimit(4);
+        mViewpager.setOffscreenPageLimit(5);
         //这里要用getChildFragmentManager()
         mViewpager.setAdapter(new FragmentAdapter(getChildFragmentManager(), mFragments));
         mViewpager.setCurrentItem(0);
@@ -112,7 +112,12 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
     @Override
     protected void initListener() {
         super.initListener();
-
+        mAppbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                isRefrsh = verticalOffset >= 0;
+            }
+        });
     }
 
     @Override

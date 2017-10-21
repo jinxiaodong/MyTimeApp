@@ -17,6 +17,7 @@ import com.project.xiaodong.mytimeapp.frame.presenter.home.HomeSelectionPresente
 import com.project.xiaodong.mytimeapp.frame.presenter.home.view.IAdvanceView;
 import com.project.xiaodong.mytimeapp.frame.presenter.home.view.ILiveAndShopView;
 import com.project.xiaodong.mytimeapp.frame.presenter.view.IBaseView;
+import com.project.xiaodong.mytimeapp.frame.utils.LogUtil;
 import com.project.xiaodong.mytimeapp.frame.view.recycleview.LoadMoreWithHorRecycleView;
 import com.project.xiaodong.mytimeapp.frame.view.recycleview.OnLoadMoreListener;
 import com.project.xiaodong.mytimeapp.frame.view.refresh.PullToRefreshWithHorFrameLayout;
@@ -29,6 +30,8 @@ import butterknife.InjectView;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
 
+import static com.project.xiaodong.mytimeapp.R.id.loadMoreRecyclerView;
+
 /**
  * Created by xiaodong.jin on 2017/10/17.
  */
@@ -36,7 +39,7 @@ import in.srain.cube.views.ptr.PtrHandler;
 public class SelectionFragment extends BaseFragment implements IBaseView<HotPlayMoviesBean>, ILiveAndShopView, IAdvanceView {
 
 
-    @InjectView(R.id.loadMoreRecyclerView)
+    @InjectView(loadMoreRecyclerView)
     LoadMoreWithHorRecycleView mLoadMoreRecyclerView;
     @InjectView(R.id.pull_refresh)
     PullToRefreshWithHorFrameLayout mPullRefresh;
@@ -80,12 +83,13 @@ public class SelectionFragment extends BaseFragment implements IBaseView<HotPlay
         super.initWidget();
 
         mParentFragment = (HomeFragment) getParentFragment();
-        mLoadMoreRecyclerView.setHasLoadMore(false);
-        mLoadMoreRecyclerView.setNoLoadMoreHideView(true);
+        mPullRefresh.disableWhenHorizontalMove(true);
 
+        mLoadMoreRecyclerView.setHasLoadMore(true);
+        mLoadMoreRecyclerView.setNoLoadMoreHideView(true);
+        mLoadMoreRecyclerView.setNoLoadMoreHideViewFrist(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         mLoadMoreRecyclerView.setLayoutManager(linearLayoutManager);
-
         mAdapter = new SelectionAdapter(mContext, mData);
         mLoadMoreRecyclerView.setAdapter(mAdapter);
 
@@ -113,6 +117,7 @@ public class SelectionFragment extends BaseFragment implements IBaseView<HotPlay
         mLoadMoreRecyclerView.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void loadMore() {
+                LogUtil.e("sssssssssss");
                 mHomeSelectionAdvacePresenter.getMoreAdvance();
             }
         });
@@ -155,12 +160,15 @@ public class SelectionFragment extends BaseFragment implements IBaseView<HotPlay
      * @param data
      */
     @Override
-    public void setData(SelectionAdvanceBean data) {
-        List<SelectionAdvanceBean.DataBean> data1 = data.data;
+    public void setData(SelectionAdvanceBean.AdvanceBean data) {
+        List<SelectionAdvanceBean.AdvanceBean.DataBean> data1 = data.data;
         if (data1 != null) {
-            for (SelectionAdvanceBean.DataBean dataBean : data1) {
+            for (SelectionAdvanceBean.AdvanceBean.DataBean dataBean : data1) {
                 if (dataBean != null) {
-                    mAdapter.getData().add(getDataByType(SelectionAdapter.TYPE_ADVANCE, dataBean));
+                    BeanWrapper beanWrapper = new BeanWrapper();
+                    beanWrapper.viewType = dataBean.type;
+                    beanWrapper.data = dataBean;
+                    mAdapter.getData().add(beanWrapper);
                 }
             }
             mAdapter.notifyDataSetChanged();
@@ -169,28 +177,47 @@ public class SelectionFragment extends BaseFragment implements IBaseView<HotPlay
     }
 
     @Override
-    public void addData(SelectionAdvanceBean data) {
+    public void addData(SelectionAdvanceBean.AdvanceBean data) {
 
-        List<SelectionAdvanceBean.DataBean> data1 = data.data;
+        List<SelectionAdvanceBean.AdvanceBean.DataBean> data1 = data.data;
         if (data1 != null) {
-            for (SelectionAdvanceBean.DataBean dataBean : data1) {
+            for (SelectionAdvanceBean.AdvanceBean.DataBean dataBean : data1) {
                 if (dataBean != null) {
-                    mAdapter.getData().add(getDataByType(SelectionAdapter.TYPE_ADVANCE, dataBean));
+                    BeanWrapper beanWrapper = new BeanWrapper();
+                    beanWrapper.viewType = dataBean.type;
+                    beanWrapper.data = dataBean;
+                    mAdapter.getData().add(beanWrapper);
                 }
             }
             mAdapter.notifyDataSetChanged();
         }
+
+    }
+
+    @Override
+    public void onAdvanceEmpty() {
+//        mLoadMoreRecyclerView.setHasLoadMore(false);
+        mLoadMoreRecyclerView.showNoMoreUI();
+    }
+
+    @Override
+    public void onAdvanceFailure(String msg) {
+//        mLoadMoreRecyclerView.setHasLoadMore(false);
+        mLoadMoreRecyclerView.showFailUI();
+    }
+
+    @Override
+    public void onComplete(boolean hasMore) {
+        mLoadMoreRecyclerView.setHasLoadMore(hasMore);
     }
 
 
     @Override
     public void onEmpty() {
-
     }
 
     @Override
     public void onFailure(String msg) {
-
     }
 
     @Override

@@ -12,6 +12,8 @@ import com.project.xiaodong.mytimeapp.R;
 import com.project.xiaodong.mytimeapp.business.home.bean.HotPlayMoviesBean;
 import com.project.xiaodong.mytimeapp.frame.base.adapter.BaseRecyclerAdapter;
 import com.project.xiaodong.mytimeapp.frame.base.adapter.BaseViewHold;
+import com.project.xiaodong.mytimeapp.frame.utils.DeviceUtil;
+import com.project.xiaodong.mytimeapp.frame.utils.ImageUtils;
 
 import java.util.List;
 
@@ -60,7 +62,9 @@ public class HotPlayMoviesAdapter extends BaseRecyclerAdapter<HotPlayMoviesBean>
             }
             HotPlayMoviesBean hotPlayMoviesBean = mData.get(position);
 
-            mSdvCover.setImageURI(hotPlayMoviesBean.img);
+            int width = DeviceUtil.dip2px(mContext, 110);
+            int height = DeviceUtil.dip2px(mContext, 155);
+            mSdvCover.setImageURI(ImageUtils.getAdapterUri(hotPlayMoviesBean.img,width,height));
             mTvMovieName.setText(hotPlayMoviesBean.titleCn);
             mTvMark.setText(hotPlayMoviesBean.ratingFinal + "");
 

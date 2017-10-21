@@ -8,19 +8,20 @@
 
 
     <RelativeLayout
-        android:layout_width="100dp"
-        android:layout_height="150dp"
+        android:layout_width="110dp"
+        android:layout_height="155dp"
         >
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/sdv_cover"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            fresco:actualImageScaleType="fitXY"
+            fresco:actualImageScaleType="focusCrop"
             fresco:failureImage="@drawable/img_default"
             fresco:failureImageScaleType="fitXY"
             fresco:placeholderImage="@drawable/img_default"
             fresco:placeholderImageScaleType="fitXY"
+
             />
 
         <ImageView

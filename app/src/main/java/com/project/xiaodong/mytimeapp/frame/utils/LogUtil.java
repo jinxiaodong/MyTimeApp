@@ -78,7 +78,7 @@ public class LogUtil {
 //                .methodCount(0)         // (Optional) How many method line to show. Default 2
 //                .methodOffset(3)        // (Optional) Skips some method invokes in stack trace. Default 5
 //                .logStrategy(customLog) // (Optional) Changes the log strategy to print out. Default LogCat
-                .tag("chinaredstar")   // (Optional) Custom tag for each log. Default PRETTY_LOGGER
+                .tag("xiaodong.jin")   // (Optional) Custom tag for each log. Default PRETTY_LOGGER
                 .build();
         Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy) {
             @Override

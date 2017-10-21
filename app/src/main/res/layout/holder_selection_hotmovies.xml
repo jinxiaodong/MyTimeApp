@@ -2,18 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
+              android:layout_marginBottom="@dimen/padding_10dp"
               android:background="@color/main_white"
               android:orientation="vertical"
-              android:paddingLeft="@dimen/padding_13dp"
 
     >
 
     <RelativeLayout
-        android:paddingRight="@dimen/padding_13dp"
         android:layout_width="match_parent"
+
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/padding_20dp"
-        android:layout_marginTop="@dimen/padding_20dp">
+        android:layout_marginBottom="@dimen/padding_15dp"
+        android:layout_marginTop="@dimen/padding_18dp"
+        android:paddingLeft="@dimen/padding_13dp"
+        android:paddingRight="@dimen/padding_13dp">
 
         <TextView
             android:id="@+id/tv_title"
@@ -41,6 +43,14 @@
     <com.project.xiaodong.mytimeapp.frame.view.recycleview.LoadMoreWithHorRecycleView
         android:id="@+id/loadMoreRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="20dp"
+        android:paddingLeft="@dimen/padding_13dp"
+        >
     </com.project.xiaodong.mytimeapp.frame.view.recycleview.LoadMoreWithHorRecycleView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/gray_999999"></View>
 </LinearLayout>
