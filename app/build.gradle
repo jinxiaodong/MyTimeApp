@@ -17,6 +17,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
 }
 
 dependencies {
@@ -34,11 +40,8 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     //网络请求调试
     compile 'com.squareup.okhttp3:logging-interceptor:3.8.1'
-    //Jackson解析
-    //    compile 'com.squareup.retrofit2:converter-jackson:2.3.0'
     //6.0后动态权限
     compile 'pub.devrel:easypermissions:0.2.1'
-    compile files('libs/jackson-all-1.9.11.jar')
     compile 'com.orhanobut:logger:2.1.1'
     //eventbus
     compile 'org.greenrobot:eventbus:3.0.0'
@@ -48,8 +51,9 @@ dependencies {
     compile 'com.facebook.fresco:fresco:0.12.0'
     compile 'com.squareup.okhttp3:okhttp:3.8.1'
     compile 'com.facebook.fresco:imagepipeline-okhttp3:0.12.0'
-    compile files('libs/glide-3.7.0.jar')
     //下拉刷新库
     compile 'in.srain.cube:ultra-ptr:1.0.11'
-    compile 'com.github.todou:appbarspring:1.0.4'
+    compile files('lib/jackson-core-asl-1.9.7.jar')
+    compile files('lib/jackson-mapper-asl-1.9.7.jar')
+    compile files('lib/BaiduLBS_Android.jar')
 }

@@ -3,7 +3,6 @@ package com.project.xiaodong.mytimeapp.frame.network;
 import android.content.Context;
 
 import com.project.xiaodong.mytimeapp.frame.constants.ConstantUrl;
-import com.project.xiaodong.mytimeapp.frame.utils.LogUtil;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;

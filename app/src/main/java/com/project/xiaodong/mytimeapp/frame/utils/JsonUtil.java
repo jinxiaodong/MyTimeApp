@@ -1,13 +1,14 @@
 package com.project.xiaodong.mytimeapp.frame.utils;
 
+
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility;
+import org.codehaus.jackson.annotate.JsonAutoDetect;
 import org.codehaus.jackson.annotate.JsonMethod;
-import org.codehaus.jackson.map.DeserializationConfig.Feature;
+import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.type.JavaType;
 
 import java.io.IOException;
@@ -64,9 +65,9 @@ public class JsonUtil {
             synchronized (JsonUtil.class) {
                 if (mapper == null) {
                     mapper = new ObjectMapper();
-                    mapper.setVisibility(JsonMethod.FIELD, Visibility.ANY);
-                    mapper.configure(Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-                    mapper.setSerializationInclusion(Inclusion.NON_NULL);
+                    mapper.setVisibility(JsonMethod.FIELD, JsonAutoDetect.Visibility.ANY);
+                    mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                    mapper.setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
                 }
             }
         }
