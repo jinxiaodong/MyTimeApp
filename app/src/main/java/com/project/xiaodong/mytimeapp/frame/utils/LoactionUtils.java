@@ -20,7 +20,7 @@ public class LoactionUtils {
         sharePreferenceUtil.setValue(LOCATION, JsonUtil.toJsonString(loactionInfo));
     }
 
-    public static LocationInfo getLocationInfo(LocationInfo locationInfo) {
+    public static LocationInfo getLocationInfo() {
         SharePreferenceUtil sharePreferenceUtil = SharePreferenceUtil.getInstance(BaseApplication.getContext());
         String value = sharePreferenceUtil.getValue(LOCATION, "");
         if (TextUtils.isEmpty(value)) {

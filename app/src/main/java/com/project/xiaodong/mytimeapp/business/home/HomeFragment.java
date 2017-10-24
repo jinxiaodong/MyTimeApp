@@ -139,6 +139,11 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
     }
 
     @Override
+    public void refreshCity() {
+
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         stopTurn();

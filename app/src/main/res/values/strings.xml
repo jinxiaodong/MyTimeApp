@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">我的时光</string>
+    <string name="app_name">MTime</string>
     <string name="action_settings">Settings</string>
     <!-- common -->
     <string name="cancel">取消</string>

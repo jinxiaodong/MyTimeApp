@@ -6,7 +6,10 @@ import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.project.xiaodong.mytimeapp.frame.application.BaseApplication;
+import com.project.xiaodong.mytimeapp.frame.bean.LocationInfo;
 import com.project.xiaodong.mytimeapp.frame.constants.IntentKey;
+import com.project.xiaodong.mytimeapp.frame.utils.LoactionUtils;
 import com.project.xiaodong.mytimeapp.frame.utils.LogUtil;
 
 /**
@@ -25,11 +28,11 @@ public class LocationBlock extends BaseBlock {
     }
 
     private void initLocation() {
-        mLocationClient = new LocationClient(mContext);
+        mLocationClient = new LocationClient(BaseApplication.getContext());
         //该类用来设置定位SDK的定位方式
         LocationClientOption clientOption = new LocationClientOption();
 
-        clientOption.setAddrType("all");
+
         //可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
         clientOption.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
 
@@ -49,12 +52,6 @@ public class LocationBlock extends BaseBlock {
         //可选，默认false，设置是否当GPS有效时按照1S/1次频率输出GPS结果
         clientOption.setLocationNotify(true);
 
-        //可选，默认true，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认不杀死
-        clientOption.setIgnoreKillProcess(false);
-
-        //可选，默认false，设置是否需要过滤GPS仿真结果，默认需要
-        clientOption.setEnableSimulateGps(false);
-
 
         mLocationClient.registerLocationListener(mLocationListener);
         mLocationClient.setLocOption(clientOption);
@@ -65,6 +62,7 @@ public class LocationBlock extends BaseBlock {
         @Override
         public void onReceiveLocation(BDLocation bdLocation) {
             //获取定位结果
+            int locType = bdLocation.getLocType();
             String province = bdLocation.getProvince();//获取省信息
             String city = bdLocation.getCity();        //获取城市信息
             String district = bdLocation.getDistrict(); //获取区县信息
@@ -72,6 +70,16 @@ public class LocationBlock extends BaseBlock {
             Double longitude = bdLocation.getLongitude();//获取纬度信息
             Double latitude = bdLocation.getLatitude(); //获取经度信息
             if (latitude != IntentKey.Location.BAIDU_LOCATION_INVALID_VALUE && longitude != IntentKey.Location.BAIDU_LOCATION_INVALID_VALUE) {
+
+                LocationInfo locationInfo = new LocationInfo();
+                locationInfo.province = province;
+                locationInfo.city = city;
+                locationInfo.district = district;
+                locationInfo.cityCode = cityCode;
+                locationInfo.longitude = longitude;
+                locationInfo.latitude = latitude;
+                LogUtil.e(locationInfo.toString());
+                LoactionUtils.setLoactionInfo(locationInfo);
                 if (mOnLocationListener != null)
                     mOnLocationListener.onLocationedSuccess(bdLocation);
 
@@ -81,6 +89,12 @@ public class LocationBlock extends BaseBlock {
             }
 
             mLocationClient.stop();
+        }
+
+        @Override
+        public void onLocDiagnosticMessage(int i, int i1, String s) {
+            super.onLocDiagnosticMessage(i, i1, s);
+
         }
     }
 

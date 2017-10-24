@@ -1,6 +1,14 @@
 package com.project.xiaodong.mytimeapp.business;
 
+import android.Manifest;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -9,11 +17,19 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.baidu.location.BDLocation;
 import com.project.xiaodong.mytimeapp.R;
 import com.project.xiaodong.mytimeapp.TestFragment;
 import com.project.xiaodong.mytimeapp.business.home.HomeFragment;
 import com.project.xiaodong.mytimeapp.frame.base.activity.TBaseActivity;
 import com.project.xiaodong.mytimeapp.frame.base.fragment.BaseFragment;
+import com.project.xiaodong.mytimeapp.frame.bean.LocationInfo;
+import com.project.xiaodong.mytimeapp.frame.block.LocationBlock;
+import com.project.xiaodong.mytimeapp.frame.constants.GlobalConstants;
+import com.project.xiaodong.mytimeapp.frame.utils.AlertDialogUtil;
+import com.project.xiaodong.mytimeapp.frame.utils.LoactionUtils;
+import com.project.xiaodong.mytimeapp.frame.utils.PreferencesUtils;
+import com.project.xiaodong.mytimeapp.frame.utils.ToastUtil;
 import com.project.xiaodong.mytimeapp.frame.view.APSTSViewPager;
 
 import java.util.ArrayList;
@@ -21,6 +37,7 @@ import java.util.List;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
+import pub.devrel.easypermissions.EasyPermissions;
 
 public class MainActivity extends TBaseActivity {
 
@@ -75,6 +92,8 @@ public class MainActivity extends TBaseActivity {
 
 
     List<BaseFragment> mFragments = new ArrayList<>();
+    private static final int REQUEST_PERMISSION = 1;
+    private static final int REQUEST_CODE_SETTINGS = 2;
 
     private static final int VIEW_HOME = 0;
     private static final int VIEW_TICKETS = 1;
@@ -141,8 +160,105 @@ public class MainActivity extends TBaseActivity {
     @Override
     protected void initData(Bundle savedInstanceState) {
         super.initData(savedInstanceState);
+        requestUserPermissions();
         mViewpager.setCurrentItem(VIEW_HOME);
         setTab(VIEW_HOME);
+    }
+
+
+    @OnClick({R.id.rl_tab_home, R.id.rl_tab_payticket, R.id.rl_tab_mall, R.id.rl_tab_live, R.id.rl_tab_mine})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.rl_tab_home:
+                mViewpager.setCurrentItem(VIEW_HOME);
+                break;
+            case R.id.rl_tab_payticket:
+                mViewpager.setCurrentItem(VIEW_TICKETS);
+                break;
+            case R.id.rl_tab_mall:
+                mViewpager.setCurrentItem(VIEW_MALL);
+                break;
+            case R.id.rl_tab_live:
+                mViewpager.setCurrentItem(VIEW_LIVE);
+                break;
+            case R.id.rl_tab_mine:
+                mViewpager.setCurrentItem(VIEW_MINE);
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_CODE_SETTINGS:
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_PERMISSION);
+                break;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (grantResults.length == 0) {
+            return;
+        }
+        switch (requestCode) {
+            case REQUEST_PERMISSION:
+                for (int i = 0; i < permissions.length; i++) {
+                    String permission = permissions[i];
+                    if (Manifest.permission.ACCESS_FINE_LOCATION.equals(permission)) {
+
+                        if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                            startLocation();
+                        } else {
+                            //拒绝:检查是否是永久禁止
+                            if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
+                                //显示提示框
+                                showRequstLocationDialog();
+                            }
+                        }
+                    } else if (Manifest.permission.WRITE_EXTERNAL_STORAGE.equals(permission)) {
+                        if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                            if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
+                                ToastUtil.makeToast(mContext, "为了不影响您的使用请在设置中开启文件读写权限");
+                            }
+                        }
+                    }
+                }
+                break;
+
+            default:
+                break;
+        }
+
+    }
+
+    private void showRequstLocationDialog() {
+        boolean isPrompted = PreferencesUtils.getBoolean(this, GlobalConstants.BD_LOACTION_KEY, false);
+
+        if (!isPrompted) {
+            AlertDialogUtil locationDialog = new AlertDialogUtil(this)
+                    .setTitle("定位服务未开启")
+                    .setMessage("请在系统设置中允许使用定位服务")
+                    .setNegativeButton("暂不", null)
+                    .setPositiveButton("去设置", new AlertDialogUtil.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog) {
+                            try {
+                                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                Uri uri = Uri.fromParts("package", mContext.getPackageName(), null);
+                                intent.setData(uri);
+                                startActivityForResult(intent, REQUEST_CODE_SETTINGS);
+                            } catch (Exception e) {
+
+                            }
+                        }
+                    });
+            locationDialog.show();
+            PreferencesUtils.putBoolean(this, GlobalConstants.BD_LOACTION_KEY, true);
+        }
     }
 
     private void setTab(int position) {
@@ -181,24 +297,49 @@ public class MainActivity extends TBaseActivity {
         }
     }
 
-    @OnClick({R.id.rl_tab_home, R.id.rl_tab_payticket, R.id.rl_tab_mall, R.id.rl_tab_live, R.id.rl_tab_mine})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.rl_tab_home:
-                mViewpager.setCurrentItem(VIEW_HOME);
-                break;
-            case R.id.rl_tab_payticket:
-                mViewpager.setCurrentItem(VIEW_TICKETS);
-                break;
-            case R.id.rl_tab_mall:
-                mViewpager.setCurrentItem(VIEW_MALL);
-                break;
-            case R.id.rl_tab_live:
-                mViewpager.setCurrentItem(VIEW_LIVE);
-                break;
-            case R.id.rl_tab_mine:
-                mViewpager.setCurrentItem(VIEW_MINE);
-                break;
+    /***
+     * 请求权限
+     */
+    private void requestUserPermissions() {
+        ArrayList<String> mPerms = new ArrayList<>();
+
+        //定位权限
+        if (EasyPermissions.hasPermissions(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+            startLocation();
+        } else {
+            mPerms.add(Manifest.permission.ACCESS_FINE_LOCATION);
         }
+
+        //读写SD卡权限
+        if (!EasyPermissions.hasPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            mPerms.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+
+        if (!mPerms.isEmpty()) {
+            ActivityCompat.requestPermissions(this, mPerms.toArray(new String[mPerms.size()]), REQUEST_PERMISSION);
+        }
+    }
+
+    private void startLocation() {
+        LocationBlock mlLocationBlock = new LocationBlock(this);
+        mlLocationBlock.setOnLocationListener(new LocationBlock.OnLocationListener() {
+            @Override
+            public void onLocationedSuccess(BDLocation bdLocation) {
+                LocationInfo locationInfo = LoactionUtils.getLocationInfo();
+
+                refreshCity();
+            }
+
+            @Override
+            public void onLocationedFail() {
+                LoactionUtils.setLoactionInfo(LoactionUtils.getDefalutLocationInfo());
+            }
+        });
+        mlLocationBlock.statrLocation();
+    }
+
+    private void refreshCity() {
+        int currentItem = mViewpager.getCurrentItem();
+        mFragments.get(currentItem).refreshCity();
     }
 }

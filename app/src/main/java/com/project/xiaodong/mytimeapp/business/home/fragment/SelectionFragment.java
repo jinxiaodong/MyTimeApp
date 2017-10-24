@@ -124,6 +124,11 @@ public class SelectionFragment extends BaseFragment implements IBaseView<HotPlay
     }
 
     @Override
+    public void refreshCity() {
+
+    }
+
+    @Override
     public void initData() {
         super.initData();
         mAdapter.getData().clear();

@@ -65,6 +65,11 @@ public class TestFragment extends BaseFragment {
     }
 
     @Override
+    public void refreshCity() {
+
+    }
+
+    @Override
     protected void initValue() {
         super.initValue();
         list = new ArrayList<>();

@@ -258,6 +258,7 @@ public abstract class BaseFragment extends Fragment {
             }
         });
     }
+
     /**
      * 根据id查找view
      *
@@ -277,4 +278,9 @@ public abstract class BaseFragment extends Fragment {
             return null;
         }
     }
+
+    /*
+     *更新城市：属性数据
+     */
+    public abstract void refreshCity();
 }
