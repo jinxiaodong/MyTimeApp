@@ -10,6 +10,10 @@ public class ConstantUrl {
     public static final String BASE_URL_TYPE2 = "https://api-m.mtime.cn/";
     public static final String BASE_URL_TYPE3 = "https://ticket-api-m.mtime.cn/";
 
+    /**
+     * 获取城市
+     */
+    public static final String MTIME_CITY_INFO= "GetCityByLongitudelatitude.api";
     /*
      *首页TopModule
      */

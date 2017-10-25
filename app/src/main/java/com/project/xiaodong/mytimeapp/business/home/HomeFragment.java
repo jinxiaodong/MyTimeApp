@@ -15,11 +15,13 @@ import com.project.xiaodong.mytimeapp.business.home.adapter.NetworkImageHolderVi
 import com.project.xiaodong.mytimeapp.business.home.bean.TopModuleBean;
 import com.project.xiaodong.mytimeapp.business.home.fragment.SelectionFragment;
 import com.project.xiaodong.mytimeapp.frame.base.fragment.BaseFragment;
+import com.project.xiaodong.mytimeapp.frame.bean.MTimeCityInfo;
 import com.project.xiaodong.mytimeapp.frame.constants.DeviceInfo;
 import com.project.xiaodong.mytimeapp.frame.presenter.home.HomeTopModulePresenter;
 import com.project.xiaodong.mytimeapp.frame.presenter.view.IBaseView;
 import com.project.xiaodong.mytimeapp.frame.tabindicator.TabIndicatorLayout;
 import com.project.xiaodong.mytimeapp.frame.tabindicator.TabLayoutUtil;
+import com.project.xiaodong.mytimeapp.frame.utils.LoactionUtils;
 import com.project.xiaodong.mytimeapp.frame.view.APSTSViewPager;
 import com.project.xiaodong.mytimeapp.frame.view.banner.ConvenientBanner;
 import com.project.xiaodong.mytimeapp.frame.view.banner.holder.CBViewHolderCreator;
@@ -78,6 +80,8 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
 
 
     private boolean isRefrsh;
+    //城市信息
+    private MTimeCityInfo mMTimeCityInfo;
 
     //
     @Override
@@ -99,6 +103,10 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
     @Override
     protected void initWidget() {
         super.initWidget();
+
+        mMTimeCityInfo = LoactionUtils.getMTimeCityInfo();
+        mTvCityName.setText(mMTimeCityInfo.name);
+
         mViewpager.setNoFocus(false);
         mViewpager.setOffscreenPageLimit(5);
         //这里要用getChildFragmentManager()
@@ -140,7 +148,12 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
 
     @Override
     public void refreshCity() {
-
+        MTimeCityInfo mTimeCityInfo = LoactionUtils.getMTimeCityInfo();
+        if (!mMTimeCityInfo.cityId.equals(mTimeCityInfo.cityId)) {
+            mMTimeCityInfo = mTimeCityInfo;
+            mTvCityName.setText(mTimeCityInfo.name);
+            mFragments.get(mViewpager.getCurrentItem()).refreshCity();
+        }
     }
 
     @Override

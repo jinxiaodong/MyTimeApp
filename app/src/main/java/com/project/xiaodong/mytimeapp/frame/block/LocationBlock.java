@@ -70,7 +70,6 @@ public class LocationBlock extends BaseBlock {
             Double longitude = bdLocation.getLongitude();//获取纬度信息
             Double latitude = bdLocation.getLatitude(); //获取经度信息
             if (latitude != IntentKey.Location.BAIDU_LOCATION_INVALID_VALUE && longitude != IntentKey.Location.BAIDU_LOCATION_INVALID_VALUE) {
-
                 LocationInfo locationInfo = new LocationInfo();
                 locationInfo.province = province;
                 locationInfo.city = city;
@@ -78,8 +77,10 @@ public class LocationBlock extends BaseBlock {
                 locationInfo.cityCode = cityCode;
                 locationInfo.longitude = longitude;
                 locationInfo.latitude = latitude;
-                LogUtil.e(locationInfo.toString());
-                LoactionUtils.setLoactionInfo(locationInfo);
+
+                if(!LoactionUtils.getLocationInfo().city.equals(city)) {
+                    LoactionUtils.setLoactionInfo(locationInfo);
+                }
                 if (mOnLocationListener != null)
                     mOnLocationListener.onLocationedSuccess(bdLocation);
 

@@ -4,7 +4,7 @@ package com.project.xiaodong.mytimeapp.frame.bean;
  * Created by xiaodong.jin on 2017/10/23.
  */
 
-public class CityInfo {
+public class MTimeCityInfo {
 
 
     public String name;     //城市名

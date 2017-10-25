@@ -11,12 +11,14 @@ import com.project.xiaodong.mytimeapp.business.home.bean.SelectionAdvanceBean;
 import com.project.xiaodong.mytimeapp.business.home.fragment.adapter.SelectionAdapter;
 import com.project.xiaodong.mytimeapp.frame.base.fragment.BaseFragment;
 import com.project.xiaodong.mytimeapp.frame.bean.BeanWrapper;
+import com.project.xiaodong.mytimeapp.frame.bean.MTimeCityInfo;
 import com.project.xiaodong.mytimeapp.frame.presenter.home.HomeSelectionAdvacePresenter;
 import com.project.xiaodong.mytimeapp.frame.presenter.home.HomeSelectionLiveAndShopPresenter;
 import com.project.xiaodong.mytimeapp.frame.presenter.home.HomeSelectionPresenter;
 import com.project.xiaodong.mytimeapp.frame.presenter.home.view.IAdvanceView;
 import com.project.xiaodong.mytimeapp.frame.presenter.home.view.ILiveAndShopView;
 import com.project.xiaodong.mytimeapp.frame.presenter.view.IBaseView;
+import com.project.xiaodong.mytimeapp.frame.utils.LoactionUtils;
 import com.project.xiaodong.mytimeapp.frame.utils.LogUtil;
 import com.project.xiaodong.mytimeapp.frame.view.recycleview.LoadMoreWithHorRecycleView;
 import com.project.xiaodong.mytimeapp.frame.view.recycleview.OnLoadMoreListener;
@@ -62,6 +64,8 @@ public class SelectionFragment extends BaseFragment implements IBaseView<HotPlay
     private boolean isRefresh;
     private HomeFragment mParentFragment;
 
+    private MTimeCityInfo mMTimeCityInfo;
+
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_selection;
@@ -71,6 +75,7 @@ public class SelectionFragment extends BaseFragment implements IBaseView<HotPlay
     @Override
     protected void initValue() {
         super.initValue();
+        mMTimeCityInfo = LoactionUtils.getMTimeCityInfo();
         mHashMapMenu = new HashMap();
         mData = new ArrayList<>();
         mHomeSelectionPresenter = new HomeSelectionPresenter(mContext, this);
@@ -92,8 +97,6 @@ public class SelectionFragment extends BaseFragment implements IBaseView<HotPlay
         mLoadMoreRecyclerView.setLayoutManager(linearLayoutManager);
         mAdapter = new SelectionAdapter(mContext, mData);
         mLoadMoreRecyclerView.setAdapter(mAdapter);
-
-
     }
 
     @Override
@@ -124,11 +127,6 @@ public class SelectionFragment extends BaseFragment implements IBaseView<HotPlay
     }
 
     @Override
-    public void refreshCity() {
-
-    }
-
-    @Override
     public void initData() {
         super.initData();
         mAdapter.getData().clear();
@@ -137,8 +135,14 @@ public class SelectionFragment extends BaseFragment implements IBaseView<HotPlay
         mData.add(getDataByType(SelectionAdapter.TYPE_HOT_MOVIES, null));
         mData.add(getDataByType(SelectionAdapter.TYPE_LIVE_SHOP, null));
         mAdapter.getData().addAll(mData);
-        mHomeSelectionPresenter.getData("");
+        mHomeSelectionPresenter.getData(mMTimeCityInfo.cityId);
 
+    }
+
+    @Override
+    public void refreshCity() {
+        mMTimeCityInfo = LoactionUtils.getMTimeCityInfo();
+        mHomeSelectionPresenter.getData(mMTimeCityInfo.cityId);
     }
 
 

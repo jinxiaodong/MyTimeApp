@@ -23,9 +23,11 @@ import com.project.xiaodong.mytimeapp.TestFragment;
 import com.project.xiaodong.mytimeapp.business.home.HomeFragment;
 import com.project.xiaodong.mytimeapp.frame.base.activity.TBaseActivity;
 import com.project.xiaodong.mytimeapp.frame.base.fragment.BaseFragment;
-import com.project.xiaodong.mytimeapp.frame.bean.LocationInfo;
+import com.project.xiaodong.mytimeapp.frame.bean.MTimeCityInfo;
 import com.project.xiaodong.mytimeapp.frame.block.LocationBlock;
 import com.project.xiaodong.mytimeapp.frame.constants.GlobalConstants;
+import com.project.xiaodong.mytimeapp.frame.presenter.home.MainCityPresenter;
+import com.project.xiaodong.mytimeapp.frame.presenter.home.view.ISuccessOrFailureView;
 import com.project.xiaodong.mytimeapp.frame.utils.AlertDialogUtil;
 import com.project.xiaodong.mytimeapp.frame.utils.LoactionUtils;
 import com.project.xiaodong.mytimeapp.frame.utils.PreferencesUtils;
@@ -101,6 +103,7 @@ public class MainActivity extends TBaseActivity {
     private static final int VIEW_LIVE = 3;
     private static final int VIEW_MINE = 4;
     private static final int VIEW_SIZE = 5;
+    private MainCityPresenter mCityPresenter;
 
     @Override
     public int getContentLayoutId() {
@@ -325,9 +328,9 @@ public class MainActivity extends TBaseActivity {
         mlLocationBlock.setOnLocationListener(new LocationBlock.OnLocationListener() {
             @Override
             public void onLocationedSuccess(BDLocation bdLocation) {
-                LocationInfo locationInfo = LoactionUtils.getLocationInfo();
+                //定位成功后：根据经纬度请求接口，获取city属性
 
-                refreshCity();
+                refreshCity(bdLocation.getLatitude() + "", bdLocation.getLongitude() + "");
             }
 
             @Override
@@ -338,8 +341,22 @@ public class MainActivity extends TBaseActivity {
         mlLocationBlock.statrLocation();
     }
 
-    private void refreshCity() {
-        int currentItem = mViewpager.getCurrentItem();
-        mFragments.get(currentItem).refreshCity();
+    private void refreshCity(String latitude, String longitude) {
+
+        MainCityPresenter mainCityPresenter = new MainCityPresenter(this, new ISuccessOrFailureView<MTimeCityInfo>() {
+            @Override
+            public void onSuccess(MTimeCityInfo data) {
+                LoactionUtils.setMTimeCityInfo(data);
+                int currentItem = mViewpager.getCurrentItem();
+                mFragments.get(currentItem).refreshCity();
+            }
+
+            @Override
+            public void onFailure(String message) {
+
+            }
+        });
+        mainCityPresenter.getCityInfo(latitude,longitude);
+
     }
 }
