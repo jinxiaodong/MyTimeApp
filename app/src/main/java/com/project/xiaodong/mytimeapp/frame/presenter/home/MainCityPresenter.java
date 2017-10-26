@@ -1,6 +1,7 @@
 package com.project.xiaodong.mytimeapp.frame.presenter.home;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.project.xiaodong.mytimeapp.business.home.apiserveice.ApiService;
 import com.project.xiaodong.mytimeapp.frame.bean.MTimeCityInfo;
@@ -33,15 +34,19 @@ public class MainCityPresenter extends Presenter<ISuccessOrFailureView<MTimeCity
         mRetrofitClient = new RetrofitClient();
     }
 
-    public void getCityInfo(String latitude, String longitude) {
+    public void getCityInfo(String latitude, String longitude, String url) {
 
-        put("latitude", latitude);
-        put("longitude", longitude);
+        if (!TextUtils.isEmpty(latitude)) {
+            put("latitude", latitude);
+        }
+        if (!TextUtils.isEmpty(longitude)) {
+            put("longitude", longitude);
+        }
 
 
         mRetrofitClient.mBaseUrl(ConstantUrl.BASE_URL_TYPE2)
                 .create(ApiService.class)
-                .getTimeCityInfo(ConstantUrl.MTIME_CITY_INFO, mParams)
+                .getTimeCityInfo(url, mParams)
                 .compose(RxSchedulers.<MTimeCityInfo>compose())
                 .subscribe(new Observer<MTimeCityInfo>() {
                     @Override
@@ -72,4 +77,38 @@ public class MainCityPresenter extends Presenter<ISuccessOrFailureView<MTimeCity
 
     }
 
+
+    public void getAllCity() {
+
+        mRetrofitClient.mBaseUrl(ConstantUrl.BASE_URL_TYPE2)
+                .create(ApiService.class)
+                .getTimeCityInfo(ConstantUrl.MTIME_ALL_CITY, mParams)
+                .compose(RxSchedulers.<MTimeCityInfo>compose())
+                .subscribe(new Observer<MTimeCityInfo>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull MTimeCityInfo mTimeCityInfo) {
+                        if (mTimeCityInfo != null) {
+                            mvpView.onSuccess(mTimeCityInfo);
+                        } else {
+                            mvpView.onFailure("数据为空");
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        mvpView.onFailure("请求出错");
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+    }
 }

@@ -25,6 +25,7 @@ import com.project.xiaodong.mytimeapp.frame.base.activity.TBaseActivity;
 import com.project.xiaodong.mytimeapp.frame.base.fragment.BaseFragment;
 import com.project.xiaodong.mytimeapp.frame.bean.MTimeCityInfo;
 import com.project.xiaodong.mytimeapp.frame.block.LocationBlock;
+import com.project.xiaodong.mytimeapp.frame.constants.ConstantUrl;
 import com.project.xiaodong.mytimeapp.frame.constants.GlobalConstants;
 import com.project.xiaodong.mytimeapp.frame.presenter.home.MainCityPresenter;
 import com.project.xiaodong.mytimeapp.frame.presenter.home.view.ISuccessOrFailureView;
@@ -356,7 +357,7 @@ public class MainActivity extends TBaseActivity {
 
             }
         });
-        mainCityPresenter.getCityInfo(latitude,longitude);
+        mainCityPresenter.getCityInfo(latitude,longitude, ConstantUrl.MTIME_CITY_INFO);
 
     }
 }

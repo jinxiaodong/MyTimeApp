@@ -11,9 +11,14 @@ public class ConstantUrl {
     public static final String BASE_URL_TYPE3 = "https://ticket-api-m.mtime.cn/";
 
     /**
-     * 获取城市
+     * 根据经纬度获取城市
      */
-    public static final String MTIME_CITY_INFO= "GetCityByLongitudelatitude.api";
+    public static final String MTIME_CITY_INFO = "GetCityByLongitudelatitude.api";
+    /**
+     * 获取所有城市
+     */
+    public static final String MTIME_ALL_CITY = "Showtime/HotCitiesByCinema.api";
+
     /*
      *首页TopModule
      */
@@ -33,8 +38,7 @@ public class ConstantUrl {
     /**
      * 首页精选：精彩预告
      */
-    public static final String HOME_SELECTION_ADVANCE= "choice/feed.api";
-
+    public static final String HOME_SELECTION_ADVANCE = "choice/feed.api";
 
 
 }
