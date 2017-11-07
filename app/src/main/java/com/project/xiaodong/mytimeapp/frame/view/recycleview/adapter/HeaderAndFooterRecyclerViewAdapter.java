@@ -151,7 +151,7 @@ public class HeaderAndFooterRecyclerViewAdapter extends RecyclerView.Adapter<Rec
                 mHeaderViewTypes.add(mHeaderViewType);
                 return mHeaderViewType;
             } else if (position >= mHeadersCount && position < mHeadersCount + itemCount) {
-                //current itemType is item defined by user
+                //current itemType is hot_city_item defined by user
                 int itemViewType = mAdapter.getItemViewType(position - mHeadersCount);
                 if (itemViewType <= TYPE_HEADER_VIEW + mHeadersCount) {
                     throw new IllegalArgumentException("your adapter's return value of " +

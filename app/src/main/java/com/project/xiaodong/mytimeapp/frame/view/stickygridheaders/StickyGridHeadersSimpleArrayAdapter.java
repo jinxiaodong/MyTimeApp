@@ -23,12 +23,15 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.project.xiaodong.mytimeapp.frame.bean.MTimeCityInfo;
+import com.project.xiaodong.mytimeapp.frame.utils.LogUtil;
+
 import java.util.Arrays;
 import java.util.List;
 
 /**
- * @author Tonic Artos
  * @param <T>
+ * @author Tonic Artos
  */
 public class StickyGridHeadersSimpleArrayAdapter<T> extends BaseAdapter implements
         StickyGridHeadersSimpleAdapter {
@@ -59,6 +62,7 @@ public class StickyGridHeadersSimpleArrayAdapter<T> extends BaseAdapter implemen
 
     @Override
     public int getCount() {
+        LogUtil.e(mItems.size() + "=====");
         return mItems.size();
     }
 
@@ -67,35 +71,39 @@ public class StickyGridHeadersSimpleArrayAdapter<T> extends BaseAdapter implemen
         T item = getItem(position);
         CharSequence value;
         if (item instanceof CharSequence) {
-            value = (CharSequence)item;
+            value = (CharSequence) item;
         } else {
             value = item.toString();
         }
 
-        return value.subSequence(0, 1).charAt(0);
+        MTimeCityInfo cityInfo = (MTimeCityInfo) getItem(position);
+        value = cityInfo.getSuspensionTag();
+
+//        LogUtil.e(value.charAt(0) + "====headerid");
+
+        return value.charAt(0);
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public View getHeaderView(int position, View convertView, ViewGroup parent) {
         HeaderViewHolder holder;
         if (convertView == null) {
             convertView = mInflater.inflate(mHeaderResId, parent, false);
             holder = new HeaderViewHolder();
-            holder.textView = (TextView)convertView.findViewById(android.R.id.text1);
+            holder.textView = (TextView) convertView.findViewById(android.R.id.text1);
             convertView.setTag(holder);
         } else {
-            holder = (HeaderViewHolder)convertView.getTag();
+            holder = (HeaderViewHolder) convertView.getTag();
         }
 
-        T item = getItem(position);
-        CharSequence string;
-        if (item instanceof CharSequence) {
-            string = (CharSequence)item;
-        } else {
-            string = item.toString();
-        }
-
+        String string;
+//        if (hot_city_item instanceof CharSequence) {
+//            string = (CharSequence) hot_city_item;
+//        } else {
+//            string = hot_city_item.toString();
+//        }
+        MTimeCityInfo cityInfo = (MTimeCityInfo) getItem(position);
+        string = cityInfo.getBaseIndexPinyin();
         // set header text as first char in string
         holder.textView.setText(string.subSequence(0, 1));
 
@@ -107,29 +115,35 @@ public class StickyGridHeadersSimpleArrayAdapter<T> extends BaseAdapter implemen
         return mItems.get(position);
     }
 
+
     @Override
     public long getItemId(int position) {
         return position;
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
             convertView = mInflater.inflate(mItemResId, parent, false);
             holder = new ViewHolder();
-            holder.textView = (TextView)convertView.findViewById(android.R.id.text1);
+            holder.textView = (TextView) convertView.findViewById(android.R.id.text1);
             convertView.setTag(holder);
         } else {
-            holder = (ViewHolder)convertView.getTag();
+            holder = (ViewHolder) convertView.getTag();
         }
+//        LogUtil.e("===" + position);
 
-        T item = getItem(position);
-        if (item instanceof CharSequence) {
-            holder.textView.setText((CharSequence)item);
+//        T hot_city_item = getItem(position);
+        MTimeCityInfo cityInfo = (MTimeCityInfo) getItem(position);
+        String string = cityInfo.n;
+        if(string.equals("沅江")) {
+            LogUtil.e(string+"=");
+        }
+        if (string instanceof CharSequence) {
+            holder.textView.setText(string);
         } else {
-            holder.textView.setText(item.toString());
+            holder.textView.setText(string);
         }
 
         return convertView;

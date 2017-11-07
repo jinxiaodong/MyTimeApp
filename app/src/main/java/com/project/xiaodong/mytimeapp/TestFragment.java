@@ -75,7 +75,7 @@ public class TestFragment extends BaseFragment {
         list = new ArrayList<>();
 
         for (int i = 0; i < 40; i++) {
-            list.add(new String("item" + i));
+            list.add(new String("hot_city_item" + i));
         }
     }
 

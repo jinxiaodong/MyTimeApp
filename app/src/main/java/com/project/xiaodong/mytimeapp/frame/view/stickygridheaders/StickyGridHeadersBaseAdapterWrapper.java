@@ -24,10 +24,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 
+import com.project.xiaodong.mytimeapp.frame.utils.LogUtil;
+
 /**
  * Adapter wrapper to insert extra views and otherwise hack around GridView to
  * add sections and headers.
- * 
+ *
  * @author Tonic Artos
  */
 public class StickyGridHeadersBaseAdapterWrapper extends BaseAdapter {
@@ -115,25 +117,29 @@ public class StickyGridHeadersBaseAdapterWrapper extends BaseAdapter {
     }
 
     /**
-     * Get the data item associated with the specified position in the data set.
+     * Get the data hot_city_item associated with the specified position in the data set.
      * <p>
      * Since this wrapper inserts fake entries to fill out items grouped by
      * header and also spaces to insert headers into some positions will return
      * null.
      * </p>
-     * 
-     * @param position Position of the item whose data we want within the
-     *            adapter's data set.
+     *
+     * @param position Position of the hot_city_item whose data we want within the
+     *                 adapter's data set.
      * @return The data at the specified position.
      */
     @Override
     public Object getItem(int position) throws ArrayIndexOutOfBoundsException {
+
+
         Position adapterPosition = translatePosition(position);
         if (adapterPosition.mPosition == POSITION_FILLER
                 || adapterPosition.mPosition == POSITION_HEADER) {
             // Fake entry in view.
+            LogUtil.e("position==null" + adapterPosition.mPosition);
             return null;
         }
+        LogUtil.e("position==" + adapterPosition.mPosition);
 
         return mDelegate.getItem(adapterPosition.mPosition);
     }
@@ -174,10 +180,12 @@ public class StickyGridHeadersBaseAdapterWrapper extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        LogUtil.e("mmmmm==" + position);
         Position adapterPosition = translatePosition(position);
+
         if (adapterPosition.mPosition == POSITION_HEADER) {
             HeaderFillerView v = getHeaderFillerView(adapterPosition.mHeader, convertView, parent);
-            View view = mDelegate.getHeaderView(adapterPosition.mHeader, (View)v.getTag(), parent);
+            View view = mDelegate.getHeaderView(adapterPosition.mHeader, (View) v.getTag(), parent);
             mGridView.detachHeader((View) v.getTag());
             v.setTag(view);
             mGridView.attachHeader(view);
@@ -249,7 +257,7 @@ public class StickyGridHeadersBaseAdapterWrapper extends BaseAdapter {
     }
 
     private FillerView getFillerView(View convertView, ViewGroup parent, View lastViewSeen) {
-        FillerView fillerView = (FillerView)convertView;
+        FillerView fillerView = (FillerView) convertView;
         if (fillerView == null) {
             fillerView = new FillerView(mContext);
         }
@@ -260,8 +268,8 @@ public class StickyGridHeadersBaseAdapterWrapper extends BaseAdapter {
     }
 
     private HeaderFillerView getHeaderFillerView(int headerPosition, View convertView,
-            ViewGroup parent) {
-        HeaderFillerView headerFillerView = (HeaderFillerView)convertView;
+                                                 ViewGroup parent) {
+        HeaderFillerView headerFillerView = (HeaderFillerView) convertView;
         if (headerFillerView == null) {
             headerFillerView = new HeaderFillerView(mContext);
         }
@@ -272,13 +280,13 @@ public class StickyGridHeadersBaseAdapterWrapper extends BaseAdapter {
     /**
      * Counts the number of items that would be need to fill out the last row in
      * the group of items with the given header.
-     * 
+     *
      * @param header Header set of items are grouped by.
      * @return The count of unfilled spaces in the last row.
      */
     private int unFilledSpacesInHeaderGroup(int header) {
         //If mNumColumns is equal to zero we will have a divide by 0 exception
-        if(mNumColumns == 0){
+        if (mNumColumns == 0) {
             return 0;
         }
 
@@ -299,6 +307,7 @@ public class StickyGridHeadersBaseAdapterWrapper extends BaseAdapter {
     }
 
     protected Position translatePosition(int position) {
+
         int numHeaders = mDelegate.getNumHeaders();
         if (numHeaders == 0) {
             if (position >= mDelegate.getCount()) {
@@ -364,7 +373,7 @@ public class StickyGridHeadersBaseAdapterWrapper extends BaseAdapter {
 
     /**
      * Simple view to fill space in grid view.
-     * 
+     *
      * @author Tonic Artos
      */
     protected class FillerView extends View {
@@ -397,7 +406,7 @@ public class StickyGridHeadersBaseAdapterWrapper extends BaseAdapter {
     /**
      * A view to hold the section header and measure the header row height
      * correctly.
-     * 
+     *
      * @author Tonic Artos
      */
     protected class HeaderFillerView extends FrameLayout {
@@ -433,7 +442,7 @@ public class StickyGridHeadersBaseAdapterWrapper extends BaseAdapter {
 
         @Override
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-            View v = (View)getTag();
+            View v = (View) getTag();
             android.view.ViewGroup.LayoutParams params = v.getLayoutParams();
             if (params == null) {
                 params = generateDefaultLayoutParams();

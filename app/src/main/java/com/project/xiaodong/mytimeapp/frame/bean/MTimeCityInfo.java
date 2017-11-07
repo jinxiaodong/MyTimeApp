@@ -30,11 +30,16 @@ public class MTimeCityInfo extends BaseIndexPinyinBean<MTimeCityInfo> {
 
     @Override
     public String getTarget() {
-        return n;
+        return pinyinFull;
     }
 
     @Override
     public String getPinYin() {
         return pinyinFull;
+    }
+
+    @Override
+    public boolean isNeedToPinyin() {
+        return true;
     }
 }

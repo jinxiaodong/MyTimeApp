@@ -200,7 +200,7 @@ public class StickyGridHeadersGridView extends GridView implements OnScrollListe
     }
 
     /**
-     * Gets the header at an item position. However, the position must be that
+     * Gets the header at an hot_city_item position. However, the position must be that
      * of a HeaderFiller.
      * 
      * @param position Position of HeaderFiller.

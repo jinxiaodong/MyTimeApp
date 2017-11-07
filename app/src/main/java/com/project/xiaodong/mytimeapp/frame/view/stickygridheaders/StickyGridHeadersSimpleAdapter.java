@@ -35,7 +35,7 @@ public interface StickyGridHeadersSimpleAdapter extends ListAdapter {
      * Get the header id associated with the specified position in the list.
      * 
      * @param position
-     *            The position of the item within the adapter's data set whose
+     *            The position of the hot_city_item within the adapter's data set whose
      *            header id we want.
      * @return The id of the header at the specified position.
      */
