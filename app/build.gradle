@@ -56,7 +56,7 @@ dependencies {
     compile files('lib/jackson-core-asl-1.9.7.jar')
     compile files('lib/jackson-mapper-asl-1.9.7.jar')
     compile files('lib/BaiduLBS_Android.jar')
-
     //运行时权限
     compile 'pub.devrel:easypermissions:0.4.0'
+    compile project(':stickygridview')
 }

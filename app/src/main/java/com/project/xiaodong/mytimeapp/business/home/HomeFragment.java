@@ -16,7 +16,7 @@ import com.project.xiaodong.mytimeapp.business.FragmentAdapter;
 import com.project.xiaodong.mytimeapp.business.home.adapter.NetworkImageHolderView;
 import com.project.xiaodong.mytimeapp.business.home.bean.TopModuleBean;
 import com.project.xiaodong.mytimeapp.business.home.fragment.SelectionFragment;
-import com.project.xiaodong.mytimeapp.business.home.location.MtimeLocationActivity;
+import com.project.xiaodong.mytimeapp.business.home.location.MtimeLocationActivity2;
 import com.project.xiaodong.mytimeapp.frame.base.fragment.BaseFragment;
 import com.project.xiaodong.mytimeapp.frame.bean.MTimeCityInfo;
 import com.project.xiaodong.mytimeapp.frame.constants.DeviceInfo;
@@ -126,7 +126,7 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
         mTvCityName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mContext.startActivity(new Intent(mContext, MtimeLocationActivity.class));
+                mContext.startActivity(new Intent(mContext, MtimeLocationActivity2.class));
             }
         });
         mAppbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {

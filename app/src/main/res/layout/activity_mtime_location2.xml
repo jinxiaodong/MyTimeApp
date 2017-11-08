@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/search"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/colorAccent"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/search">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/current_hot_city_header"></include>
+
+            <com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView
+                android:id="@+id/sgv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView>
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <com.project.xiaodong.mytimeapp.frame.view.recycleview.LoadMoreRecyclerView
+        android:id="@+id/loadMoreRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/search"
+        android:visibility="invisible">
+
+    </com.project.xiaodong.mytimeapp.frame.view.recycleview.LoadMoreRecyclerView>
+</RelativeLayout>
