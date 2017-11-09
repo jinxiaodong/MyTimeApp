@@ -32,7 +32,6 @@
         <activity
             android:name=".business.LaunchActivity"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen">
-
         </activity>
         <activity
             android:name=".business.MainActivity"
@@ -54,11 +53,11 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="U56QcfkaQzGlsIvwcFfYbPyohhtCq2I4"/>
 
-        <activity
-            android:name=".business.home.location.MtimeLocationActivity2">
+        <activity android:name=".business.home.location.MtimeLocationActivity2">
         </activity>
-        <activity
-            android:name=".business.home.location.MtimeLocationActivity">
+        <activity android:name=".business.home.location.MtimeLocationActivity">
+        </activity>
+        <activity android:name=".TestActivity">
         </activity>
     </application>
 

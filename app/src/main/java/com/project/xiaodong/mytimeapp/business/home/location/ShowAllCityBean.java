@@ -15,7 +15,7 @@ public class ShowAllCityBean implements ISuspensionInterface {
 
     @Override
     public boolean isShowSuspension() {
-        return false;
+        return true;
     }
 
     @Override

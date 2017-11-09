@@ -3,10 +3,11 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:orientation="vertical"
-              android:paddingLeft="@dimen/padding_15dp"
-              android:paddingRight="@dimen/padding_15dp">
+              >
 
     <LinearLayout
+        android:paddingLeft="@dimen/padding_15dp"
+        android:paddingRight="@dimen/padding_15dp"
         android:layout_width="match_parent"
         android:layout_height="43dp"
         android:gravity="center_vertical">
@@ -29,11 +30,15 @@
     </LinearLayout>
 
     <View
+        android:paddingLeft="@dimen/padding_15dp"
+        android:paddingRight="@dimen/padding_15dp"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="@color/gray_e4e4e4"></View>
 
     <TextView
+        android:paddingLeft="@dimen/padding_15dp"
+        android:paddingRight="@dimen/padding_15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/padding_3dp"

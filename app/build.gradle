@@ -58,5 +58,4 @@ dependencies {
     compile files('lib/BaiduLBS_Android.jar')
     //运行时权限
     compile 'pub.devrel:easypermissions:0.4.0'
-    compile project(':stickygridview')
 }

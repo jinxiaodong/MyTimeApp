@@ -3,12 +3,13 @@ package com.project.xiaodong.mytimeapp.business.home.location.adapter;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.project.xiaodong.mytimeapp.R;
+import com.project.xiaodong.mytimeapp.business.home.location.ShowAllCityBean;
 import com.project.xiaodong.mytimeapp.frame.base.adapter.BaseRecyclerAdapter;
 import com.project.xiaodong.mytimeapp.frame.base.adapter.BaseViewHold;
 import com.project.xiaodong.mytimeapp.frame.bean.MTimeCityInfo;
+import com.project.xiaodong.mytimeapp.frame.view.NoScrollGridview;
 
 import java.util.List;
 
@@ -16,12 +17,11 @@ import java.util.List;
  * Created by xiaodong.jin on 2017/11/7.
  */
 
-public class AllCityAdapter extends BaseRecyclerAdapter<MTimeCityInfo> {
+public class AllCityAdapter extends BaseRecyclerAdapter<ShowAllCityBean> {
 
 
-    private GridViewCityAdapter mGridViewCityAdapter;
 
-    public AllCityAdapter(Context context, List<MTimeCityInfo> list) {
+    public AllCityAdapter(Context context, List<ShowAllCityBean> list) {
         super(context, list);
     }
 
@@ -30,23 +30,28 @@ public class AllCityAdapter extends BaseRecyclerAdapter<MTimeCityInfo> {
         return new AllCityVH(inflate(R.layout.all_city_view_holder, parent));
     }
 
-    private class AllCityVH extends BaseViewHold<MTimeCityInfo> {
+    private class AllCityVH extends BaseViewHold<ShowAllCityBean> {
 
-        private TextView tvCity;
+        private NoScrollGridview ngv;
 
         public AllCityVH(View view) {
             super(view);
-            tvCity = (TextView) view.findViewById(R.id.tv_city);
+            ngv = (NoScrollGridview) view.findViewById(R.id.ngv);
 
         }
 
         @Override
-        public void onBindViewHolder(int position, List<MTimeCityInfo> mData) {
-            MTimeCityInfo cityInfo = mData.get(position);
+        public void onBindViewHolder(int position, List<ShowAllCityBean> mData) {
+            ShowAllCityBean cityInfo = mData.get(position);
             if (cityInfo == null) {
                 return;
             }
-            tvCity.setText(cityInfo.n);
+            List<MTimeCityInfo> mTimeCityInfos = cityInfo.mMTimeCityInfos;
+
+            if (mTimeCityInfos == null || mTimeCityInfos.size() == 0) {
+                return;
+            }
+            ngv.setAdapter(new GridViewCityAdapter(mContext, mTimeCityInfos, R.layout.hot_city_item));
         }
     }
 }

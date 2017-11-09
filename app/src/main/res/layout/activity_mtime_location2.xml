@@ -13,27 +13,33 @@
 
     </LinearLayout>
 
-    <android.support.v4.widget.NestedScrollView
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/search"
+    android:orientation="vertical">
+
+    <!--<android.support.v4.widget.NestedScrollView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_below="@+id/search">-->
+
+    <include layout="@layout/current_hot_city_header"></include>
+
+    <!--</android.support.v4.widget.NestedScrollView>-->
+
+    <com.project.xiaodong.mytimeapp.frame.view.stickygridheadersgridview.StickyGridHeadersGridView
+        android:id="@+id/sgv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/search">
+        android:layout_below="@+id/search"
+        >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+    </com.project.xiaodong.mytimeapp.frame.view.stickygridheadersgridview.StickyGridHeadersGridView>
 
-            <include layout="@layout/current_hot_city_header"></include>
 
-            <com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView
-                android:id="@+id/sgv"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+    </LinearLayout>
 
-            </com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView>
-        </LinearLayout>
-
-    </android.support.v4.widget.NestedScrollView>
 
     <com.project.xiaodong.mytimeapp.frame.view.recycleview.LoadMoreRecyclerView
         android:id="@+id/loadMoreRecyclerView"
