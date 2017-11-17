@@ -35,7 +35,7 @@ public abstract class BaseActivity extends BasePermissionsActivity {
     private LinearLayout mRootView;
     private ViewGroup mHeaderView;
     private ViewGroup mContentView;
-    private LayoutInflater mLayoutInflater;
+    protected LayoutInflater mLayoutInflater;
 
 
     @Override
@@ -70,10 +70,10 @@ public abstract class BaseActivity extends BasePermissionsActivity {
             this.mContentView = (ViewGroup) this.mLayoutInflater.inflate(this.getContentLayoutId(), (ViewGroup) null);
             this.mRootView.addView(this.mContentView, -1, -1);
         }
+        ButterKnife.inject(this);
         if (!NetworkUtil.isNetworkAvailable(this)) {
             onNetworkInvalid();
         }
-        ButterKnife.inject(this);
         initValue(savedInstanceState);
         initWidget(savedInstanceState);
         initListener(savedInstanceState);
@@ -140,6 +140,7 @@ public abstract class BaseActivity extends BasePermissionsActivity {
     public ViewGroup getContentView() {
         return this.mContentView;
     }
+
 
     public void close() {
         this.finish();

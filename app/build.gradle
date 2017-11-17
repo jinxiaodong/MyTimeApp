@@ -16,11 +16,18 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
     }
+
+
 
 //    sourceSets {
 //        main {
-//            jniLibs.srcDirs = ['libs']
+//            res.srcDirs = [
+//                    'src/main/res/layouts/activity',
+//                    'src/main/res/layouts/fragment',
+//                    'src/main/res/layouts/viewholder',
+//                    'src/main/res/layouts']
 //        }
 //    }
 }

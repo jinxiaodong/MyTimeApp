@@ -27,7 +27,7 @@ public class SuspensionDecoration extends RecyclerView.ItemDecoration {
     private static int mTitleFontSize;//title字体大小
 
     private int mHeaderViewCount = 0;
-    private float leftMargin = 15;  //距离左边的距离
+    private float leftMargin = 17;  //距离左边的距离
 
 
     public SuspensionDecoration(Context context, List<? extends ISuspensionInterface> datas) {
