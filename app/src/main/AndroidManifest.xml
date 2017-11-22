@@ -53,7 +53,7 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="U56QcfkaQzGlsIvwcFfYbPyohhtCq2I4"/>
 
-        <activity android:name=".business.home.location.MtimeLocationActivity">
+        <activity android:name=".business.location.MtimeLocationActivity">
         </activity>
         <activity android:name=".TestActivity">
         </activity>

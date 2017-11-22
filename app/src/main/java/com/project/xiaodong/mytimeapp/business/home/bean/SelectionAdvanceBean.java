@@ -1,12 +1,14 @@
 package com.project.xiaodong.mytimeapp.business.home.bean;
 
+import com.project.xiaodong.mytimeapp.frame.bean.BaseBean;
+
 import java.util.List;
 
 /**
  * Created by xiaodong.jin on 2017/10/19.
  */
 
-public class SelectionAdvanceBean {
+public class SelectionAdvanceBean extends BaseBean {
 
     public String code;
     public String msg;

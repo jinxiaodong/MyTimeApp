@@ -1,14 +1,15 @@
-package com.project.xiaodong.mytimeapp.business.home.location.adapter;
+package com.project.xiaodong.mytimeapp.business.location.adapter;
 
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import com.project.xiaodong.mytimeapp.R;
-import com.project.xiaodong.mytimeapp.business.home.location.ShowAllCityBean;
+import com.project.xiaodong.mytimeapp.business.location.bean.ShowAllCityBean;
 import com.project.xiaodong.mytimeapp.frame.base.adapter.BaseRecyclerAdapter;
 import com.project.xiaodong.mytimeapp.frame.base.adapter.BaseViewHold;
-import com.project.xiaodong.mytimeapp.frame.bean.MTimeCityInfo;
+import com.project.xiaodong.mytimeapp.business.location.bean.MTimeCityInfo;
 import com.project.xiaodong.mytimeapp.frame.view.NoScrollGridview;
 
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.List;
 public class AllCityAdapter extends BaseRecyclerAdapter<ShowAllCityBean> {
 
 
+    private OnCityItemClickListener mOnItemClickListener;
 
     public AllCityAdapter(Context context, List<ShowAllCityBean> list) {
         super(context, list);
@@ -46,12 +48,29 @@ public class AllCityAdapter extends BaseRecyclerAdapter<ShowAllCityBean> {
             if (cityInfo == null) {
                 return;
             }
-            List<MTimeCityInfo> mTimeCityInfos = cityInfo.mMTimeCityInfos;
+            final List<MTimeCityInfo> mTimeCityInfos = cityInfo.mMTimeCityInfos;
 
             if (mTimeCityInfos == null || mTimeCityInfos.size() == 0) {
                 return;
             }
             ngv.setAdapter(new GridViewCityAdapter(mContext, mTimeCityInfos, R.layout.hot_city_item));
+            ngv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    MTimeCityInfo cityInfo1 = mTimeCityInfos.get(position);
+                    mOnItemClickListener.onItemClick(cityInfo1);
+                }
+            });
         }
     }
+
+
+    public void setOnItemClickListener(OnCityItemClickListener itemClickListener) {
+        mOnItemClickListener = itemClickListener;
+    }
+
+    public interface OnCityItemClickListener {
+        void onItemClick(MTimeCityInfo cityinfo);
+    }
+
 }

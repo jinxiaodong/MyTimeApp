@@ -1,6 +1,6 @@
 package com.project.xiaodong.mytimeapp.business.home.bean;
 
-import com.project.xiaodong.mytimeapp.frame.bean.MTimeCityInfo;
+import com.project.xiaodong.mytimeapp.business.location.bean.MTimeCityInfo;
 import com.project.xiaodong.mytimeapp.frame.bean.indexbar.BaseIndexPinyinBean;
 
 /**

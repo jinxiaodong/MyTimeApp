@@ -1,4 +1,4 @@
-package com.project.xiaodong.mytimeapp.business.home.location;
+package com.project.xiaodong.mytimeapp.business.location;
 
 import android.Manifest;
 import android.os.Bundle;
@@ -13,13 +13,15 @@ import android.widget.RelativeLayout;
 import com.baidu.location.BDLocation;
 import com.project.xiaodong.mytimeapp.R;
 import com.project.xiaodong.mytimeapp.business.home.bean.LocationHeaderBean;
-import com.project.xiaodong.mytimeapp.business.home.location.adapter.AllCityAdapter;
-import com.project.xiaodong.mytimeapp.business.home.location.adapter.GridViewCityAdapter;
+import com.project.xiaodong.mytimeapp.business.location.adapter.AllCityAdapter;
+import com.project.xiaodong.mytimeapp.business.location.adapter.GridViewCityAdapter;
+import com.project.xiaodong.mytimeapp.business.location.bean.ShowAllCityBean;
 import com.project.xiaodong.mytimeapp.frame.base.activity.TBaseActivity;
 import com.project.xiaodong.mytimeapp.frame.bean.LocationInfo;
-import com.project.xiaodong.mytimeapp.frame.bean.MTimeCityInfo;
+import com.project.xiaodong.mytimeapp.business.location.bean.MTimeCityInfo;
 import com.project.xiaodong.mytimeapp.frame.block.LocationBlock;
 import com.project.xiaodong.mytimeapp.frame.constants.ConstantUrl;
+import com.project.xiaodong.mytimeapp.frame.eventbus.EventCenter;
 import com.project.xiaodong.mytimeapp.frame.presenter.home.MainCityPresenter;
 import com.project.xiaodong.mytimeapp.frame.presenter.home.view.ISuccessOrFailureView;
 import com.project.xiaodong.mytimeapp.frame.utils.JsonUtil;
@@ -70,6 +72,7 @@ public class MtimeLocationActivity extends TBaseActivity implements ISuccessOrFa
     private SharePreferenceUtil sp;
 
 
+
     @Override
     public int getHeaderLayoutId() {
         return super.getHeaderLayoutId();
@@ -111,6 +114,9 @@ public class MtimeLocationActivity extends TBaseActivity implements ISuccessOrFa
                         GridView gridView = holder.getView(R.id.gv_hot_city);
                         gridView.setAdapter(mHotCityAdapter);
                         holder.setText(R.id.current_city, mLocationHeaderBean.cityName);
+                        if (mLocationHeaderBean.status == LocationHeaderBean.LOCATION_FAILURE) {
+                            holder.setText(R.id.current_city, "定位失败，点击重试！");
+                        }
                         holder.setOnClickListener(R.id.current_city, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -145,6 +151,14 @@ public class MtimeLocationActivity extends TBaseActivity implements ISuccessOrFa
     @Override
     protected void initListener(Bundle savedInstanceState) {
         super.initListener(savedInstanceState);
+        mAdapter.setOnItemClickListener(new AllCityAdapter.OnCityItemClickListener() {
+            @Override
+            public void onItemClick(MTimeCityInfo cityinfo) {
+                LoactionUtils.setUserChooseCity(cityinfo);
+                finish();
+            }
+        });
+
     }
 
     @Override
@@ -152,6 +166,13 @@ public class MtimeLocationActivity extends TBaseActivity implements ISuccessOrFa
         super.initData(savedInstanceState);
 
         getCity();
+        locationtask();
+    }
+
+    @Override
+    protected void onEventCallback(EventCenter event) {
+        super.onEventCallback(event);
+
     }
 
     private void getCity() {
@@ -164,7 +185,7 @@ public class MtimeLocationActivity extends TBaseActivity implements ISuccessOrFa
     private void locationtask() {
         mLocationHeaderBean.status = LocationHeaderBean.LOCATION_BEGIN;
         mLocationHeaderBean.cityCode = null;
-        mLocationHeaderBean.cityName = "定位中";
+        mLocationHeaderBean.cityName = "定位中...";
         mHeaderAdapter.notifyDataSetChanged();
         String[] perms = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
         if (EasyPermissions.hasPermissions(this, perms)) {
@@ -198,8 +219,8 @@ public class MtimeLocationActivity extends TBaseActivity implements ISuccessOrFa
         }
         if (mCityData.size() != 0) {
             for (MTimeCityInfo cityInfo : allCityList) {
-                if (cityInfo.name != null && mBDcity != null && cityInfo.name.equals(mBDcity)) {
-                    mLocationHeaderBean.cityCode = cityInfo.cityId;
+                if (cityInfo.n != null && mBDcity != null && cityInfo.n.equals(mBDcity)) {
+                    mLocationHeaderBean.cityCode = cityInfo.id;
                     mLocationHeaderBean.cityBean = cityInfo;
                     mLocationHeaderBean.status = LocationHeaderBean.LOCATION_SUCCESS;
                     return;

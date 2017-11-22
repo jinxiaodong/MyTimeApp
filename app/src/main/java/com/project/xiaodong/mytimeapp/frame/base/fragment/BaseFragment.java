@@ -13,7 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.project.xiaodong.mytimeapp.frame.application.BaseApplication;
+import com.project.xiaodong.mytimeapp.frame.eventbus.EventCenter;
 import com.project.xiaodong.mytimeapp.frame.view.dialog.DialogUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.ButterKnife;
 
@@ -105,6 +110,9 @@ public abstract class BaseFragment extends Fragment {
         }
         ButterKnife.inject(this, mRootView);
 
+        if (enableEventBus()) {
+            EventBus.getDefault().register(this);
+        }
         isOnCreated = true;
         initValue();
         initWidget();
@@ -125,6 +133,9 @@ public abstract class BaseFragment extends Fragment {
         }
         if (mRootView != null) {
             ButterKnife.reset(mRootView);
+        }
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
         }
     }
 
@@ -160,6 +171,28 @@ public abstract class BaseFragment extends Fragment {
             onFragmentVisible();
             lazyinit();
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)//, priority = 100
+    public final void onEventCenter(EventCenter event) {
+        if (null != event) {
+            onEventCallback(event);
+        }
+    }
+
+    /**
+     * 根据code区分当前事件类型
+     */
+    protected void onEventCallback(EventCenter event) {
+        // handle event
+    }
+
+    /**
+     *
+     * @return
+     */
+    protected boolean enableEventBus() {
+        return false;
     }
 
     /**

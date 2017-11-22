@@ -4,8 +4,8 @@ import android.text.TextUtils;
 
 import com.project.xiaodong.mytimeapp.frame.application.BaseApplication;
 import com.project.xiaodong.mytimeapp.frame.bean.LocationInfo;
-import com.project.xiaodong.mytimeapp.frame.bean.MTimeCityInfo;
-import com.project.xiaodong.mytimeapp.frame.eventbus.MarketEvents;
+import com.project.xiaodong.mytimeapp.business.location.bean.MTimeCityInfo;
+import com.project.xiaodong.mytimeapp.frame.eventbus.LocationEvents;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -69,8 +69,8 @@ public class LoactionUtils {
     public static MTimeCityInfo getMTimeCityInfo() {
 
         MTimeCityInfo cityInfo = new MTimeCityInfo();
-        cityInfo.cityId = "292";
-        cityInfo.name = "上海";
+        cityInfo.cityId = cityInfo.id = "292";
+        cityInfo.name =cityInfo.n =  "上海";
         cityInfo.pinyinShort = "sh";
 
         SharePreferenceUtil sharePreferenceUtil = SharePreferenceUtil.getInstance(BaseApplication.getContext());
@@ -96,7 +96,7 @@ public class LoactionUtils {
         try {
             SharePreferenceUtil sharePreferenceUtil = SharePreferenceUtil.getInstance(BaseApplication.getContext());
             sharePreferenceUtil.setValue(USER_CHOOSE_LOCATION, JsonUtil.toJsonString(cityInfo));
-            EventBus.getDefault().post(MarketEvents.USER_CUTOVER_CITY);
+            EventBus.getDefault().post(new LocationEvents(LocationEvents.code, LocationEvents.target));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -105,12 +105,12 @@ public class LoactionUtils {
 
     public static MTimeCityInfo getUserChooseCity() {
         MTimeCityInfo cityInfo = new MTimeCityInfo();
-        cityInfo.cityId = "292";
-        cityInfo.name = "上海";
+        cityInfo.cityId = cityInfo.id = "292";
+        cityInfo.name =cityInfo.n =  "上海";
         cityInfo.pinyinShort = "sh";
 
         SharePreferenceUtil sharePreferenceUtil = SharePreferenceUtil.getInstance(BaseApplication.getContext());
-        String value = sharePreferenceUtil.getValue(MTIME_LOCATION, "");
+        String value = sharePreferenceUtil.getValue(USER_CHOOSE_LOCATION, "");
         if (!TextUtils.isEmpty(value)) {
             MTimeCityInfo parse = JsonUtil.parse(value, MTimeCityInfo.class);
             if (parse != null) {

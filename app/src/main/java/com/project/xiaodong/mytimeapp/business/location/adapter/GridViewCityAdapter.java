@@ -1,4 +1,4 @@
-package com.project.xiaodong.mytimeapp.business.home.location.adapter;
+package com.project.xiaodong.mytimeapp.business.location.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.project.xiaodong.mytimeapp.frame.bean.MTimeCityInfo;
+import com.project.xiaodong.mytimeapp.business.location.bean.MTimeCityInfo;
 
 import java.util.List;
 

@@ -16,10 +16,11 @@ import com.project.xiaodong.mytimeapp.business.FragmentAdapter;
 import com.project.xiaodong.mytimeapp.business.home.adapter.NetworkImageHolderView;
 import com.project.xiaodong.mytimeapp.business.home.bean.TopModuleBean;
 import com.project.xiaodong.mytimeapp.business.home.fragment.SelectionFragment;
-import com.project.xiaodong.mytimeapp.business.home.location.MtimeLocationActivity;
+import com.project.xiaodong.mytimeapp.business.location.MtimeLocationActivity;
 import com.project.xiaodong.mytimeapp.frame.base.fragment.BaseFragment;
-import com.project.xiaodong.mytimeapp.frame.bean.MTimeCityInfo;
+import com.project.xiaodong.mytimeapp.business.location.bean.MTimeCityInfo;
 import com.project.xiaodong.mytimeapp.frame.constants.DeviceInfo;
+import com.project.xiaodong.mytimeapp.frame.eventbus.EventCenter;
 import com.project.xiaodong.mytimeapp.frame.presenter.home.HomeTopModulePresenter;
 import com.project.xiaodong.mytimeapp.frame.presenter.view.IBaseView;
 import com.project.xiaodong.mytimeapp.frame.tabindicator.TabIndicatorLayout;
@@ -93,6 +94,11 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
     }
 
     @Override
+    protected boolean enableEventBus() {
+        return true;
+    }
+
+    @Override
     protected void initValue() {
         super.initValue();
         mHomeTopModulePresenter = new HomeTopModulePresenter(mContext, this);
@@ -107,8 +113,8 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
     protected void initWidget() {
         super.initWidget();
 
-        mMTimeCityInfo = LoactionUtils.getMTimeCityInfo();
-        mTvCityName.setText(mMTimeCityInfo.name);
+        mMTimeCityInfo = LoactionUtils.getUserChooseCity();
+        mTvCityName.setText(mMTimeCityInfo.n);
 
         mViewpager.setNoFocus(false);
         mViewpager.setOffscreenPageLimit(5);
@@ -143,6 +149,15 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
         mHomeTopModulePresenter.getData();
     }
 
+
+    @Override
+    protected void onEventCallback(EventCenter event) {
+        super.onEventCallback(event);
+        if (event.code == 1001) {
+            refreshCity();
+        }
+    }
+
     @Override
     protected void onFragmentVisible() {
         super.onFragmentVisible();
@@ -157,10 +172,10 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
 
     @Override
     public void refreshCity() {
-        MTimeCityInfo mTimeCityInfo = LoactionUtils.getMTimeCityInfo();
-        if (!mMTimeCityInfo.cityId.equals(mTimeCityInfo.cityId)) {
+        MTimeCityInfo mTimeCityInfo = LoactionUtils.getUserChooseCity();
+        if (!mMTimeCityInfo.id.equals(mTimeCityInfo.id)) {
             mMTimeCityInfo = mTimeCityInfo;
-            mTvCityName.setText(mTimeCityInfo.name);
+            mTvCityName.setText(mTimeCityInfo.n);
             mFragments.get(mViewpager.getCurrentItem()).refreshCity();
         }
     }

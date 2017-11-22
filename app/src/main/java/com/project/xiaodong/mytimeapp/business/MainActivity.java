@@ -21,9 +21,9 @@ import com.baidu.location.BDLocation;
 import com.project.xiaodong.mytimeapp.R;
 import com.project.xiaodong.mytimeapp.TestFragment;
 import com.project.xiaodong.mytimeapp.business.home.HomeFragment;
+import com.project.xiaodong.mytimeapp.business.location.bean.MTimeCityInfo;
 import com.project.xiaodong.mytimeapp.frame.base.activity.TBaseActivity;
 import com.project.xiaodong.mytimeapp.frame.base.fragment.BaseFragment;
-import com.project.xiaodong.mytimeapp.frame.bean.MTimeCityInfo;
 import com.project.xiaodong.mytimeapp.frame.block.LocationBlock;
 import com.project.xiaodong.mytimeapp.frame.constants.ConstantUrl;
 import com.project.xiaodong.mytimeapp.frame.constants.GlobalConstants;
@@ -346,10 +346,28 @@ public class MainActivity extends TBaseActivity {
 
         MainCityPresenter mainCityPresenter = new MainCityPresenter(this, new ISuccessOrFailureView<MTimeCityInfo>() {
             @Override
-            public void onSuccess(MTimeCityInfo data) {
+            public void onSuccess(final MTimeCityInfo data) {
+                //当返回成功后，我们去判断是否用户选择的城市和定位的城市一致，
+                //一致：我们刷新数据，不一致：我们提示是否要切换城市。
                 LoactionUtils.setMTimeCityInfo(data);
-                int currentItem = mViewpager.getCurrentItem();
-                mFragments.get(currentItem).refreshCity();
+                MTimeCityInfo userChooseCity = LoactionUtils.getUserChooseCity();
+                if (!data.cityId.equals(userChooseCity.id)) {
+                    //如果城市id不一，提示切换城市,切换则刷新数据
+                    AlertDialogUtil alertDialogUtil = new AlertDialogUtil(MainActivity.this);
+                    alertDialogUtil
+                            .setTitle("位置提示")
+                            .setMessage(String.format("系统定位到您在%1$s,是否切换至城市%1$s", data.name, data.name))
+                            .setNegativeButton("取消", null)
+                            .setPositiveButton("确定", new AlertDialogUtil.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog) {
+                                    LoactionUtils.setUserChooseCity(data);
+                                    int currentItem = mViewpager.getCurrentItem();
+                                    mFragments.get(currentItem).refreshCity();
+                                }
+                            }).show();
+                }
+
             }
 
             @Override
@@ -357,7 +375,7 @@ public class MainActivity extends TBaseActivity {
 
             }
         });
-        mainCityPresenter.getCityInfo(latitude,longitude, ConstantUrl.MTIME_CITY_INFO);
+        mainCityPresenter.getCityInfo(latitude, longitude, ConstantUrl.MTIME_CITY_INFO);
 
     }
 }

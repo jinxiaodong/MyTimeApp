@@ -4,7 +4,7 @@ import com.project.xiaodong.mytimeapp.business.home.bean.HotPlayMoviesBean;
 import com.project.xiaodong.mytimeapp.business.home.bean.LiveAndShopBean;
 import com.project.xiaodong.mytimeapp.business.home.bean.SelectionAdvanceBean;
 import com.project.xiaodong.mytimeapp.business.home.bean.TopModuleBean;
-import com.project.xiaodong.mytimeapp.frame.bean.MTimeCityInfo;
+import com.project.xiaodong.mytimeapp.business.location.bean.MTimeCityInfo;
 import com.project.xiaodong.mytimeapp.frame.bean.TimeBaseEntity;
 
 import java.util.HashMap;

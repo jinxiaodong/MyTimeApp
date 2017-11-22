@@ -12,6 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="47dp"
         android:background="@color/gray_e4e4e4"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -27,8 +29,7 @@
             android:cursorVisible="false"
             android:drawableLeft="@drawable/title_bar_search_zoomin"
             android:drawablePadding="@dimen/padding_4dp"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
+
             android:gravity="center_vertical"
             android:hint="输入城市名"
             android:paddingLeft="@dimen/padding_10dp"

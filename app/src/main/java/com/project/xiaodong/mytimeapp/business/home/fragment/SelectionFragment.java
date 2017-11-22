@@ -11,7 +11,7 @@ import com.project.xiaodong.mytimeapp.business.home.bean.SelectionAdvanceBean;
 import com.project.xiaodong.mytimeapp.business.home.fragment.adapter.SelectionAdapter;
 import com.project.xiaodong.mytimeapp.frame.base.fragment.BaseFragment;
 import com.project.xiaodong.mytimeapp.frame.bean.BeanWrapper;
-import com.project.xiaodong.mytimeapp.frame.bean.MTimeCityInfo;
+import com.project.xiaodong.mytimeapp.business.location.bean.MTimeCityInfo;
 import com.project.xiaodong.mytimeapp.frame.presenter.home.HomeSelectionAdvacePresenter;
 import com.project.xiaodong.mytimeapp.frame.presenter.home.HomeSelectionLiveAndShopPresenter;
 import com.project.xiaodong.mytimeapp.frame.presenter.home.HomeSelectionPresenter;
@@ -75,7 +75,7 @@ public class SelectionFragment extends BaseFragment implements IBaseView<HotPlay
     @Override
     protected void initValue() {
         super.initValue();
-        mMTimeCityInfo = LoactionUtils.getMTimeCityInfo();
+        mMTimeCityInfo = LoactionUtils.getUserChooseCity();
         mHashMapMenu = new HashMap();
         mData = new ArrayList<>();
         mHomeSelectionPresenter = new HomeSelectionPresenter(mContext, this);
@@ -112,7 +112,7 @@ public class SelectionFragment extends BaseFragment implements IBaseView<HotPlay
 
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                mHomeSelectionPresenter.getData("");
+                refreshCity();
             }
         });
 
@@ -135,19 +135,22 @@ public class SelectionFragment extends BaseFragment implements IBaseView<HotPlay
         mData.add(getDataByType(SelectionAdapter.TYPE_HOT_MOVIES, null));
         mData.add(getDataByType(SelectionAdapter.TYPE_LIVE_SHOP, null));
         mAdapter.getData().addAll(mData);
-        mHomeSelectionPresenter.getData(mMTimeCityInfo.cityId);
+
+        refreshCity();
 
     }
 
     @Override
     public void refreshCity() {
-        mMTimeCityInfo = LoactionUtils.getMTimeCityInfo();
-        mHomeSelectionPresenter.getData(mMTimeCityInfo.cityId);
+        showDialog();
+        mMTimeCityInfo = LoactionUtils.getUserChooseCity();
+        mHomeSelectionPresenter.getData(mMTimeCityInfo.id);
     }
 
 
     @Override
     public void setData(HotPlayMoviesBean data) {
+        dismissDialog();
         mPullRefresh.refreshComplete();
 
         mAdapter.getData().clear();

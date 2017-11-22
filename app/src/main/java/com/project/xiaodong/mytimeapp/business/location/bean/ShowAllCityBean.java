@@ -1,6 +1,6 @@
-package com.project.xiaodong.mytimeapp.business.home.location;
+package com.project.xiaodong.mytimeapp.business.location.bean;
 
-import com.project.xiaodong.mytimeapp.frame.bean.MTimeCityInfo;
+import com.project.xiaodong.mytimeapp.frame.bean.BaseBean;
 import com.project.xiaodong.mytimeapp.frame.view.IndexBar.suspension.ISuspensionInterface;
 
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
  * Created by xiaodong.jin on 2017/11/6.
  */
 
-public class ShowAllCityBean implements ISuspensionInterface {
+public class ShowAllCityBean extends BaseBean implements ISuspensionInterface {
     public String tag;
     public List<MTimeCityInfo> mMTimeCityInfos;
 
