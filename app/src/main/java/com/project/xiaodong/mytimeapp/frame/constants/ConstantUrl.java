@@ -41,4 +41,8 @@ public class ConstantUrl {
     public static final String HOME_SELECTION_ADVANCE = "choice/feed.api";
 
 
+    /**
+     * 预加载的信息
+     */
+    public static final String HOME_LOAD_INFO = "startup/load.api";
 }

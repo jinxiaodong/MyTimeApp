@@ -13,7 +13,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.project.xiaodong.mytimeapp.R;
-import com.project.xiaodong.mytimeapp.frame.view.PullToRefreshFrameLayout;
+import com.project.xiaodong.mytimeapp.business.home.bean.MovieAdvListBean;
+import com.project.xiaodong.mytimeapp.frame.view.refresh.PullToRefreshFrameLayout;
+
+import java.util.List;
+import java.util.Random;
 
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrUIHandler;
@@ -39,6 +43,8 @@ public class TimeRefreshView extends FrameLayout implements PtrUIHandler {
     private RotateAnimation mReverseFlipAnimation;
     private TimeTensionIndicator mIndicator;
     private PtrFrameLayout mPtrFrameLayout;
+    private List<MovieAdvListBean> mMovieAdvList;
+
     public TimeRefreshView(Context context) {
         super(context);
         initView(null);
@@ -127,6 +133,14 @@ public class TimeRefreshView extends FrameLayout implements PtrUIHandler {
         } else {
             mTitleTextView.setText(getResources().getString(R.string.ptr_pull_down_to_refresh));
         }
+        if(mMovieAdvList != null && mMovieAdvList.size()>0) {
+            int size = mMovieAdvList.size();
+            Random random = new Random();
+            int i = random.nextInt(size);
+            MovieAdvListBean movieAdvListBean = mMovieAdvList.get(i);
+            movieName.setText(movieAdvListBean.movieName);
+            movieDesc.setText(movieAdvListBean.word);
+        }
     }
 
     @Override
@@ -192,5 +206,9 @@ public class TimeRefreshView extends FrameLayout implements PtrUIHandler {
         mPtrFrameLayout = pullToRefreshFrameLayout;
         mIndicator = new TimeTensionIndicator();
         mPtrFrameLayout.setPtrIndicator(mIndicator);
+    }
+
+    public void setMovieAdvList(List<MovieAdvListBean> movieAdvList) {
+        mMovieAdvList = movieAdvList;
     }
 }

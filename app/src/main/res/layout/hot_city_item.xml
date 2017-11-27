@@ -6,7 +6,6 @@
           android:layout_height="55dip"
           android:textSize="@dimen/font_16sp"
           android:textColor="@color/black"
-          android:layout_marginLeft="@dimen/padding_15dp"
           android:gravity="center"
           android:padding="15dp"
           tool:text="北京"/>

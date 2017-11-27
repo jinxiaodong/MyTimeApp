@@ -135,6 +135,8 @@ public class GlobalConstants extends BaseConstants {
      */
     public static final long UPDATE_CHANNEL_TIME = 1000 * 60 * 60 * 24 * 7;
 
+
+
     /*******************************************************************************
      *	Private Variables
      *******************************************************************************/

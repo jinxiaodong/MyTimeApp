@@ -45,6 +45,8 @@ public class SelectionHotMoviesVH extends BaseViewHold<BeanWrapper> {
     @Override
     public void onBindViewHolder(int position, List<BeanWrapper> mData) {
         if (mData.get(position).data == null) {
+            mAdapter.getData().clear();
+            mAdapter.notifyDataSetChanged();
             return;
         }
 

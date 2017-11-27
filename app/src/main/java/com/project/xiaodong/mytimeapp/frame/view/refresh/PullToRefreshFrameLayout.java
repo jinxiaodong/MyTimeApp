@@ -4,12 +4,15 @@
  * @author SongZheng
  * @date 2016/9/4
  */
-package com.project.xiaodong.mytimeapp.frame.view;
+package com.project.xiaodong.mytimeapp.frame.view.refresh;
 
 import android.content.Context;
 import android.util.AttributeSet;
 
+import com.project.xiaodong.mytimeapp.business.home.bean.MovieAdvListBean;
 import com.project.xiaodong.mytimeapp.frame.view.pulltorefresh.TimeRefreshView;
+
+import java.util.List;
 
 import in.srain.cube.views.ptr.PtrFrameLayout;
 
@@ -25,7 +28,7 @@ public class PullToRefreshFrameLayout extends PtrFrameLayout {
      *******************************************************************************/
 
     /*******************************************************************************
-     *	Private Variables
+     * Private Variables
      *******************************************************************************/
     private TimeRefreshView mTHerdview;
     /*******************************************************************************
@@ -33,7 +36,7 @@ public class PullToRefreshFrameLayout extends PtrFrameLayout {
      *******************************************************************************/
 
     /*******************************************************************************
-     *	Public/Protected Methods
+     * Public/Protected Methods
      *******************************************************************************/
     public PullToRefreshFrameLayout(Context context) {
         super(context);
@@ -51,19 +54,19 @@ public class PullToRefreshFrameLayout extends PtrFrameLayout {
     }
 
     /*******************************************************************************
-     *	Private Methods
+     * Private Methods
      *******************************************************************************/
-    private void init(){
+    private void init() {
         // the following are default settings
-        setResistance(1.8f);
-        setRatioOfHeaderHeightToRefresh(1.2f);
+        setResistance(1.6f);
+        setRatioOfHeaderHeightToRefresh(1.1f);
         setDurationToClose(200);
         setDurationToCloseHeader(500);
         // default is false
         setPullToRefresh(false);
         // default is true
         setKeepHeaderWhenRefresh(true);
-        setLoadingMinTime(1500);
+        setLoadingMinTime(1000);
 
         //etHeaderView
         mTHerdview = new TimeRefreshView(getContext());
@@ -73,6 +76,11 @@ public class PullToRefreshFrameLayout extends PtrFrameLayout {
         addPtrUIHandler(mTHerdview);
 
     }
+
+    public void setMovieAdvList(List<MovieAdvListBean> movieAdvList) {
+        mTHerdview.setMovieAdvList(movieAdvList);
+    }
+
     /*******************************************************************************
      *	Internal Class,Interface
      *******************************************************************************/

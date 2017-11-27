@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 
-import com.project.xiaodong.mytimeapp.frame.view.PullToRefreshFrameLayout;
+import com.project.xiaodong.mytimeapp.frame.view.refresh.PullToRefreshFrameLayout;
 
 
 public class MPtrClassicFrameLayout extends PullToRefreshFrameLayout {

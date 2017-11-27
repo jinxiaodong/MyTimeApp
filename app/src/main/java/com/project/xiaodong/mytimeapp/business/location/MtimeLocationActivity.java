@@ -3,41 +3,54 @@ package com.project.xiaodong.mytimeapp.business.location;
 import android.Manifest;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
 import com.project.xiaodong.mytimeapp.R;
 import com.project.xiaodong.mytimeapp.business.home.bean.LocationHeaderBean;
 import com.project.xiaodong.mytimeapp.business.location.adapter.AllCityAdapter;
+import com.project.xiaodong.mytimeapp.business.location.adapter.AllCityListAdapter;
 import com.project.xiaodong.mytimeapp.business.location.adapter.GridViewCityAdapter;
+import com.project.xiaodong.mytimeapp.business.location.bean.MTimeCityInfo;
 import com.project.xiaodong.mytimeapp.business.location.bean.ShowAllCityBean;
 import com.project.xiaodong.mytimeapp.frame.base.activity.TBaseActivity;
 import com.project.xiaodong.mytimeapp.frame.bean.LocationInfo;
-import com.project.xiaodong.mytimeapp.business.location.bean.MTimeCityInfo;
 import com.project.xiaodong.mytimeapp.frame.block.LocationBlock;
 import com.project.xiaodong.mytimeapp.frame.constants.ConstantUrl;
 import com.project.xiaodong.mytimeapp.frame.eventbus.EventCenter;
 import com.project.xiaodong.mytimeapp.frame.presenter.home.MainCityPresenter;
 import com.project.xiaodong.mytimeapp.frame.presenter.home.view.ISuccessOrFailureView;
 import com.project.xiaodong.mytimeapp.frame.utils.JsonUtil;
+import com.project.xiaodong.mytimeapp.frame.utils.KeyBoardManager;
 import com.project.xiaodong.mytimeapp.frame.utils.LoactionUtils;
 import com.project.xiaodong.mytimeapp.frame.utils.SharePreferenceUtil;
+import com.project.xiaodong.mytimeapp.frame.utils.SoftKeyboardStateHelper;
 import com.project.xiaodong.mytimeapp.frame.view.IndexBar.helper.IndexBarDataHelperImpl;
 import com.project.xiaodong.mytimeapp.frame.view.IndexBar.suspension.SuspensionDecoration;
 import com.project.xiaodong.mytimeapp.frame.view.IndexBar.utils.HeaderRecyclerAndFooterWrapperAdapter;
 import com.project.xiaodong.mytimeapp.frame.view.IndexBar.utils.ViewHolder;
+import com.project.xiaodong.mytimeapp.frame.view.IndexBar.widget.MyIndexBar;
 import com.project.xiaodong.mytimeapp.frame.view.recycleview.LoadMoreRecyclerView;
+import com.project.xiaodong.mytimeapp.frame.view.recycleview.adapter.HeaderAndFooterRecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.ButterKnife;
 import butterknife.InjectView;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -47,13 +60,21 @@ public class MtimeLocationActivity extends TBaseActivity implements ISuccessOrFa
 
     private static final String LOCATION_MCITYDATA = "LOCATION_MCITYDATA";
     private static final String LOCATION_HOTCITYDATA = "LOCATION_HOTCITYDATA";
-    MainCityPresenter mMainCityPresenter;
+    @InjectView(R.id.et_search)
+    EditText mEtSearch;
+    @InjectView(R.id.tv_cancle)
+    TextView mTvCancle;
+    @InjectView(R.id.search)
+    LinearLayout mSearch;
     @InjectView(R.id.recyclerView)
     LoadMoreRecyclerView mRecyclerView;
-    //    @InjectView(R.id.tvSideBarHint)
-//    MyIndexBar mIndexBar;
-    //    @InjectView(R.id.indexBar)
-//    TextView mTvSideBarHint;
+    @InjectView(R.id.indexBar)
+    MyIndexBar mIndexBar;
+    @InjectView(R.id.tvSideBarHint)
+    TextView mTvSideBarHint;
+    @InjectView(R.id.loadrecyclerView)
+    LoadMoreRecyclerView mLoadrecyclerView;
+
 
     private LocationHeaderBean mLocationHeaderBean = new LocationHeaderBean();
     private LocationBlock mLocationBlock;
@@ -62,15 +83,18 @@ public class MtimeLocationActivity extends TBaseActivity implements ISuccessOrFa
     private List<MTimeCityInfo> hotCityList = new ArrayList<>();
     private List<MTimeCityInfo> allCityList = new ArrayList<>();
     private List<ShowAllCityBean> mCityData = new ArrayList<>();
+    private String mBDcity;
+
+    private SoftKeyboardStateHelper mSoftKeyboardStateHelper;
     private LinearLayoutManager mManager;
     private AllCityAdapter mAdapter;
     private HeaderRecyclerAndFooterWrapperAdapter mHeaderAdapter;
     private GridViewCityAdapter mHotCityAdapter;
+    private AllCityListAdapter mAllCityListAdapter;
     private SuspensionDecoration mDecoration;
-    private String mBDcity;
     //sp存储工具
     private SharePreferenceUtil sp;
-
+    MainCityPresenter mMainCityPresenter;
 
 
     @Override
@@ -89,6 +113,7 @@ public class MtimeLocationActivity extends TBaseActivity implements ISuccessOrFa
         mLocationBlock = new LocationBlock(mContext);
         mMainCityPresenter = new MainCityPresenter(this, this);
         sp = SharePreferenceUtil.getInstance(mContext);
+        mSoftKeyboardStateHelper = new SoftKeyboardStateHelper(findViewById(R.id.rl_loaction));
         getCacheData();
     }
 
@@ -106,6 +131,7 @@ public class MtimeLocationActivity extends TBaseActivity implements ISuccessOrFa
         mManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(mManager);
         mAdapter = new AllCityAdapter(mContext, mCityData);
+        mAllCityListAdapter = new AllCityListAdapter(mContext, allCityList);
         mHeaderAdapter = new HeaderRecyclerAndFooterWrapperAdapter(mAdapter) {
             @Override
             protected void onBindHeaderHolder(ViewHolder holder, int headerPos, int layoutId, Object o) {
@@ -128,6 +154,14 @@ public class MtimeLocationActivity extends TBaseActivity implements ISuccessOrFa
                                 }
                             }
                         });
+
+                        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                LoactionUtils.setUserChooseCity(hotCityList.get(position));
+                                finish();
+                            }
+                        });
                         break;
                 }
             }
@@ -141,7 +175,9 @@ public class MtimeLocationActivity extends TBaseActivity implements ISuccessOrFa
                 .setTitleFontSize((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 16, getResources().getDisplayMetrics()))
                 .setColorTitleFont("#ff999999")
                 .setHeaderViewCount(1));
-//
+
+        mLoadrecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        mLoadrecyclerView.setAdapter(mAllCityListAdapter);
 //        mIndexBar.setmPressedShowTextView(mTvSideBarHint)//设置HintTextView
 //                .setNeedRealIndex(true)//设置需要真实的索引
 //                .setmLayoutManager(mManager)//设置RecyclerView的LayoutManager
@@ -159,12 +195,63 @@ public class MtimeLocationActivity extends TBaseActivity implements ISuccessOrFa
             }
         });
 
+
+        mSoftKeyboardStateHelper.addSoftKeyboardStateListener(new SoftKeyboardStateHelper.SoftKeyboardStateListener() {
+            @Override
+            public void onSoftKeyboardOpened(int keyboardHeightInPx) {
+                mLoadrecyclerView.setVisibility(View.VISIBLE);
+                mTvCancle.setVisibility(View.VISIBLE);
+                mEtSearch.setCursorVisible(true);
+            }
+
+            @Override
+            public void onSoftKeyboardClosed() {
+//                mLoadrecyclerView.setVisibility(View.INVISIBLE);
+//                mTvCancle.setVisibility(View.GONE);
+//                mEtSearch.setCursorVisible(false);
+            }
+        });
+        mTvCancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mLoadrecyclerView.setVisibility(View.INVISIBLE);
+                mTvCancle.setVisibility(View.GONE);
+                if (mSoftKeyboardStateHelper.isSoftKeyboardOpened()) {
+                    KeyBoardManager.closeKeybord(mEtSearch, mContext);
+                }
+                mEtSearch.setText("");
+                mEtSearch.setCursorVisible(false);
+            }
+        });
+        mLoadrecyclerView.setOnItemClickListener(new HeaderAndFooterRecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(RecyclerView.ViewHolder holder, int position) {
+                LoactionUtils.setUserChooseCity(allCityList.get(position));
+                finish();
+            }
+        });
+
+        mEtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                //在list中做匹配搜索：暂时不做
+            }
+        });
     }
 
     @Override
     protected void initData(Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-
         getCity();
         locationtask();
     }
@@ -176,9 +263,7 @@ public class MtimeLocationActivity extends TBaseActivity implements ISuccessOrFa
     }
 
     private void getCity() {
-        showDialog();
         mMainCityPresenter.getCityInfo("", "", ConstantUrl.MTIME_ALL_CITY);
-
     }
 
     @AfterPermissionGranted(LOCATION)
@@ -215,9 +300,10 @@ public class MtimeLocationActivity extends TBaseActivity implements ISuccessOrFa
 
     private void getLocationCode() {
         if (mLocationHeaderBean.status != LocationHeaderBean.LOCATION_SUCCESS) {
+
             return;
         }
-        if (mCityData.size() != 0) {
+        if (allCityList.size() != 0) {
             for (MTimeCityInfo cityInfo : allCityList) {
                 if (cityInfo.n != null && mBDcity != null && cityInfo.n.equals(mBDcity)) {
                     mLocationHeaderBean.cityCode = cityInfo.id;
@@ -234,7 +320,6 @@ public class MtimeLocationActivity extends TBaseActivity implements ISuccessOrFa
 
     @Override
     public void onSuccess(MTimeCityInfo data) {
-        dismissDialog();
         hideNoDataNoti();
         if (data.p != null && data.p.size() > 0) {
             allCityList.addAll(data.p);
@@ -267,10 +352,14 @@ public class MtimeLocationActivity extends TBaseActivity implements ISuccessOrFa
             if (mLocationHeaderBean.cityCode == null) {
                 getLocationCode();
             }
-            mHeaderAdapter.notifyDataSetChanged();
+
             mAdapter.getData().clear();
             mAdapter.getData().addAll(mCityData);
             mAdapter.notifyDataSetChanged();
+            mHeaderAdapter.notifyDataSetChanged();
+            mAllCityListAdapter.getData().clear();
+            mAllCityListAdapter.getData().addAll(allCityList);
+            mAllCityListAdapter.notifyDataSetChanged();
 
             //缓存数据
             cacheData();
@@ -337,4 +426,10 @@ public class MtimeLocationActivity extends TBaseActivity implements ISuccessOrFa
         });
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.inject(this);
+    }
 }

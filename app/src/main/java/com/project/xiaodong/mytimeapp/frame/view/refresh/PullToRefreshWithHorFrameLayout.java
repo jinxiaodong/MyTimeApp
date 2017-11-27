@@ -6,8 +6,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 
-import com.project.xiaodong.mytimeapp.frame.view.PullToRefreshFrameLayout;
-
 /**
  * @author Cody.yi
  *         扩展第三方下拉刷新库

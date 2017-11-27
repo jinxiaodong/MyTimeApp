@@ -21,17 +21,24 @@ import com.baidu.location.BDLocation;
 import com.project.xiaodong.mytimeapp.R;
 import com.project.xiaodong.mytimeapp.TestFragment;
 import com.project.xiaodong.mytimeapp.business.home.HomeFragment;
+import com.project.xiaodong.mytimeapp.business.home.bean.Loadbean;
+import com.project.xiaodong.mytimeapp.business.home.bean.MovieAdvListBean;
 import com.project.xiaodong.mytimeapp.business.location.bean.MTimeCityInfo;
 import com.project.xiaodong.mytimeapp.frame.base.activity.TBaseActivity;
 import com.project.xiaodong.mytimeapp.frame.base.fragment.BaseFragment;
 import com.project.xiaodong.mytimeapp.frame.block.LocationBlock;
 import com.project.xiaodong.mytimeapp.frame.constants.ConstantUrl;
 import com.project.xiaodong.mytimeapp.frame.constants.GlobalConstants;
+import com.project.xiaodong.mytimeapp.frame.constants.TimeKey;
 import com.project.xiaodong.mytimeapp.frame.presenter.home.MainCityPresenter;
+import com.project.xiaodong.mytimeapp.frame.presenter.home.MainLoadInfoPresenter;
 import com.project.xiaodong.mytimeapp.frame.presenter.home.view.ISuccessOrFailureView;
+import com.project.xiaodong.mytimeapp.frame.presenter.view.ICommonView;
 import com.project.xiaodong.mytimeapp.frame.utils.AlertDialogUtil;
+import com.project.xiaodong.mytimeapp.frame.utils.JsonUtil;
 import com.project.xiaodong.mytimeapp.frame.utils.LoactionUtils;
 import com.project.xiaodong.mytimeapp.frame.utils.PreferencesUtils;
+import com.project.xiaodong.mytimeapp.frame.utils.SharePreferenceUtil;
 import com.project.xiaodong.mytimeapp.frame.utils.ToastUtil;
 import com.project.xiaodong.mytimeapp.frame.view.APSTSViewPager;
 
@@ -42,7 +49,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class MainActivity extends TBaseActivity {
+public class MainActivity extends TBaseActivity implements ICommonView<Loadbean> {
 
 
     @InjectView(R.id.viewpager)
@@ -104,7 +111,8 @@ public class MainActivity extends TBaseActivity {
     private static final int VIEW_LIVE = 3;
     private static final int VIEW_MINE = 4;
     private static final int VIEW_SIZE = 5;
-    private MainCityPresenter mCityPresenter;
+
+    MainLoadInfoPresenter mMainLoadInfoPresenter;
 
     @Override
     public int getContentLayoutId() {
@@ -119,6 +127,7 @@ public class MainActivity extends TBaseActivity {
     @Override
     protected void initValue(Bundle savedInstanceState) {
         super.initValue(savedInstanceState);
+        mMainLoadInfoPresenter = new MainLoadInfoPresenter(this, this);
         mFragments.add(new HomeFragment());
         mFragments.add(new TestFragment("购票"));
         mFragments.add(new TestFragment("商城"));
@@ -167,6 +176,7 @@ public class MainActivity extends TBaseActivity {
         requestUserPermissions();
         mViewpager.setCurrentItem(VIEW_HOME);
         setTab(VIEW_HOME);
+        mMainLoadInfoPresenter.getLoadInfo();
     }
 
 
@@ -376,6 +386,22 @@ public class MainActivity extends TBaseActivity {
             }
         });
         mainCityPresenter.getCityInfo(latitude, longitude, ConstantUrl.MTIME_CITY_INFO);
+
+    }
+
+    @Override
+    public void onSuccess(Loadbean data) {
+
+        List<MovieAdvListBean> movieAdvList = data.getMovieAdvList();
+        if (movieAdvList != null && movieAdvList.size() > 0) {
+            SharePreferenceUtil instance = SharePreferenceUtil.getInstance(mContext);
+            instance.setValue(TimeKey.MOVIE_ADVLIST, JsonUtil.toJsonString(movieAdvList));
+        }
+
+    }
+
+    @Override
+    public void onFailure(String message) {
 
     }
 }

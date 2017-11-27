@@ -7,24 +7,27 @@ import com.project.xiaodong.mytimeapp.R;
 import com.project.xiaodong.mytimeapp.business.home.HomeFragment;
 import com.project.xiaodong.mytimeapp.business.home.bean.HotPlayMoviesBean;
 import com.project.xiaodong.mytimeapp.business.home.bean.LiveAndShopBean;
+import com.project.xiaodong.mytimeapp.business.home.bean.MovieAdvListBean;
 import com.project.xiaodong.mytimeapp.business.home.bean.SelectionAdvanceBean;
 import com.project.xiaodong.mytimeapp.business.home.fragment.adapter.SelectionAdapter;
+import com.project.xiaodong.mytimeapp.business.location.bean.MTimeCityInfo;
 import com.project.xiaodong.mytimeapp.frame.base.fragment.BaseFragment;
 import com.project.xiaodong.mytimeapp.frame.bean.BeanWrapper;
-import com.project.xiaodong.mytimeapp.business.location.bean.MTimeCityInfo;
+import com.project.xiaodong.mytimeapp.frame.constants.TimeKey;
 import com.project.xiaodong.mytimeapp.frame.presenter.home.HomeSelectionAdvacePresenter;
 import com.project.xiaodong.mytimeapp.frame.presenter.home.HomeSelectionLiveAndShopPresenter;
 import com.project.xiaodong.mytimeapp.frame.presenter.home.HomeSelectionPresenter;
 import com.project.xiaodong.mytimeapp.frame.presenter.home.view.IAdvanceView;
 import com.project.xiaodong.mytimeapp.frame.presenter.home.view.ILiveAndShopView;
 import com.project.xiaodong.mytimeapp.frame.presenter.view.IBaseView;
+import com.project.xiaodong.mytimeapp.frame.utils.JsonUtil;
 import com.project.xiaodong.mytimeapp.frame.utils.LoactionUtils;
 import com.project.xiaodong.mytimeapp.frame.utils.LogUtil;
+import com.project.xiaodong.mytimeapp.frame.utils.SharePreferenceUtil;
 import com.project.xiaodong.mytimeapp.frame.view.recycleview.LoadMoreWithHorRecycleView;
 import com.project.xiaodong.mytimeapp.frame.view.recycleview.OnLoadMoreListener;
 import com.project.xiaodong.mytimeapp.frame.view.refresh.PullToRefreshWithHorFrameLayout;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -58,7 +61,6 @@ public class SelectionFragment extends BaseFragment implements IBaseView<HotPlay
      * 精彩预告
      */
     HomeSelectionAdvacePresenter mHomeSelectionAdvacePresenter;
-    List<BeanWrapper> mData;
     private SelectionAdapter mAdapter;
     private HashMap mHashMapMenu;
     private boolean isRefresh;
@@ -77,7 +79,7 @@ public class SelectionFragment extends BaseFragment implements IBaseView<HotPlay
         super.initValue();
         mMTimeCityInfo = LoactionUtils.getUserChooseCity();
         mHashMapMenu = new HashMap();
-        mData = new ArrayList<>();
+//        mData = new ArrayList<>();
         mHomeSelectionPresenter = new HomeSelectionPresenter(mContext, this);
         mHomeSelectionLiveAndShopPresenter = new HomeSelectionLiveAndShopPresenter(mContext, this);
         mHomeSelectionAdvacePresenter = new HomeSelectionAdvacePresenter(mContext, this);
@@ -95,7 +97,7 @@ public class SelectionFragment extends BaseFragment implements IBaseView<HotPlay
         mLoadMoreRecyclerView.setNoLoadMoreHideViewFrist(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         mLoadMoreRecyclerView.setLayoutManager(linearLayoutManager);
-        mAdapter = new SelectionAdapter(mContext, mData);
+        mAdapter = new SelectionAdapter(mContext, null);
         mLoadMoreRecyclerView.setAdapter(mAdapter);
     }
 
@@ -129,13 +131,18 @@ public class SelectionFragment extends BaseFragment implements IBaseView<HotPlay
     @Override
     public void initData() {
         super.initData();
-        mAdapter.getData().clear();
-        mData.clear();
+//        mAdapter.getData().clear();
+//        mData.clear();
         //占位
-        mData.add(getDataByType(SelectionAdapter.TYPE_HOT_MOVIES, null));
-        mData.add(getDataByType(SelectionAdapter.TYPE_LIVE_SHOP, null));
-        mAdapter.getData().addAll(mData);
+//        mData.add(getDataByType(SelectionAdapter.TYPE_HOT_MOVIES, null));
+//        mData.add(getDataByType(SelectionAdapter.TYPE_LIVE_SHOP, null));
+//        mAdapter.getData().addAll(mData);
 
+        String value = SharePreferenceUtil.getInstance(mContext).getValue(TimeKey.MOVIE_ADVLIST, "");
+        List<MovieAdvListBean> movieAdvListBeen = JsonUtil.parseList(value, MovieAdvListBean.class);
+        if (movieAdvListBeen != null && movieAdvListBeen.size() > 0) {
+            mPullRefresh.setMovieAdvList(movieAdvListBeen);
+        }
         refreshCity();
 
     }
@@ -154,9 +161,9 @@ public class SelectionFragment extends BaseFragment implements IBaseView<HotPlay
         mPullRefresh.refreshComplete();
 
         mAdapter.getData().clear();
-        mAdapter.getData().addAll(mData);
+//        mAdapter.getData().addAll(mData);
         List<HotPlayMoviesBean> movies = data.movies;
-        mAdapter.getData().set(0, getDataByType(SelectionAdapter.TYPE_HOT_MOVIES, movies));
+        mAdapter.getData().add(getDataByType(SelectionAdapter.TYPE_HOT_MOVIES, movies));
         mHomeSelectionLiveAndShopPresenter.getLiveAndShop();
         mAdapter.notifyDataSetChanged();
     }
@@ -164,6 +171,25 @@ public class SelectionFragment extends BaseFragment implements IBaseView<HotPlay
     @Override
     public void addData(HotPlayMoviesBean data) {
 
+    }
+
+    @Override
+    public void onEmpty() {
+        dismissDialog();
+        mPullRefresh.refreshComplete();
+        mAdapter.getData().clear();
+//        mAdapter.getData().addAll(mData);
+//        mAdapter.getData().set(0, getDataByType(SelectionAdapter.TYPE_HOT_MOVIES, null));
+        mHomeSelectionLiveAndShopPresenter.getLiveAndShop();
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onFailure(String msg) {
+        dismissDialog();
+        mPullRefresh.refreshComplete();
+        mAdapter.getData().clear();
+        mAdapter.showFailed();
     }
 
     /**
@@ -225,17 +251,9 @@ public class SelectionFragment extends BaseFragment implements IBaseView<HotPlay
 
 
     @Override
-    public void onEmpty() {
-    }
-
-    @Override
-    public void onFailure(String msg) {
-    }
-
-    @Override
     public void onLiveAndShopSuccess(LiveAndShopBean data) {
         mPullRefresh.refreshComplete();
-        mAdapter.getData().set(1, getDataByType(SelectionAdapter.TYPE_LIVE_SHOP, data));
+        mAdapter.getData().add(getDataByType(SelectionAdapter.TYPE_LIVE_SHOP, data));
         mAdapter.notifyDataSetChanged();
         mHomeSelectionAdvacePresenter.getAdvanceData();
     }

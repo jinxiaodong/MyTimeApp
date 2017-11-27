@@ -2,6 +2,7 @@ package com.project.xiaodong.mytimeapp.business.home.apiserveice;
 
 import com.project.xiaodong.mytimeapp.business.home.bean.HotPlayMoviesBean;
 import com.project.xiaodong.mytimeapp.business.home.bean.LiveAndShopBean;
+import com.project.xiaodong.mytimeapp.business.home.bean.Loadbean;
 import com.project.xiaodong.mytimeapp.business.home.bean.SelectionAdvanceBean;
 import com.project.xiaodong.mytimeapp.business.home.bean.TopModuleBean;
 import com.project.xiaodong.mytimeapp.business.location.bean.MTimeCityInfo;
@@ -36,21 +37,53 @@ public interface ApiService {
     Observable<TopModuleBean> getHome(@Path(value = "url", encoded = true) String url,
                                       @QueryMap HashMap<String, Object> maps);
 
+    /**
+     * 首页正在热映
+     * @param url
+     * @param maps
+     * @return
+     */
     @GET("{url}")
     Observable<HotPlayMoviesBean> getHotplay(@Path(value = "url", encoded = true) String url,
                                              @QueryMap HashMap<String, Object> maps);
 
+    /**
+     * 首页直播商城
+     * @param url
+     * @return
+     */
     @GET("{url}")
     Observable<LiveAndShopBean> getLiveAndShop(@Path(value = "url", encoded = true) String url);
 
-
+    /**
+     * 首页精选：预告
+     * @param url
+     * @param maps
+     * @return
+     */
     @GET("{url}")
     Observable<SelectionAdvanceBean> getSelectionAdvance(@Path(value = "url", encoded = true) String url,
                                                          @QueryMap HashMap<String, Object> maps);
 
+    /**
+     * 城市信息
+     * @param url
+     * @param maps
+     * @return
+     */
     @GET("{url}")
     Observable<MTimeCityInfo> getTimeCityInfo(@Path(value = "url", encoded = true) String url,
                                               @QueryMap HashMap<String, Object> maps);
+
+    /**
+     *
+     * @param url
+     * @param maps
+     * @return
+     */
+    @GET("{url}")
+    Observable<Loadbean> getLoadInfo(@Path(value = "url", encoded = true) String url,
+                                     @QueryMap HashMap<String, Object> maps);
 
     @GET("{url}")
     Observable<Response> getData(@Path(value = "url", encoded = true) String url,
