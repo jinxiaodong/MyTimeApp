@@ -19,7 +19,6 @@ import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
 import com.project.xiaodong.mytimeapp.R;
-import com.project.xiaodong.mytimeapp.TestFragment;
 import com.project.xiaodong.mytimeapp.business.home.HomeFragment;
 import com.project.xiaodong.mytimeapp.business.home.bean.Loadbean;
 import com.project.xiaodong.mytimeapp.business.home.bean.MovieAdvListBean;
@@ -30,8 +29,8 @@ import com.project.xiaodong.mytimeapp.frame.block.LocationBlock;
 import com.project.xiaodong.mytimeapp.frame.constants.ConstantUrl;
 import com.project.xiaodong.mytimeapp.frame.constants.GlobalConstants;
 import com.project.xiaodong.mytimeapp.frame.constants.TimeKey;
-import com.project.xiaodong.mytimeapp.frame.presenter.home.MainCityPresenter;
-import com.project.xiaodong.mytimeapp.frame.presenter.home.MainLoadInfoPresenter;
+import com.project.xiaodong.mytimeapp.frame.presenter.main.MainCityPresenter;
+import com.project.xiaodong.mytimeapp.frame.presenter.main.MainLoadInfoPresenter;
 import com.project.xiaodong.mytimeapp.frame.presenter.home.view.ISuccessOrFailureView;
 import com.project.xiaodong.mytimeapp.frame.presenter.view.ICommonView;
 import com.project.xiaodong.mytimeapp.frame.utils.AlertDialogUtil;
@@ -129,10 +128,10 @@ public class MainActivity extends TBaseActivity implements ICommonView<Loadbean>
         super.initValue(savedInstanceState);
         mMainLoadInfoPresenter = new MainLoadInfoPresenter(this, this);
         mFragments.add(new HomeFragment());
-        mFragments.add(new TestFragment("购票"));
-        mFragments.add(new TestFragment("商城"));
-        mFragments.add(new TestFragment("直播"));
-        mFragments.add(new TestFragment("我的"));
+        mFragments.add(new HomeFragment());
+        mFragments.add(new HomeFragment());
+        mFragments.add(new HomeFragment());
+        mFragments.add(new HomeFragment());
 
     }
 
@@ -391,8 +390,7 @@ public class MainActivity extends TBaseActivity implements ICommonView<Loadbean>
 
     @Override
     public void onSuccess(Loadbean data) {
-
-        List<MovieAdvListBean> movieAdvList = data.getMovieAdvList();
+        List<MovieAdvListBean> movieAdvList = data.getData().getMovieAdvList();
         if (movieAdvList != null && movieAdvList.size() > 0) {
             SharePreferenceUtil instance = SharePreferenceUtil.getInstance(mContext);
             instance.setValue(TimeKey.MOVIE_ADVLIST, JsonUtil.toJsonString(movieAdvList));
@@ -403,5 +401,27 @@ public class MainActivity extends TBaseActivity implements ICommonView<Loadbean>
     @Override
     public void onFailure(String message) {
 
+    }
+
+    /**
+     * 有网络
+     */
+    @Override
+    protected void onNetworkAvailable(boolean iswify) {
+        super.onNetworkAvailable(iswify);
+        if (iswify) {
+//            RerequestData();
+        }
+    }
+
+    /**
+     * 无网络
+     */
+    @Override
+    protected void onNetworkInvalid() {
+        super.onNetworkInvalid();
+        //无网络应该先从缓存取数据，若没有怎显示无数据
+//        showNoDataNoti(getContentView(),R.layout.default_page_no_content);
+        ToastUtil.makeToast(this, "网络已断开~~");
     }
 }

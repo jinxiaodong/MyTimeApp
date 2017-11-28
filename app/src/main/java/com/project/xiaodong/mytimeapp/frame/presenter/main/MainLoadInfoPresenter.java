@@ -1,4 +1,4 @@
-package com.project.xiaodong.mytimeapp.frame.presenter.home;
+package com.project.xiaodong.mytimeapp.frame.presenter.main;
 
 import android.content.Context;
 
@@ -49,9 +49,16 @@ public class MainLoadInfoPresenter extends Presenter<ICommonView<Loadbean>> {
                     @Override
                     public void onNext(@NonNull Loadbean loadbean) {
                             if(loadbean != null) {
-                                mvpView.onSuccess(loadbean);
+                                Loadbean.DataBean data = loadbean.getData();
+                                if(data != null) {
+                                    mvpView.onSuccess(loadbean);
+                                }else {
+
+                                    mvpView.onFailure("数据为空");
+                                }
                             }else {
                                 mvpView.onFailure("数据为空");
+
                             }
                     }
 

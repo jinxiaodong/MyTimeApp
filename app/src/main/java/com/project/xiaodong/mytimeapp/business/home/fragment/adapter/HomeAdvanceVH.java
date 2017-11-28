@@ -9,9 +9,8 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.project.xiaodong.mytimeapp.R;
-import com.project.xiaodong.mytimeapp.business.home.bean.SelectionAdvanceBean;
+import com.project.xiaodong.mytimeapp.business.home.bean.HomeAdvanceBean;
 import com.project.xiaodong.mytimeapp.frame.base.adapter.BaseViewHold;
-import com.project.xiaodong.mytimeapp.frame.bean.BeanWrapper;
 
 import java.util.List;
 
@@ -19,13 +18,15 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 /**
- * Created by xiaodong.jin on 2017/10/19.
+ * Created by xiaodong.jin on 2017/11/28.
  */
-public class SelectionAdvanceVH extends BaseViewHold<BeanWrapper> {
+public  class HomeAdvanceVH extends BaseViewHold<HomeAdvanceBean.ListBean> {
 
 
     @InjectView(R.id.sdv_cover)
     SimpleDraweeView mSdvCover;
+    @InjectView(R.id.iv_play_big)
+    ImageView mIvPlayBig;
     @InjectView(R.id.title)
     TextView mTitle;
     @InjectView(R.id.line_splite)
@@ -37,9 +38,9 @@ public class SelectionAdvanceVH extends BaseViewHold<BeanWrapper> {
     @InjectView(R.id.sdv_cover_0)
     SimpleDraweeView mSdvCover0;
     @InjectView(R.id.iv_play)
-    ImageView ivPlay;
-    @InjectView(R.id.iv_play_big)
-    ImageView ivPlayBig;
+    ImageView mIvPlay;
+    @InjectView(R.id.left_cover)
+    RelativeLayout mLeftCover;
     @InjectView(R.id.title0)
     TextView mTitle0;
     @InjectView(R.id.line_splite0)
@@ -65,42 +66,44 @@ public class SelectionAdvanceVH extends BaseViewHold<BeanWrapper> {
     @InjectView(R.id.draw_line)
     View mDrawLine;
 
-    public SelectionAdvanceVH(View view) {
+    public HomeAdvanceVH(View view) {
         super(view);
         ButterKnife.inject(this, view);
     }
 
     @Override
-    public void onBindViewHolder(int position, List<BeanWrapper> mData) {
-        if (mData.get(position).data == null) {
+    public void onBindViewHolder(int position, List<HomeAdvanceBean.ListBean> mData) {
+        if (mData.get(position) == null) {
             return;
         }
 
-        SelectionAdvanceBean.AdvanceBean.DataBean dataBean = (SelectionAdvanceBean.AdvanceBean.DataBean) mData.get(position).data;
-
-        if (dataBean.status == 1) {
+        HomeAdvanceBean.ListBean listBean = mData.get(position);
+            /*
+             *type:0:小无、1：小有、2：大有、3、大无
+             */
+        if (listBean.type == 1 || listBean.type == 0) {
             mLlType1.setVisibility(View.GONE);
             mRlType0.setVisibility(View.VISIBLE);
-            mSdvCover0.setImageURI(dataBean.img1);
-            mTitle0.setText(dataBean.title);
-            mMovieDesc0.setText(dataBean.content);
+            mSdvCover0.setImageURI(listBean.image);
+            mTitle0.setText(listBean.title);
+            mMovieDesc0.setText(listBean.introduction);
 
         } else {
             mRlType0.setVisibility(View.GONE);
             mLlType1.setVisibility(View.VISIBLE);
-            mSdvCover.setImageURI(dataBean.img1);
-            mTitle.setText(dataBean.title);
-            mMovieDesc.setText(dataBean.content);
+            mSdvCover.setImageURI(listBean.image);
+            mTitle.setText(listBean.title);
+            mMovieDesc.setText(listBean.introduction);
 
         }
-        if (dataBean.dataType == 2) {
-            ivPlayBig.setVisibility(View.VISIBLE);
-            ivPlay.setVisibility(View.VISIBLE);
+        if (listBean.type == 2 || listBean.type == 1) {
+            mIvPlayBig.setVisibility(View.VISIBLE);
+            mIvPlay.setVisibility(View.VISIBLE);
         } else {
-            ivPlayBig.setVisibility(View.INVISIBLE);
-            ivPlay.setVisibility(View.INVISIBLE);
+            mIvPlayBig.setVisibility(View.INVISIBLE);
+            mIvPlay.setVisibility(View.INVISIBLE);
         }
-        if (TextUtils.isEmpty(dataBean.content)) {
+        if (TextUtils.isEmpty(listBean.introduction)) {
             mLineSplite0.setVisibility(View.INVISIBLE);
             mLineSplite.setVisibility(View.INVISIBLE);
         } else {
@@ -108,9 +111,11 @@ public class SelectionAdvanceVH extends BaseViewHold<BeanWrapper> {
             mLineSplite0.setVisibility(View.VISIBLE);
         }
 
-        mIconFrom.setImageURI(dataBean.publicHeadImage);
-        mTvFrom.setText(dataBean.publicName);
-        mTvComment.setText(dataBean.commentCount + "");
-        mTvLike.setText(dataBean.imageCount + "");
+        mIconFrom.setImageURI(listBean.publicHeadImage);
+        mTvFrom.setText(listBean.publicName);
+//            mTvComment.setText(listBean.commentCount + "");
+//            mTvLike.setText(dataBean.imageCount + "");
+        mTvComment.setVisibility(View.INVISIBLE);
+        mTvLike.setVisibility(View.INVISIBLE);
     }
 }

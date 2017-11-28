@@ -40,7 +40,10 @@ public class ConstantUrl {
      */
     public static final String HOME_SELECTION_ADVANCE = "choice/feed.api";
 
-
+    /**
+     * 首页资讯
+     */
+    public static final String HOME_ADVANCE= "information/List.api";
     /**
      * 预加载的信息
      */

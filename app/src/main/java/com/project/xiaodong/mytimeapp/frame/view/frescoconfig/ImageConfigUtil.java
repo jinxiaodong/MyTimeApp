@@ -16,10 +16,11 @@ import com.facebook.imagepipeline.backends.okhttp3.OkHttpImagePipelineConfigFact
 import com.facebook.imagepipeline.cache.MemoryCacheParams;
 import com.facebook.imagepipeline.core.ImagePipeline;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
-import com.project.xiaodong.mytimeapp.frame.network.HttpClient;
 
 import java.io.File;
 import java.util.ArrayList;
+
+import okhttp3.OkHttpClient;
 
 /**
  * Created by zhulianggang on 16/5/24.
@@ -52,7 +53,7 @@ public class ImageConfigUtil {
         sMemoryTrimmable = new ArrayList<>();
         if (sImagePipelineConfig == null) {
             ImagePipelineConfig.Builder configBuilder = OkHttpImagePipelineConfigFactory
-                    .newBuilder(context, HttpClient.instance().getOkClient())
+                    .newBuilder(context, new OkHttpClient())
                     .setMemoryTrimmableRegistry(new MemoryTrimmableRegistry() {
                         @Override
                         public void registerMemoryTrimmable(MemoryTrimmable trimmable) {

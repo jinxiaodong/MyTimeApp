@@ -105,14 +105,14 @@ public abstract class BaseActivity extends BasePermissionsActivity {
     /**
      * 无网络
      */
-    protected static void onNetworkInvalid() {
+    protected void onNetworkInvalid() {
 
     }
 
     /**
      * 有网络
      */
-    protected static void onNetworkAvailable() {
+    protected void onNetworkAvailable(boolean isWify) {
     }
 
     public abstract int getHeaderLayoutId();
@@ -147,16 +147,16 @@ public abstract class BaseActivity extends BasePermissionsActivity {
     }
 
 
-    private final static BroadcastReceiver mNetworkMonitorReceiver = new BroadcastReceiver() {
+    private final  BroadcastReceiver mNetworkMonitorReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (NETWORK_CHANGE_ACTION.equals(intent.getAction())) {
                 if (!NetworkUtil.isNetworkAvailable(context)) { // network invalid
                     onNetworkInvalid();
                 } else if (NetworkUtil.isConnectedWifi(context)) { // valid wifi
-                    onNetworkAvailable();
+                    onNetworkAvailable(true);
                 } else if (NetworkUtil.isConnectedMobile(context)) {// valid mobile
-                    onNetworkAvailable();
+                    onNetworkAvailable(false);
                 }
             }
         }

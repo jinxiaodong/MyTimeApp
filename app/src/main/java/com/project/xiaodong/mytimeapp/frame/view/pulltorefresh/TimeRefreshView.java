@@ -139,7 +139,7 @@ public class TimeRefreshView extends FrameLayout implements PtrUIHandler {
             int i = random.nextInt(size);
             MovieAdvListBean movieAdvListBean = mMovieAdvList.get(i);
             movieName.setText(movieAdvListBean.movieName);
-            movieDesc.setText(movieAdvListBean.word);
+            movieDesc.setText("“"+movieAdvListBean.word+"”");
         }
     }
 

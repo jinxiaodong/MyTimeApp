@@ -156,11 +156,10 @@ public class TBaseActivity extends BaseActivity {
     }
 
     /**
-     *
-     * @param resLayoutId           resID
-     * @param fragment              fragment
-     * @param isAddBackStack        是否加入返回栈
-     *                              替换Fragment (默认有动画效果)
+     * @param resLayoutId    resID
+     * @param fragment       fragment
+     * @param isAddBackStack 是否加入返回栈
+     *                       替换Fragment (默认有动画效果)
      */
     protected void replaceFragment(int resLayoutId, Fragment fragment, boolean isAddBackStack) {
         if (isSwitchFragmenting) {
@@ -208,7 +207,6 @@ public class TBaseActivity extends BaseActivity {
         fragmentTransaction.commit();
         isSwitchFragmenting = false;
     }
-
 
 
     /**
@@ -373,6 +371,7 @@ public class TBaseActivity extends BaseActivity {
             e.printStackTrace();
         }
     }
+
     /**
      * @param
      * @return
@@ -550,7 +549,6 @@ public class TBaseActivity extends BaseActivity {
     }
 
 
-
     /**
      * 显示无数据提示
      */
@@ -558,10 +556,11 @@ public class TBaseActivity extends BaseActivity {
         try {
             if (mNoDataView == null) {
                 mNoDataView = mLayoutInflater.inflate(layoutResId, null);
-                mNoDataView.setOnClickListener(new View.OnClickListener() {
+                View viewById = mNoDataView.findViewById(R.id.ll_failure);
+                viewById.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //donothing
+                        reRequestData();
                     }
                 });
                 ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
@@ -572,6 +571,13 @@ public class TBaseActivity extends BaseActivity {
             }
         } catch (Exception e) {
         }
+    }
+
+    /**
+     * 加载失败后，点击重新加载
+     */
+    protected void reRequestData() {
+
     }
 
     /**

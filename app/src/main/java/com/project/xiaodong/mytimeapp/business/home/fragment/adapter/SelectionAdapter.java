@@ -32,7 +32,7 @@ public class SelectionAdapter extends BaseRecyclerAdapter<BeanWrapper> {
 
     @Override
     public int getItemViewType(int position) {
-        return mData.get(position).viewType;
+            return mData.get(position).viewType;
     }
 
     @Override

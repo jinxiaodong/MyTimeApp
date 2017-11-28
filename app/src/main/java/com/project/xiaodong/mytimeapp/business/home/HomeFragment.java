@@ -11,14 +11,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.project.xiaodong.mytimeapp.R;
-import com.project.xiaodong.mytimeapp.TestFragment;
 import com.project.xiaodong.mytimeapp.business.FragmentAdapter;
 import com.project.xiaodong.mytimeapp.business.home.adapter.NetworkImageHolderView;
 import com.project.xiaodong.mytimeapp.business.home.bean.TopModuleBean;
+import com.project.xiaodong.mytimeapp.business.home.fragment.AdvanceFragment;
 import com.project.xiaodong.mytimeapp.business.home.fragment.SelectionFragment;
 import com.project.xiaodong.mytimeapp.business.location.MtimeLocationActivity;
-import com.project.xiaodong.mytimeapp.frame.base.fragment.BaseFragment;
 import com.project.xiaodong.mytimeapp.business.location.bean.MTimeCityInfo;
+import com.project.xiaodong.mytimeapp.frame.base.fragment.BaseFragment;
 import com.project.xiaodong.mytimeapp.frame.constants.DeviceInfo;
 import com.project.xiaodong.mytimeapp.frame.eventbus.EventCenter;
 import com.project.xiaodong.mytimeapp.frame.presenter.home.HomeTopModulePresenter;
@@ -26,6 +26,8 @@ import com.project.xiaodong.mytimeapp.frame.presenter.view.IBaseView;
 import com.project.xiaodong.mytimeapp.frame.tabindicator.TabIndicatorLayout;
 import com.project.xiaodong.mytimeapp.frame.tabindicator.TabLayoutUtil;
 import com.project.xiaodong.mytimeapp.frame.utils.LoactionUtils;
+import com.project.xiaodong.mytimeapp.frame.utils.NetworkUtil;
+import com.project.xiaodong.mytimeapp.frame.utils.ToastUtil;
 import com.project.xiaodong.mytimeapp.frame.view.APSTSViewPager;
 import com.project.xiaodong.mytimeapp.frame.view.banner.ConvenientBanner;
 import com.project.xiaodong.mytimeapp.frame.view.banner.holder.CBViewHolderCreator;
@@ -59,6 +61,8 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
     @InjectView(R.id.rel_center)
     RelativeLayout mRelCenter;
 
+    @InjectView(R.id.rl_home)
+    RelativeLayout mRelativeLayout;
     @InjectView(R.id.rl_header)
     RelativeLayout mRlHeader;
     @InjectView(R.id.cb_banner)
@@ -99,14 +103,35 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
     }
 
     @Override
+    protected void onNetworkInvalid() {
+        super.onNetworkInvalid();
+        showNoDataNoti(mRelativeLayout, R.layout.default_page_failed);
+    }
+
+    @Override
+    public void reRequestData() {
+        super.reRequestData();
+        hideNoDataNoti();
+
+        if (NetworkUtil.isNetworkAvailable(mContext)) {
+            initData();
+            mFragments.get(mViewpager.getCurrentItem()).reRequestData();
+        } else {
+            ToastUtil.makeToast(mContext, "网络已断开~~");
+            onNetworkInvalid();
+        }
+    }
+
+    @Override
     protected void initValue() {
         super.initValue();
         mHomeTopModulePresenter = new HomeTopModulePresenter(mContext, this);
         mFragments.add(new SelectionFragment());
-        mFragments.add(new TestFragment("资讯"));
-        mFragments.add(new TestFragment("选电影"));
-        mFragments.add(new TestFragment("预告片"));
-        mFragments.add(new TestFragment("影评"));
+        mFragments.add(new AdvanceFragment());
+//        mFragments.add(new SelectionFragment());
+        mFragments.add(new SelectionFragment());
+        mFragments.add(new SelectionFragment());
+        mFragments.add(new SelectionFragment());
     }
 
     @Override

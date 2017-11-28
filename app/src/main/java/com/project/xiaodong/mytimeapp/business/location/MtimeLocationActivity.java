@@ -30,8 +30,8 @@ import com.project.xiaodong.mytimeapp.frame.bean.LocationInfo;
 import com.project.xiaodong.mytimeapp.frame.block.LocationBlock;
 import com.project.xiaodong.mytimeapp.frame.constants.ConstantUrl;
 import com.project.xiaodong.mytimeapp.frame.eventbus.EventCenter;
-import com.project.xiaodong.mytimeapp.frame.presenter.home.MainCityPresenter;
 import com.project.xiaodong.mytimeapp.frame.presenter.home.view.ISuccessOrFailureView;
+import com.project.xiaodong.mytimeapp.frame.presenter.main.MainCityPresenter;
 import com.project.xiaodong.mytimeapp.frame.utils.JsonUtil;
 import com.project.xiaodong.mytimeapp.frame.utils.KeyBoardManager;
 import com.project.xiaodong.mytimeapp.frame.utils.LoactionUtils;
@@ -50,7 +50,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -416,20 +415,14 @@ public class MtimeLocationActivity extends TBaseActivity implements ISuccessOrFa
     public void onFailure(String message) {
         dismissDialog();
         showNoDataNoti(getContentView(), R.layout.default_page_failed);
-        View bt_refresh = getContentView().findViewById(R.id.bt_refresh);
-        bt_refresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getCity();
-                locationtask();
-            }
-        });
+
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.inject(this);
+    protected void reRequestData() {
+        super.reRequestData();
+        getCity();
+        locationtask();
     }
+
 }

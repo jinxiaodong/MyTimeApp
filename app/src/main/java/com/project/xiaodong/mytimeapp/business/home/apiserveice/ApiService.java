@@ -1,5 +1,6 @@
 package com.project.xiaodong.mytimeapp.business.home.apiserveice;
 
+import com.project.xiaodong.mytimeapp.business.home.bean.HomeAdvanceBean;
 import com.project.xiaodong.mytimeapp.business.home.bean.HotPlayMoviesBean;
 import com.project.xiaodong.mytimeapp.business.home.bean.LiveAndShopBean;
 import com.project.xiaodong.mytimeapp.business.home.bean.Loadbean;
@@ -76,7 +77,17 @@ public interface ApiService {
                                               @QueryMap HashMap<String, Object> maps);
 
     /**
-     *
+     * 首页资讯
+     * @param url
+     * @param maps
+     * @return
+     */
+    @GET("{url}")
+    Observable<HomeAdvanceBean> getAdvanceData(@Path(value = "url", encoded = true) String url,
+                                                @QueryMap HashMap<String, Object> maps);
+
+    /**
+     *一些app初始化的信息
      * @param url
      * @param maps
      * @return

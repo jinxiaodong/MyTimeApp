@@ -11,9 +11,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.project.xiaodong.mytimeapp.frame.application.BaseApplication;
 import com.project.xiaodong.mytimeapp.frame.eventbus.EventCenter;
+import com.project.xiaodong.mytimeapp.frame.utils.NetworkUtil;
 import com.project.xiaodong.mytimeapp.frame.view.dialog.DialogUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -57,6 +59,10 @@ public abstract class BaseFragment extends Fragment {
     private View mRootView;
     public Context mContext;
     private AnimationDrawable mAnimationDrawable;
+    /**
+     * 无数据view
+     */
+    private View mNoDataView;
 
     protected abstract int getLayoutId();
 
@@ -117,6 +123,10 @@ public abstract class BaseFragment extends Fragment {
         initValue();
         initWidget();
         initListener();
+
+        if (!NetworkUtil.isNetworkAvailable(mContext)) {
+            onNetworkInvalid();
+        }
         if (openLazyinit()) {
             lazyinit();
         } else {
@@ -188,7 +198,6 @@ public abstract class BaseFragment extends Fragment {
     }
 
     /**
-     *
      * @return
      */
     protected boolean enableEventBus() {
@@ -210,14 +219,14 @@ public abstract class BaseFragment extends Fragment {
     /**
      * 无网络:由子类自己去处理
      */
-    protected static void onNetworkInvalid() {
+    protected void onNetworkInvalid() {
 
     }
 
     /**
      * 有网络
      */
-    protected static void onNetworkAvailable() {
+    protected void onNetworkAvailable() {
     }
 
     /**
@@ -312,8 +321,44 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
+
+    /**
+     * 显示无数据提示
+     */
+    public void showNoDataNoti(ViewGroup viewGroup, int layoutResId) {
+        try {
+            if (mNoDataView == null) {
+                mNoDataView = mLayoutInflater.inflate(layoutResId, null);
+                mNoDataView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //donothing
+                        reRequestData();
+                    }
+                });
+                ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT);
+                viewGroup.addView(mNoDataView, lp);
+            } else {
+                mNoDataView.setVisibility(View.VISIBLE);
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    /**
+     * 隐藏无数据提示
+     */
+    public void hideNoDataNoti() {
+        if (mNoDataView != null) {
+            mNoDataView.setVisibility(View.GONE);
+        }
+    }
+
     /*
-     *更新城市：属性数据
+     *刷新数据
      */
     public abstract void refreshCity();
+
+
 }

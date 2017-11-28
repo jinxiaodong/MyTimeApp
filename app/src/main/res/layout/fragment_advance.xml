@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_advance"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.project.xiaodong.mytimeapp.frame.view.refresh.PullToRefreshFrameLayout
+        android:id="@+id/pullToRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.project.xiaodong.mytimeapp.frame.view.recycleview.LoadMoreRecyclerView
+            android:id="@+id/loadMoreRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical">
+
+        </com.project.xiaodong.mytimeapp.frame.view.recycleview.LoadMoreRecyclerView>
+    </com.project.xiaodong.mytimeapp.frame.view.refresh.PullToRefreshFrameLayout>
+
+</RelativeLayout>

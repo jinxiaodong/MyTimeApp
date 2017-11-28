@@ -2,6 +2,7 @@ package com.project.xiaodong.mytimeapp.business.home.fragment;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.project.xiaodong.mytimeapp.R;
 import com.project.xiaodong.mytimeapp.business.home.HomeFragment;
@@ -23,6 +24,7 @@ import com.project.xiaodong.mytimeapp.frame.presenter.view.IBaseView;
 import com.project.xiaodong.mytimeapp.frame.utils.JsonUtil;
 import com.project.xiaodong.mytimeapp.frame.utils.LoactionUtils;
 import com.project.xiaodong.mytimeapp.frame.utils.LogUtil;
+import com.project.xiaodong.mytimeapp.frame.utils.NetworkUtil;
 import com.project.xiaodong.mytimeapp.frame.utils.SharePreferenceUtil;
 import com.project.xiaodong.mytimeapp.frame.view.recycleview.LoadMoreWithHorRecycleView;
 import com.project.xiaodong.mytimeapp.frame.view.recycleview.OnLoadMoreListener;
@@ -48,7 +50,8 @@ public class SelectionFragment extends BaseFragment implements IBaseView<HotPlay
     LoadMoreWithHorRecycleView mLoadMoreRecyclerView;
     @InjectView(R.id.pull_refresh)
     PullToRefreshWithHorFrameLayout mPullRefresh;
-
+    @InjectView(R.id.rl_selection)
+    RelativeLayout mRelativeLayout;
     /*
      *正在热映
      */
@@ -73,6 +76,22 @@ public class SelectionFragment extends BaseFragment implements IBaseView<HotPlay
         return R.layout.fragment_selection;
     }
 
+    @Override
+    protected void onNetworkInvalid() {
+        super.onNetworkInvalid();
+        showNoDataNoti(mRelativeLayout, R.layout.default_page_failed);
+    }
+
+    @Override
+    public void reRequestData() {
+        super.reRequestData();
+        hideNoDataNoti();
+        if (NetworkUtil.isNetworkAvailable(mContext)) {
+            initData();
+        } else {
+            onNetworkInvalid();
+        }
+    }
 
     @Override
     protected void initValue() {
@@ -92,7 +111,7 @@ public class SelectionFragment extends BaseFragment implements IBaseView<HotPlay
         mParentFragment = (HomeFragment) getParentFragment();
         mPullRefresh.disableWhenHorizontalMove(true);
 
-        mLoadMoreRecyclerView.setHasLoadMore(true);
+        mLoadMoreRecyclerView.setHasLoadMore(false);
         mLoadMoreRecyclerView.setNoLoadMoreHideView(true);
         mLoadMoreRecyclerView.setNoLoadMoreHideViewFrist(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
@@ -131,12 +150,6 @@ public class SelectionFragment extends BaseFragment implements IBaseView<HotPlay
     @Override
     public void initData() {
         super.initData();
-//        mAdapter.getData().clear();
-//        mData.clear();
-        //占位
-//        mData.add(getDataByType(SelectionAdapter.TYPE_HOT_MOVIES, null));
-//        mData.add(getDataByType(SelectionAdapter.TYPE_LIVE_SHOP, null));
-//        mAdapter.getData().addAll(mData);
 
         String value = SharePreferenceUtil.getInstance(mContext).getValue(TimeKey.MOVIE_ADVLIST, "");
         List<MovieAdvListBean> movieAdvListBeen = JsonUtil.parseList(value, MovieAdvListBean.class);
@@ -178,8 +191,6 @@ public class SelectionFragment extends BaseFragment implements IBaseView<HotPlay
         dismissDialog();
         mPullRefresh.refreshComplete();
         mAdapter.getData().clear();
-//        mAdapter.getData().addAll(mData);
-//        mAdapter.getData().set(0, getDataByType(SelectionAdapter.TYPE_HOT_MOVIES, null));
         mHomeSelectionLiveAndShopPresenter.getLiveAndShop();
         mAdapter.notifyDataSetChanged();
     }
@@ -189,7 +200,7 @@ public class SelectionFragment extends BaseFragment implements IBaseView<HotPlay
         dismissDialog();
         mPullRefresh.refreshComplete();
         mAdapter.getData().clear();
-        mAdapter.showFailed();
+        showNoDataNoti(mRelativeLayout, R.layout.default_page_failed);
     }
 
     /**
