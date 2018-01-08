@@ -35,7 +35,7 @@ public class ImageConfigUtil {
     private static final int MAX_HEAP_SIZE = (int) Runtime.getRuntime().maxMemory();
 
     public static final int MAX_DISK_CACHE_SIZE = 300 * ByteConstants.MB;
-    public static final int MAX_MEMORY_CACHE_SIZE = MAX_HEAP_SIZE / 10;
+    public static final int MAX_MEMORY_CACHE_SIZE = MAX_HEAP_SIZE / 5;
 
     /**
      * Creates config using android http stack as network backend.
