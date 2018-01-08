@@ -250,7 +250,7 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
 
     private void initBanner() {
         int width = DeviceInfo.WIDTHPIXELS;
-        int height = (int) ((float) width / 1.44);
+        int height = (int) ((float) width /2.2);
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mCbBanner.getLayoutParams();
         if (lp == null) {
             lp = new LinearLayout.LayoutParams(width, height);
@@ -261,9 +261,9 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
 
         mCbBanner
                 //设置两个点图片作为翻页指示器，不设置则没有指示器，可以根据自己需求自行配合自己的指示器,不需要圆点指示器可用不设
-                .setPageIndicator(new int[]{R.drawable.bg_loaddialog, R.drawable.bg_status})
+//                .setPageIndicator(new int[]{R.drawable.bg_loaddialog, R.drawable.bg_status})
                 //设置指示器的方向
-                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
+//                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
                 .setOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void onItemClick(int position) {

@@ -7,10 +7,14 @@ import android.widget.RelativeLayout;
 import com.project.xiaodong.mytimeapp.R;
 import com.project.xiaodong.mytimeapp.business.home.HomeFragment;
 import com.project.xiaodong.mytimeapp.business.home.bean.HomeAdvanceBean;
+import com.project.xiaodong.mytimeapp.business.home.bean.MovieAdvListBean;
 import com.project.xiaodong.mytimeapp.business.home.fragment.adapter.HomeAdvanceAdapter;
 import com.project.xiaodong.mytimeapp.frame.base.fragment.BaseFragment;
+import com.project.xiaodong.mytimeapp.frame.constants.TimeKey;
 import com.project.xiaodong.mytimeapp.frame.presenter.IBaseListView;
 import com.project.xiaodong.mytimeapp.frame.presenter.home.AdvancePresenter;
+import com.project.xiaodong.mytimeapp.frame.utils.JsonUtil;
+import com.project.xiaodong.mytimeapp.frame.utils.SharePreferenceUtil;
 import com.project.xiaodong.mytimeapp.frame.view.recycleview.LoadMoreRecyclerView;
 import com.project.xiaodong.mytimeapp.frame.view.recycleview.OnLoadMoreListener;
 import com.project.xiaodong.mytimeapp.frame.view.refresh.PullToRefreshFrameLayout;
@@ -91,6 +95,11 @@ public class AdvanceFragment extends BaseFragment implements IBaseListView<HomeA
     @Override
     public void initData() {
         super.initData();
+        String value = SharePreferenceUtil.getInstance(mContext).getValue(TimeKey.MOVIE_ADVLIST, "");
+        List<MovieAdvListBean> movieAdvListBeen = JsonUtil.parseList(value, MovieAdvListBean.class);
+        if (movieAdvListBeen != null && movieAdvListBeen.size() > 0) {
+            mPullToRefresh.setMovieAdvList(movieAdvListBeen);
+        }
         mAdvancePresenter.getAdvanceData();
     }
 
