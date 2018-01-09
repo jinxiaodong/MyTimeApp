@@ -11,10 +11,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.project.xiaodong.mytimeapp.R;
+import com.project.xiaodong.mytimeapp.TestFragment;
 import com.project.xiaodong.mytimeapp.business.FragmentAdapter;
 import com.project.xiaodong.mytimeapp.business.home.adapter.NetworkImageHolderView;
 import com.project.xiaodong.mytimeapp.business.home.bean.TopModuleBean;
 import com.project.xiaodong.mytimeapp.business.home.fragment.AdvanceFragment;
+import com.project.xiaodong.mytimeapp.business.home.fragment.SelecteMovieFragment;
 import com.project.xiaodong.mytimeapp.business.home.fragment.SelectionFragment;
 import com.project.xiaodong.mytimeapp.business.location.MtimeLocationActivity;
 import com.project.xiaodong.mytimeapp.business.location.bean.MTimeCityInfo;
@@ -129,9 +131,9 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
         mFragments.add(new SelectionFragment());
         mFragments.add(new AdvanceFragment());
 //        mFragments.add(new SelectionFragment());
-        mFragments.add(new SelectionFragment());
-        mFragments.add(new SelectionFragment());
-        mFragments.add(new SelectionFragment());
+        mFragments.add(new SelecteMovieFragment());
+        mFragments.add(new TestFragment("预告片"));
+        mFragments.add(new TestFragment("影评"));
     }
 
     @Override
@@ -261,9 +263,9 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
 
         mCbBanner
                 //设置两个点图片作为翻页指示器，不设置则没有指示器，可以根据自己需求自行配合自己的指示器,不需要圆点指示器可用不设
-//                .setPageIndicator(new int[]{R.drawable.bg_loaddialog, R.drawable.bg_status})
+                .setPageIndicator(new int[]{R.drawable.bg_loaddialog, R.drawable.bg_status})
                 //设置指示器的方向
-//                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
+                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
                 .setOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void onItemClick(int position) {

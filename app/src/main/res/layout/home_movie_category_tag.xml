@@ -1,0 +1,12 @@
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="@dimen/padding_12dp"
+    android:layout_marginTop="@dimen/padding_17dp"
+    android:background="@drawable/shape_tag_category"
+    android:textColor="@color/gray_666666"
+    android:textSize="@dimen/font_13sp"
+    tools:text="全部"
+    />

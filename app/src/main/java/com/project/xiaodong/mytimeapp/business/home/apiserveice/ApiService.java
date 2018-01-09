@@ -1,6 +1,7 @@
 package com.project.xiaodong.mytimeapp.business.home.apiserveice;
 
 import com.project.xiaodong.mytimeapp.business.home.bean.HomeAdvanceBean;
+import com.project.xiaodong.mytimeapp.business.home.bean.HomeSelectMovieBean;
 import com.project.xiaodong.mytimeapp.business.home.bean.HotPlayMoviesBean;
 import com.project.xiaodong.mytimeapp.business.home.bean.LiveAndShopBean;
 import com.project.xiaodong.mytimeapp.business.home.bean.Loadbean;
@@ -99,7 +100,11 @@ public interface ApiService {
     @GET("{url}")
     Observable<Response> getData(@Path(value = "url", encoded = true) String url,
                                  @QueryMap HashMap<String, Object> maps);
-
+    /*
+        首页选电影
+    */
+    @GET("{url}")
+    Observable<HomeSelectMovieBean> getSelectMovie(@Path(value = "url",encoded = true) String url);
     /**
      * Post
      */

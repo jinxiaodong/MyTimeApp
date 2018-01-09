@@ -358,7 +358,9 @@ public abstract class BaseFragment extends Fragment {
     /*
      *刷新数据
      */
-    public abstract void refreshCity();
+    public void refreshCity(){
+
+    }
 
 
 }

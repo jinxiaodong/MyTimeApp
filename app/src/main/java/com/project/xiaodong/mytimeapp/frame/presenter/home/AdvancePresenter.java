@@ -86,10 +86,11 @@ public class AdvancePresenter extends Presenter<IBaseListView<HomeAdvanceBean>> 
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        mvpView.onFailure("请求出错");
-                        if(isLoadMore) {
+                        if (isLoadMore) {
                             mvpView.onLoadMoreFailure();
+                            return;
                         }
+                        mvpView.onFailure("请求出错");
                     }
 
                     @Override

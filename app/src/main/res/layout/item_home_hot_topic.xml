@@ -1,0 +1,56 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_marginRight="@dimen/padding_2dp"
+    >
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/sdv"
+        fresco:actualImageScaleType="fitXY"
+        fresco:failureImage="@drawable/img_default"
+        fresco:failureImageScaleType="fitXY"
+        fresco:placeholderImageScaleType="fitXY"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"/>
+    <!--fresco:placeholderImage="@drawable/img_default_300x200"-->
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_topic_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            tools:text="《帝国》杂志新百大佳片"/>
+
+        <View
+            android:layout_width="@dimen/padding_22dp"
+            android:layout_height="0.5dp"
+            android:layout_marginBottom="@dimen/padding_5dp"
+            android:layout_marginTop="@dimen/padding_5dp"
+            android:background="@color/white"></View>
+
+        <TextView
+            android:id="@+id/tv_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_12sp"
+            tools:text="40部"/>
+    </LinearLayout>
+
+
+</RelativeLayout>
+
+

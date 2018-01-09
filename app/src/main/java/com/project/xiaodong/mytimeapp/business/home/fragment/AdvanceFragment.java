@@ -14,6 +14,7 @@ import com.project.xiaodong.mytimeapp.frame.constants.TimeKey;
 import com.project.xiaodong.mytimeapp.frame.presenter.IBaseListView;
 import com.project.xiaodong.mytimeapp.frame.presenter.home.AdvancePresenter;
 import com.project.xiaodong.mytimeapp.frame.utils.JsonUtil;
+import com.project.xiaodong.mytimeapp.frame.utils.NetworkUtil;
 import com.project.xiaodong.mytimeapp.frame.utils.SharePreferenceUtil;
 import com.project.xiaodong.mytimeapp.frame.view.recycleview.LoadMoreRecyclerView;
 import com.project.xiaodong.mytimeapp.frame.view.recycleview.OnLoadMoreListener;
@@ -154,5 +155,16 @@ public class AdvanceFragment extends BaseFragment implements IBaseListView<HomeA
     @Override
     public void onLoadMoreFailure() {
         mLoadMoreRecyclerView.showFailUI();
+    }
+
+    @Override
+    public void reRequestData() {
+        super.reRequestData();
+        hideNoDataNoti();
+        if (NetworkUtil.isNetworkAvailable(mContext)) {
+            initData();
+        } else {
+            onNetworkInvalid();
+        }
     }
 }

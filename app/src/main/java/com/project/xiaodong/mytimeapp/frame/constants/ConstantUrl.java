@@ -44,6 +44,7 @@ public class ConstantUrl {
      * 首页资讯
      */
     public static final String HOME_ADVANCE= "information/List.api";
+    public static final String HOME_SETECT_MOVIE= "second/select/movie.api ";
     /**
      * 预加载的信息
      */

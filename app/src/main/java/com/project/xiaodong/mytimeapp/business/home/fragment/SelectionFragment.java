@@ -133,7 +133,8 @@ public class SelectionFragment extends BaseFragment implements IBaseView<HotPlay
 
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                refreshCity();
+                mMTimeCityInfo = LoactionUtils.getUserChooseCity();
+                mHomeSelectionPresenter.getData(mMTimeCityInfo.id);
             }
         });
 
