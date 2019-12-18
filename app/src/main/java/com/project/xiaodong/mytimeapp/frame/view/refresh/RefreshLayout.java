@@ -1217,6 +1217,7 @@ public class RefreshLayout extends ViewGroup {
         public void onPullDistance(int distance);
 
         public void onPullEnable(boolean enable);
+
     }
 
     /**
@@ -1249,6 +1250,8 @@ public class RefreshLayout extends ViewGroup {
         public void onPullEnable(boolean enable) {
 
         }
+
+
 
     }
 

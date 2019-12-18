@@ -39,7 +39,7 @@ public class HomeTopModulePresenter extends Presenter<IBaseView<TopModuleBean>> 
     public void getData() {
 
         mRetrofitClient.create(ApiService.class)
-                .get(ConstantUrl.HOME_TOP_MODULE, mParams)
+                .getHome(ConstantUrl.HOME_TOP_MODULE, mParams)
 //                .subscribeOn(Schedulers.io())
 //                .observeOn(AndroidSchedulers.mainThread())
                 .compose(RxSchedulers.<TopModuleBean>compose())
@@ -57,7 +57,7 @@ public class HomeTopModulePresenter extends Presenter<IBaseView<TopModuleBean>> 
                                 if (topModuleBean.data == null) {
                                     mvpView.onEmpty();
                                 } else {
-                                    mvpView.initData(topModuleBean.data);
+                                    mvpView.setData(topModuleBean.data);
                                 }
                             } else {
                                 mvpView.onFailure(topModuleBean.showMsg);
@@ -77,6 +77,11 @@ public class HomeTopModulePresenter extends Presenter<IBaseView<TopModuleBean>> 
 
                     }
                 });
+
+
+
     }
+
+
 }
 

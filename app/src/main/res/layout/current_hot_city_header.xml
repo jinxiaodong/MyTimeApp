@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              >
+
+    <LinearLayout
+        android:paddingLeft="@dimen/padding_15dp"
+        android:paddingRight="@dimen/padding_15dp"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="当前城市"
+            android:textColor="@color/gray_777777"
+            android:textSize="@dimen/font_16sp"/>
+
+        <TextView
+            android:id="@+id/current_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_20dp"
+            android:text="上海"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_16sp"/>
+    </LinearLayout>
+
+    <View
+        android:paddingLeft="@dimen/padding_15dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/gray_e4e4e4"></View>
+
+    <TextView
+        android:paddingLeft="@dimen/padding_15dp"
+        android:paddingRight="@dimen/padding_15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding_5dp"
+        android:text="热门城市"
+        android:textColor="@color/gray_777777"
+        android:textSize="@dimen/font_16sp"/>
+
+    <com.project.xiaodong.mytimeapp.frame.view.NoScrollGridview
+        android:id="@+id/gv_hot_city"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:numColumns="4">
+    </com.project.xiaodong.mytimeapp.frame.view.NoScrollGridview>
+</LinearLayout>

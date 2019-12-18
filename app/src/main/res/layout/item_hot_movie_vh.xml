@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:fresco="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginBottom="@dimen/padding_10dp"
+              android:background="@color/white"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/padding_15dp"
+        android:layout_marginTop="@dimen/padding_15dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/padding_15dp"
+        android:paddingRight="@dimen/padding_15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="每日佳片"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_15sp"/>
+
+        <TextView
+            android:id="@+id/tv_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:drawablePadding="@dimen/padding_5dp"
+            android:drawableRight="@drawable/arrow_to_right"
+            android:text="历史推荐"
+            android:textColor="@color/gray_999999"
+            android:textSize="15sp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="210dp"
+        android:layout_marginBottom="@dimen/padding_15dp"
+        android:layout_marginLeft="@dimen/padding_15dp"
+        android:layout_marginRight="@dimen/padding_15dp">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/sdv_cover"
+            android:layout_width="match_parent"
+            android:layout_height="210dp"
+            fresco:actualImageScaleType="fitXY"
+            fresco:failureImage="@drawable/img_default"
+            fresco:failureImageScaleType="fitXY"
+            fresco:placeholderImage="@drawable/img_default_300x200"
+            fresco:placeholderImageScaleType="fitXY"/>
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/padding_10dp"
+            android:layout_marginLeft="@dimen/padding_8dp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_16sp"
+            tools:text="你好，今天抬起你"/>
+    </RelativeLayout>
+    <!--fresco:placeholderImage="@drawable/img_default_300x200"-->
+
+</LinearLayout>

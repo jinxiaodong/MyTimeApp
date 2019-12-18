@@ -13,7 +13,7 @@ import com.project.xiaodong.mytimeapp.R;
 /**
  * Created by xiaodong.jin on 2017/9/22.
  * <p>
- * 禁止改库的上拉加载
+ * 禁止该库的上拉加载
  */
 
 public class PullRefreshLayout extends RefreshLayout {
@@ -36,6 +36,15 @@ public class PullRefreshLayout extends RefreshLayout {
     }
 
     @Override
+    public boolean isChildScrollToTop() {
+
+        if (mListener != null && !mListener.isCandoRefresh()) {
+            return false;
+        }
+        return super.isChildScrollToTop();
+    }
+
+    @Override
     public void setHeaderView(View child) {
         if (child == null) {
             super.setHeaderView(createHeaderView());
@@ -46,13 +55,17 @@ public class PullRefreshLayout extends RefreshLayout {
 
     @Override
     public void setOnPullRefreshListener(OnPullRefreshListener listener) {
+
         listener = new OnPullRefreshListener() {
             @Override
             public void onRefresh() {
                 textView.setText("正在载入...");
                 imageView.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
-                mListener.onRefresh();
+                if (mListener != null) {
+
+                    mListener.onRefresh();
+                }
             }
 
             @Override
@@ -66,6 +79,8 @@ public class PullRefreshLayout extends RefreshLayout {
                 imageView.setVisibility(View.VISIBLE);
                 imageView.setRotation(enable ? 180 : 0);
             }
+
+
         };
         super.setOnPullRefreshListener(listener);
 
@@ -113,6 +128,8 @@ public class PullRefreshLayout extends RefreshLayout {
      */
     public interface OnRefreshListener {
         void onRefresh();
+
+        boolean isCandoRefresh();
     }
 
     /**

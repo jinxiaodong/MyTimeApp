@@ -1,5 +1,7 @@
 package com.project.xiaodong.mytimeapp.frame.bean;
 
+import java.util.List;
+
 /**
  * Created by xiaodong.jin on 2017/9/27.
  */
@@ -11,10 +13,10 @@ public class TimeBaseEntity<T> extends BaseBean {
     public T data;
 
 
-    public T movies;
+    public List<T> movies;
     public int count;
     public int totalCinemaCount;
     public int totalComingMovie;
-    public int totalHotMovi;
+    public int totalHotMovie;
 
 }

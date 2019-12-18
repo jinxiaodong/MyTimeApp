@@ -43,9 +43,10 @@
             android:text="正在刷新"/>
 
         <ProgressBar
+            style="@android:style/Widget.ProgressBar.Small"
             android:id="@+id/pb_view"
-            android:layout_width="17dp"
-            android:layout_height="17dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/text_view"
             android:layout_toStartOf="@id/text_view"/>

@@ -2,7 +2,6 @@ package com.project.xiaodong.mytimeapp.frame.base.adapter;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.Button;
 
 import com.project.xiaodong.mytimeapp.R;
 
@@ -16,7 +15,7 @@ public class DefaultFailedHolder extends BaseViewHold {
 
     public DefaultFailedHolder(final Context mContext, View itemView) {
         super(itemView);
-        Button bt= (Button) itemView.findViewById(R.id.bt_refresh);
+        View bt = itemView.findViewById(R.id.ll_failure);
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

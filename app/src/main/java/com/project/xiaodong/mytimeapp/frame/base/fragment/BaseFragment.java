@@ -11,9 +11,16 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.project.xiaodong.mytimeapp.frame.application.BaseApplication;
+import com.project.xiaodong.mytimeapp.frame.eventbus.EventCenter;
+import com.project.xiaodong.mytimeapp.frame.utils.NetworkUtil;
 import com.project.xiaodong.mytimeapp.frame.view.dialog.DialogUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.ButterKnife;
 
@@ -52,6 +59,10 @@ public abstract class BaseFragment extends Fragment {
     private View mRootView;
     public Context mContext;
     private AnimationDrawable mAnimationDrawable;
+    /**
+     * 无数据view
+     */
+    private View mNoDataView;
 
     protected abstract int getLayoutId();
 
@@ -105,10 +116,17 @@ public abstract class BaseFragment extends Fragment {
         }
         ButterKnife.bind(this, mRootView);
 
+        if (enableEventBus()) {
+            EventBus.getDefault().register(this);
+        }
         isOnCreated = true;
         initValue();
         initWidget();
         initListener();
+
+        if (!NetworkUtil.isNetworkAvailable(mContext)) {
+            onNetworkInvalid();
+        }
         if (openLazyinit()) {
             lazyinit();
         } else {
@@ -122,6 +140,9 @@ public abstract class BaseFragment extends Fragment {
         super.onDestroy();
         if (mWaittingDialog != null) {
             dismissDialog();
+        }
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
         }
     }
 
@@ -159,6 +180,27 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)//, priority = 100
+    public final void onEventCenter(EventCenter event) {
+        if (null != event) {
+            onEventCallback(event);
+        }
+    }
+
+    /**
+     * 根据code区分当前事件类型
+     */
+    protected void onEventCallback(EventCenter event) {
+        // handle event
+    }
+
+    /**
+     * @return
+     */
+    protected boolean enableEventBus() {
+        return false;
+    }
+
     /**
      * fragment可见时回调
      */
@@ -174,14 +216,14 @@ public abstract class BaseFragment extends Fragment {
     /**
      * 无网络:由子类自己去处理
      */
-    protected static void onNetworkInvalid() {
+    protected void onNetworkInvalid() {
 
     }
 
     /**
      * 有网络
      */
-    protected static void onNetworkAvailable() {
+    protected void onNetworkAvailable() {
     }
 
     /**
@@ -255,6 +297,7 @@ public abstract class BaseFragment extends Fragment {
             }
         });
     }
+
     /**
      * 根据id查找view
      *
@@ -274,4 +317,47 @@ public abstract class BaseFragment extends Fragment {
             return null;
         }
     }
+
+
+    /**
+     * 显示无数据提示
+     */
+    public void showNoDataNoti(ViewGroup viewGroup, int layoutResId) {
+        try {
+            if (mNoDataView == null) {
+                mNoDataView = mLayoutInflater.inflate(layoutResId, null);
+                mNoDataView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //donothing
+                        reRequestData();
+                    }
+                });
+                ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT);
+                viewGroup.addView(mNoDataView, lp);
+            } else {
+                mNoDataView.setVisibility(View.VISIBLE);
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    /**
+     * 隐藏无数据提示
+     */
+    public void hideNoDataNoti() {
+        if (mNoDataView != null) {
+            mNoDataView.setVisibility(View.GONE);
+        }
+    }
+
+    /*
+     *刷新数据
+     */
+    public void refreshCity(){
+
+    }
+
+
 }

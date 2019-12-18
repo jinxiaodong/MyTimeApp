@@ -5,7 +5,7 @@ package com.project.xiaodong.mytimeapp.frame.presenter.view;
  */
 public interface IBaseView<T> {
 
-    void initData(T data);
+    void setData(T data);
 
     void addData(T data);
 

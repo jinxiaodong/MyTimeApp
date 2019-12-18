@@ -1,12 +1,9 @@
 package com.project.xiaodong.mytimeapp.business.home;
 
+import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,12 +15,21 @@ import com.project.xiaodong.mytimeapp.TestFragment;
 import com.project.xiaodong.mytimeapp.business.FragmentAdapter;
 import com.project.xiaodong.mytimeapp.business.home.adapter.NetworkImageHolderView;
 import com.project.xiaodong.mytimeapp.business.home.bean.TopModuleBean;
+import com.project.xiaodong.mytimeapp.business.home.fragment.AdvanceFragment;
+import com.project.xiaodong.mytimeapp.business.home.fragment.SelecteMovieFragment;
+import com.project.xiaodong.mytimeapp.business.home.fragment.SelectionFragment;
+import com.project.xiaodong.mytimeapp.business.location.MtimeLocationActivity;
+import com.project.xiaodong.mytimeapp.business.location.bean.MTimeCityInfo;
 import com.project.xiaodong.mytimeapp.frame.base.fragment.BaseFragment;
 import com.project.xiaodong.mytimeapp.frame.constants.DeviceInfo;
+import com.project.xiaodong.mytimeapp.frame.eventbus.EventCenter;
 import com.project.xiaodong.mytimeapp.frame.presenter.home.HomeTopModulePresenter;
 import com.project.xiaodong.mytimeapp.frame.presenter.view.IBaseView;
 import com.project.xiaodong.mytimeapp.frame.tabindicator.TabIndicatorLayout;
 import com.project.xiaodong.mytimeapp.frame.tabindicator.TabLayoutUtil;
+import com.project.xiaodong.mytimeapp.frame.utils.LoactionUtils;
+import com.project.xiaodong.mytimeapp.frame.utils.NetworkUtil;
+import com.project.xiaodong.mytimeapp.frame.utils.ToastUtil;
 import com.project.xiaodong.mytimeapp.frame.view.APSTSViewPager;
 import com.project.xiaodong.mytimeapp.frame.view.banner.ConvenientBanner;
 import com.project.xiaodong.mytimeapp.frame.view.banner.holder.CBViewHolderCreator;
@@ -33,8 +39,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 
 /**
@@ -42,38 +46,37 @@ import butterknife.Unbinder;
  */
 
 public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBean> {
+    @BindView(R.id.tv_city_name)
+    TextView mTvCityName;
+    @BindView(R.id.rl_city)
+    RelativeLayout mRlCity;
+    @BindView(R.id.btn_search)
+    ImageButton mBtnSearch;
+    @BindView(R.id.position_1)
+    ImageButton mPosition1;
+    @BindView(R.id.rel_right)
+    RelativeLayout mRelRight;
+    @BindView(R.id.img_header)
+    ImageView mImgHeader;
+    @BindView(R.id.tv_title)
+    TextView mTvTitle;
+    @BindView(R.id.rel_center)
+    RelativeLayout mRelCenter;
 
+    @BindView(R.id.rl_home)
+    RelativeLayout mRelativeLayout;
+    @BindView(R.id.rl_header)
+    RelativeLayout mRlHeader;
+    @BindView(R.id.cb_banner)
+    ConvenientBanner mCbBanner;
+    @BindView(R.id.tab_indicator)
+    TabIndicatorLayout mTabIndicator;
+    @BindView(R.id.appbar)
+    AppBarLayout mAppbar;
+    @BindView(R.id.viewpager)
+    APSTSViewPager mViewpager;
 
     private final int START_TURNING = 5000; //轮播图时间
-    @BindView(R.id.tv_city_name)
-    TextView tvCityName;
-    @BindView(R.id.rl_city)
-    RelativeLayout rlCity;
-    @BindView(R.id.btn_search)
-    ImageButton btnSearch;
-    @BindView(R.id.position_1)
-    ImageButton position1;
-    @BindView(R.id.rel_right)
-    RelativeLayout relRight;
-    @BindView(R.id.img_header)
-    ImageView imgHeader;
-    @BindView(R.id.tv_title)
-    TextView tvTitle;
-    @BindView(R.id.rel_center)
-    RelativeLayout relCenter;
-    @BindView(R.id.driver)
-    View driver;
-    @BindView(R.id.rl_header)
-    RelativeLayout rlHeader;
-    @BindView(R.id.cb_banner)
-    ConvenientBanner cbBanner;
-    @BindView(R.id.tab_indicator)
-    TabIndicatorLayout tabIndicator;
-    @BindView(R.id.appbar)
-    AppBarLayout appbar;
-    @BindView(R.id.viewpager)
-    APSTSViewPager viewpager;
-    Unbinder unbinder;
 
     private List<BaseFragment> mFragments = new ArrayList<>();
     private List<String> networkImages = new ArrayList<String>();
@@ -85,6 +88,11 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
     private List<String> images = new ArrayList<>();
     HomeTopModulePresenter mHomeTopModulePresenter;
 
+
+    private boolean isRefrsh;
+    //城市信息
+    private MTimeCityInfo mMTimeCityInfo;
+
     //
     @Override
     protected int getLayoutId() {
@@ -92,12 +100,38 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
     }
 
     @Override
+    protected boolean enableEventBus() {
+        return true;
+    }
+
+    @Override
+    protected void onNetworkInvalid() {
+        super.onNetworkInvalid();
+        showNoDataNoti(mRelativeLayout, R.layout.default_page_failed);
+    }
+
+    @Override
+    public void reRequestData() {
+        super.reRequestData();
+        hideNoDataNoti();
+
+        if (NetworkUtil.isNetworkAvailable(mContext)) {
+            initData();
+            mFragments.get(mViewpager.getCurrentItem()).reRequestData();
+        } else {
+            ToastUtil.makeToast(mContext, "网络已断开~~");
+            onNetworkInvalid();
+        }
+    }
+
+    @Override
     protected void initValue() {
         super.initValue();
         mHomeTopModulePresenter = new HomeTopModulePresenter(mContext, this);
-        mFragments.add(new TestFragment("精选"));
-        mFragments.add(new TestFragment("资讯"));
-        mFragments.add(new TestFragment("选电影"));
+        mFragments.add(new SelectionFragment());
+        mFragments.add(new AdvanceFragment());
+//        mFragments.add(new SelectionFragment());
+        mFragments.add(new SelecteMovieFragment());
         mFragments.add(new TestFragment("预告片"));
         mFragments.add(new TestFragment("影评"));
     }
@@ -105,11 +139,15 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
     @Override
     protected void initWidget() {
         super.initWidget();
-        viewpager.setNoFocus(false);
-        viewpager.setOffscreenPageLimit(2);
+
+        mMTimeCityInfo = LoactionUtils.getUserChooseCity();
+        mTvCityName.setText(mMTimeCityInfo.n);
+
+        mViewpager.setNoFocus(false);
+        mViewpager.setOffscreenPageLimit(5);
         //这里要用getChildFragmentManager()
-        viewpager.setAdapter(new FragmentAdapter(getChildFragmentManager(), mFragments));
-        viewpager.setCurrentItem(0);
+        mViewpager.setAdapter(new FragmentAdapter(getChildFragmentManager(), mFragments));
+        mViewpager.setCurrentItem(0);
 
         initBanner();
     }
@@ -118,7 +156,18 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
     @Override
     protected void initListener() {
         super.initListener();
-
+        mTvCityName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mContext.startActivity(new Intent(mContext, MtimeLocationActivity.class));
+            }
+        });
+        mAppbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                isRefrsh = verticalOffset >= 0;
+            }
+        });
     }
 
     @Override
@@ -127,34 +176,46 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
         mHomeTopModulePresenter.getData();
     }
 
-    private void initBanner() {
-        int width = DeviceInfo.WIDTHPIXELS;
-        int height = (int) ((float) width / 1.44);
-        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) cbBanner.getLayoutParams();
-        if (lp == null) {
-            lp = new LinearLayout.LayoutParams(width, height);
-            cbBanner.setLayoutParams(lp);
-        } else {
-            lp.height = height;
+
+    @Override
+    protected void onEventCallback(EventCenter event) {
+        super.onEventCallback(event);
+        if (event.code == 1001) {
+            refreshCity();
         }
-
-        cbBanner
-                //设置两个点图片作为翻页指示器，不设置则没有指示器，可以根据自己需求自行配合自己的指示器,不需要圆点指示器可用不设
-                .setPageIndicator(new int[]{R.drawable.bg_loaddialog, R.drawable.bg_status})
-                //设置指示器的方向
-                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
-                .setOnItemClickListener(new OnItemClickListener() {
-                    @Override
-                    public void onItemClick(int position) {
-
-                    }
-                })
-                .setOffscreenPageLimit(10);
     }
 
     @Override
-    public void initData(TopModuleBean data) {
-        Log.e("tag", "成功");
+    protected void onFragmentVisible() {
+        super.onFragmentVisible();
+        startTurn();
+    }
+
+    @Override
+    protected void onFragmentInVisible() {
+        super.onFragmentInVisible();
+        stopTurn();
+    }
+
+    @Override
+    public void refreshCity() {
+        MTimeCityInfo mTimeCityInfo = LoactionUtils.getUserChooseCity();
+        if (!mMTimeCityInfo.id.equals(mTimeCityInfo.id)) {
+            mMTimeCityInfo = mTimeCityInfo;
+            mTvCityName.setText(mTimeCityInfo.n);
+            mFragments.get(mViewpager.getCurrentItem()).refreshCity();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopTurn();
+    }
+
+    @Override
+    public void setData(TopModuleBean data) {
+
         //分类tab集合数据
         List<TopModuleBean.CategoryListBean> categoryList = data.categoryList;
 
@@ -178,6 +239,7 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
 
     }
 
+
     @Override
     public void onEmpty() {
 
@@ -188,8 +250,35 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
 
     }
 
+    private void initBanner() {
+        int width = DeviceInfo.WIDTHPIXELS;
+        int height = (int) ((float) width /2.2);
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mCbBanner.getLayoutParams();
+        if (lp == null) {
+            lp = new LinearLayout.LayoutParams(width, height);
+            mCbBanner.setLayoutParams(lp);
+        } else {
+            lp.height = height;
+        }
+
+        mCbBanner
+                //设置两个点图片作为翻页指示器，不设置则没有指示器，可以根据自己需求自行配合自己的指示器,不需要圆点指示器可用不设
+                .setPageIndicator(new int[]{R.drawable.bg_loaddialog, R.drawable.bg_status})
+                //设置指示器的方向
+                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.ALIGN_PARENT_RIGHT)
+                .setOnItemClickListener(new OnItemClickListener() {
+                    @Override
+                    public void onItemClick(int position) {
+
+                    }
+                })
+                .setOffscreenPageLimit(10);
+    }
 
     private void setTable(List<TopModuleBean.CategoryListBean> categoryList) {
+        title.clear();
+        colors.clear();
+        images.clear();
         for (TopModuleBean.CategoryListBean categoryListBean : categoryList) {
             if (categoryListBean != null) {
                 title.add(categoryListBean.name);
@@ -197,7 +286,7 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
                 images.add(categoryListBean.img);
             }
         }
-        TabLayoutUtil.initTabLayout(tabIndicator, viewpager, title, colors, images, mContext);
+        TabLayoutUtil.initTabLayout(mTabIndicator, mViewpager, title, colors, images, mContext);
 
     }
 
@@ -210,14 +299,14 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
 
         //只有一张图片时，不轮播，指示器不显示
         if (networkImages.size() == 1) {
-            cbBanner.setCanLoop(false);
-            cbBanner.setPointViewVisible(false);
+            mCbBanner.setCanLoop(false);
+            mCbBanner.setPointViewVisible(false);
         } else {
-            cbBanner.setCanLoop(true);
-            cbBanner.setPointViewVisible(true);
+            mCbBanner.setCanLoop(true);
+            mCbBanner.setPointViewVisible(true);
         }
         if (networkImages.size() > 0) {
-            cbBanner.setPages(new CBViewHolderCreator<NetworkImageHolderView>() {
+            mCbBanner.setPages(new CBViewHolderCreator<NetworkImageHolderView>() {
                 @Override
                 public NetworkImageHolderView createHolder() {
                     return new NetworkImageHolderView();
@@ -228,22 +317,22 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
     }
 
     private void startTurn() {
-        if (cbBanner != null && !cbBanner.isTurning() && networkImages != null && networkImages.size() > 1) {
-            cbBanner.startTurning(START_TURNING);
+        if (mCbBanner != null && !mCbBanner.isTurning() && networkImages != null && networkImages.size() > 1) {
+            mCbBanner.startTurning(START_TURNING);
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-        return rootView;
+    private void stopTurn() {
+        if (mCbBanner != null && !mCbBanner.isTurning() && networkImages != null && networkImages.size() > 1) {
+            mCbBanner.stopTurning();
+        }
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
+    public boolean isRefrsh() {
+        return isRefrsh;
+    }
+
+    public AppBarLayout getAppbar() {
+        return mAppbar;
     }
 }

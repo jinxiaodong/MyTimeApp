@@ -6,13 +6,13 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="vertical"
-    android:paddingRight="40dp"
-    >
+    android:paddingLeft="@dimen/padding_23dp"
+    android:paddingRight="@dimen/padding_23dp">
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/tab_img"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
         />
 
 
@@ -20,7 +20,9 @@
         android:id="@+id/tab_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/font_18sp"
+        android:layout_marginTop="@dimen/padding_5dp"
+        android:textColor="@color/gray_666666"
+        android:textSize="@dimen/font_13sp"
         tool:text="精选"
         />
 

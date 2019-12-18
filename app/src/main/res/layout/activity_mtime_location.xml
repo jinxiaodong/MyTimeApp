@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/rl_loaction"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/search"
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:background="@color/gray_e4e4e4"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/padding_6dp"
+            android:layout_marginLeft="@dimen/padding_15dp"
+            android:layout_marginRight="@dimen/padding_15dp"
+            android:layout_marginTop="@dimen/padding_6dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_search_edit_text"
+            android:drawableLeft="@drawable/title_bar_search_zoomin"
+            android:drawablePadding="@dimen/padding_4dp"
+            android:gravity="center_vertical"
+            android:hint="输入城市名"
+            android:paddingLeft="@dimen/padding_10dp"
+            android:text=""
+            android:textColor="@color/gray_666666"
+            android:textColorHint="@color/gray_C9C9C9"
+            android:textCursorDrawable="@drawable/edit_cursor_color"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/tv_cancle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="10dp"
+            android:text="取消"
+            android:textColor="@color/gray_777777"
+            android:textSize="16sp"
+            android:visibility="gone"/>
+    </LinearLayout>
+
+    <View
+        android:layout_below="@+id/search"
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/gray_e4e4e4"></View>
+
+    <com.project.xiaodong.mytimeapp.frame.view.recycleview.LoadMoreRecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/line"
+        android:background="#fff5f5f5"
+        >
+
+    </com.project.xiaodong.mytimeapp.frame.view.recycleview.LoadMoreRecyclerView>
+
+
+    <com.project.xiaodong.mytimeapp.frame.view.IndexBar.widget.MyIndexBar
+        android:id="@+id/indexBar"
+        android:layout_width="24dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="right"
+        android:layout_marginEnd="10dp"
+        android:paddingTop="45dp"
+        android:visibility="gone"
+        app:indexBarPressBackground="#55666666"
+        app:indexBarTextSize="16sp"/>
+
+    <TextView
+        android:id="@+id/tvSideBarHint"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:background="@drawable/shape_side_bar_bg"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="48sp"
+        android:visibility="invisible"
+        tools:text="A"
+        tools:visibility="invisible"/>
+
+    <com.project.xiaodong.mytimeapp.frame.view.recycleview.LoadMoreRecyclerView
+        android:id="@+id/loadrecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/line"
+        android:background="#fff5f5f5"
+        android:visibility="invisible"
+        >
+
+    </com.project.xiaodong.mytimeapp.frame.view.recycleview.LoadMoreRecyclerView>
+
+</RelativeLayout>

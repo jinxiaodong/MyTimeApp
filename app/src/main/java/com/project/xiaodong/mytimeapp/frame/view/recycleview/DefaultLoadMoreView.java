@@ -3,7 +3,6 @@ package com.project.xiaodong.mytimeapp.frame.view.recycleview;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -16,7 +15,7 @@ import com.project.xiaodong.mytimeapp.R;
 public class DefaultLoadMoreView extends RelativeLayout implements ILoadMoreView {
 
     private TextView mTvMessage;
-    private ProgressBar mPbLoading;
+//    private ProgressBar mPbLoading;
 
     public DefaultLoadMoreView(Context context) {
         super(context);
@@ -35,7 +34,7 @@ public class DefaultLoadMoreView extends RelativeLayout implements ILoadMoreView
 
     private void init(Context context) {
         inflate(context, R.layout.loadmore_view_default, this);
-        mPbLoading = (ProgressBar) findViewById(R.id.pb_loading);
+//        mPbLoading = (ProgressBar) findViewById(R.id.pb_loading);
         mTvMessage = (TextView) findViewById(R.id.tv_loading_msg);
     }
 
@@ -43,25 +42,27 @@ public class DefaultLoadMoreView extends RelativeLayout implements ILoadMoreView
     public void showNormal() {
 /*        mPbLoading.setVisibility(View.GONE);
         mTvMessage.setText(R.string.loading_view_click_loading_more);*/
-        mPbLoading.setVisibility(View.VISIBLE);
+//        mPbLoading.setVisibility(View.VISIBLE);
+//      mPbLoading.setVisibility(View.GONE);
         mTvMessage.setText(R.string.loading_view_loading);
     }
 
     @Override
     public void showNoMore() {
-        mPbLoading.setVisibility(View.GONE);
+//        mPbLoading.setVisibility(View.GONE);
         mTvMessage.setText(R.string.loading_view_no_more);
     }
 
     @Override
     public void showLoading() {
-        mPbLoading.setVisibility(View.VISIBLE);
+//        mPbLoading.setVisibility(View.VISIBLE);
+//        mPbLoading.setVisibility(View.GONE);
         mTvMessage.setText(R.string.loading_view_loading);
     }
 
     @Override
     public void showFail() {
-        mPbLoading.setVisibility(View.GONE);
+//        mPbLoading.setVisibility(View.GONE);
         mTvMessage.setText(R.string.loading_view_net_error);
     }
 

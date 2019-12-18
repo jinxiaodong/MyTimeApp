@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+                android:id="@+id/rl_select_movie"
+                android:background="@color/color_f5f5f5"
+              android:orientation="vertical">
+
+    <com.project.xiaodong.mytimeapp.frame.view.recycleview.LoadMoreRecyclerView
+        android:id="@+id/loadMoreRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </com.project.xiaodong.mytimeapp.frame.view.recycleview.LoadMoreRecyclerView>
+</RelativeLayout>

@@ -4,10 +4,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.project.xiaodong.mytimeapp.frame.view.recycleview.LoadMoreRecyclerView
-        android:id="@+id/loadMoreRecyclerView"
+    <com.project.xiaodong.mytimeapp.frame.view.refresh.PullToRefreshWithHorFrameLayout
+        android:id="@+id/pull_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <com.project.xiaodong.mytimeapp.frame.view.recycleview.LoadMoreRecyclerView
+            android:id="@+id/loadMoreRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    </com.project.xiaodong.mytimeapp.frame.view.recycleview.LoadMoreRecyclerView>
+        </com.project.xiaodong.mytimeapp.frame.view.recycleview.LoadMoreRecyclerView>
+    </com.project.xiaodong.mytimeapp.frame.view.refresh.PullToRefreshWithHorFrameLayout>
+
 </LinearLayout>

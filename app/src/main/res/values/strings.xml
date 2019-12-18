@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">我的时光</string>
+    <string name="app_name">MTime</string>
     <string name="action_settings">Settings</string>
     <!-- common -->
     <string name="cancel">取消</string>
@@ -27,6 +27,10 @@
     <string name="album">相册</string>
     <string name="scan_empty">未发现二维码/条形码</string>
 
+    <string name="ptr_pull_down_to_refresh">下拉刷新</string>
+    <string name="ptr_release_to_refresh">释放刷新</string>
+    <string name="ptr_refreshing">正在载入...</string>
+    <string name="ptr_refresh_complete">刷新成功</string>
 
     <string name="tab_home">首页</string>
     <string name="tab_payticket">购票</string>

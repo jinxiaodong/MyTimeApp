@@ -1,6 +1,13 @@
 package com.project.xiaodong.mytimeapp.business.home.apiserveice;
 
+import com.project.xiaodong.mytimeapp.business.home.bean.HomeAdvanceBean;
+import com.project.xiaodong.mytimeapp.business.home.bean.HomeSelectMovieBean;
+import com.project.xiaodong.mytimeapp.business.home.bean.HotPlayMoviesBean;
+import com.project.xiaodong.mytimeapp.business.home.bean.LiveAndShopBean;
+import com.project.xiaodong.mytimeapp.business.home.bean.Loadbean;
+import com.project.xiaodong.mytimeapp.business.home.bean.SelectionAdvanceBean;
 import com.project.xiaodong.mytimeapp.business.home.bean.TopModuleBean;
+import com.project.xiaodong.mytimeapp.business.location.bean.MTimeCityInfo;
 import com.project.xiaodong.mytimeapp.frame.bean.TimeBaseEntity;
 
 import java.util.HashMap;
@@ -8,6 +15,7 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
+import okhttp3.Response;
 import retrofit2.http.FieldMap;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
@@ -28,9 +36,75 @@ public interface ApiService {
      * home
      */
     @GET("{url}")
-    Observable<TopModuleBean> get(@Path(value = "url", encoded = true) String url,
-                                                  @QueryMap HashMap<String, Object> maps);
+    Observable<TopModuleBean> getHome(@Path(value = "url", encoded = true) String url,
+                                      @QueryMap HashMap<String, Object> maps);
 
+    /**
+     * 首页正在热映
+     * @param url
+     * @param maps
+     * @return
+     */
+    @GET("{url}")
+    Observable<HotPlayMoviesBean> getHotplay(@Path(value = "url", encoded = true) String url,
+                                             @QueryMap HashMap<String, Object> maps);
+
+    /**
+     * 首页直播商城
+     * @param url
+     * @return
+     */
+    @GET("{url}")
+    Observable<LiveAndShopBean> getLiveAndShop(@Path(value = "url", encoded = true) String url);
+
+    /**
+     * 首页精选：预告
+     * @param url
+     * @param maps
+     * @return
+     */
+    @GET("{url}")
+    Observable<SelectionAdvanceBean> getSelectionAdvance(@Path(value = "url", encoded = true) String url,
+                                                         @QueryMap HashMap<String, Object> maps);
+
+    /**
+     * 城市信息
+     * @param url
+     * @param maps
+     * @return
+     */
+    @GET("{url}")
+    Observable<MTimeCityInfo> getTimeCityInfo(@Path(value = "url", encoded = true) String url,
+                                              @QueryMap HashMap<String, Object> maps);
+
+    /**
+     * 首页资讯
+     * @param url
+     * @param maps
+     * @return
+     */
+    @GET("{url}")
+    Observable<HomeAdvanceBean> getAdvanceData(@Path(value = "url", encoded = true) String url,
+                                                @QueryMap HashMap<String, Object> maps);
+
+    /**
+     *一些app初始化的信息
+     * @param url
+     * @param maps
+     * @return
+     */
+    @GET("{url}")
+    Observable<Loadbean> getLoadInfo(@Path(value = "url", encoded = true) String url,
+                                     @QueryMap HashMap<String, Object> maps);
+
+    @GET("{url}")
+    Observable<Response> getData(@Path(value = "url", encoded = true) String url,
+                                 @QueryMap HashMap<String, Object> maps);
+    /*
+        首页选电影
+    */
+    @GET("{url}")
+    Observable<HomeSelectMovieBean> getSelectMovie(@Path(value = "url",encoded = true) String url);
     /**
      * Post
      */
