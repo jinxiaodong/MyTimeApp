@@ -45,7 +45,6 @@ public abstract class BaseActivity extends BasePermissionsActivity {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
-        ButterKnife.reset(this);
     }
 
     @Override
@@ -73,7 +72,7 @@ public abstract class BaseActivity extends BasePermissionsActivity {
         if (!NetworkUtil.isNetworkAvailable(this)) {
             onNetworkInvalid();
         }
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         initValue(savedInstanceState);
         initWidget(savedInstanceState);
         initListener(savedInstanceState);

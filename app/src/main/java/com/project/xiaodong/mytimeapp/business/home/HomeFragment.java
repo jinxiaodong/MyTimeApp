@@ -1,9 +1,12 @@
 package com.project.xiaodong.mytimeapp.business.home;
 
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,7 +32,9 @@ import com.project.xiaodong.mytimeapp.frame.view.banner.listener.OnItemClickList
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.InjectView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 
 /**
@@ -37,36 +42,38 @@ import butterknife.InjectView;
  */
 
 public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBean> {
-    @InjectView(R.id.tv_city_name)
-    TextView mTvCityName;
-    @InjectView(R.id.rl_city)
-    RelativeLayout mRlCity;
-    @InjectView(R.id.btn_search)
-    ImageButton mBtnSearch;
-    @InjectView(R.id.position_1)
-    ImageButton mPosition1;
-    @InjectView(R.id.rel_right)
-    RelativeLayout mRelRight;
-    @InjectView(R.id.img_header)
-    ImageView mImgHeader;
-    @InjectView(R.id.tv_title)
-    TextView mTvTitle;
-    @InjectView(R.id.rel_center)
-    RelativeLayout mRelCenter;
-    @InjectView(R.id.driver)
-    View mDriver;
-    @InjectView(R.id.rl_header)
-    RelativeLayout mRlHeader;
-    @InjectView(R.id.cb_banner)
-    ConvenientBanner mCbBanner;
-    @InjectView(R.id.tab_indicator)
-    TabIndicatorLayout mTabIndicator;
-    @InjectView(R.id.appbar)
-    AppBarLayout mAppbar;
-    @InjectView(R.id.viewpager)
-    APSTSViewPager mViewpager;
+
 
     private final int START_TURNING = 5000; //轮播图时间
+    @BindView(R.id.tv_city_name)
+    TextView tvCityName;
+    @BindView(R.id.rl_city)
+    RelativeLayout rlCity;
+    @BindView(R.id.btn_search)
+    ImageButton btnSearch;
+    @BindView(R.id.position_1)
+    ImageButton position1;
+    @BindView(R.id.rel_right)
+    RelativeLayout relRight;
+    @BindView(R.id.img_header)
+    ImageView imgHeader;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
+    @BindView(R.id.rel_center)
+    RelativeLayout relCenter;
+    @BindView(R.id.driver)
+    View driver;
+    @BindView(R.id.rl_header)
+    RelativeLayout rlHeader;
+    @BindView(R.id.cb_banner)
+    ConvenientBanner cbBanner;
+    @BindView(R.id.tab_indicator)
+    TabIndicatorLayout tabIndicator;
+    @BindView(R.id.appbar)
+    AppBarLayout appbar;
+    @BindView(R.id.viewpager)
+    APSTSViewPager viewpager;
+    Unbinder unbinder;
 
     private List<BaseFragment> mFragments = new ArrayList<>();
     private List<String> networkImages = new ArrayList<String>();
@@ -98,11 +105,11 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
     @Override
     protected void initWidget() {
         super.initWidget();
-        mViewpager.setNoFocus(false);
-        mViewpager.setOffscreenPageLimit(2);
+        viewpager.setNoFocus(false);
+        viewpager.setOffscreenPageLimit(2);
         //这里要用getChildFragmentManager()
-        mViewpager.setAdapter(new FragmentAdapter(getChildFragmentManager(), mFragments));
-        mViewpager.setCurrentItem(0);
+        viewpager.setAdapter(new FragmentAdapter(getChildFragmentManager(), mFragments));
+        viewpager.setCurrentItem(0);
 
         initBanner();
     }
@@ -123,15 +130,15 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
     private void initBanner() {
         int width = DeviceInfo.WIDTHPIXELS;
         int height = (int) ((float) width / 1.44);
-        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mCbBanner.getLayoutParams();
+        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) cbBanner.getLayoutParams();
         if (lp == null) {
             lp = new LinearLayout.LayoutParams(width, height);
-            mCbBanner.setLayoutParams(lp);
+            cbBanner.setLayoutParams(lp);
         } else {
             lp.height = height;
         }
 
-        mCbBanner
+        cbBanner
                 //设置两个点图片作为翻页指示器，不设置则没有指示器，可以根据自己需求自行配合自己的指示器,不需要圆点指示器可用不设
                 .setPageIndicator(new int[]{R.drawable.bg_loaddialog, R.drawable.bg_status})
                 //设置指示器的方向
@@ -190,7 +197,7 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
                 images.add(categoryListBean.img);
             }
         }
-        TabLayoutUtil.initTabLayout(mTabIndicator, mViewpager, title, colors, images, mContext);
+        TabLayoutUtil.initTabLayout(tabIndicator, viewpager, title, colors, images, mContext);
 
     }
 
@@ -203,14 +210,14 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
 
         //只有一张图片时，不轮播，指示器不显示
         if (networkImages.size() == 1) {
-            mCbBanner.setCanLoop(false);
-            mCbBanner.setPointViewVisible(false);
+            cbBanner.setCanLoop(false);
+            cbBanner.setPointViewVisible(false);
         } else {
-            mCbBanner.setCanLoop(true);
-            mCbBanner.setPointViewVisible(true);
+            cbBanner.setCanLoop(true);
+            cbBanner.setPointViewVisible(true);
         }
         if (networkImages.size() > 0) {
-            mCbBanner.setPages(new CBViewHolderCreator<NetworkImageHolderView>() {
+            cbBanner.setPages(new CBViewHolderCreator<NetworkImageHolderView>() {
                 @Override
                 public NetworkImageHolderView createHolder() {
                     return new NetworkImageHolderView();
@@ -221,8 +228,22 @@ public class HomeFragment extends BaseFragment implements IBaseView<TopModuleBea
     }
 
     private void startTurn() {
-        if (mCbBanner != null && !mCbBanner.isTurning() && networkImages != null && networkImages.size() > 1) {
-            mCbBanner.startTurning(START_TURNING);
+        if (cbBanner != null && !cbBanner.isTurning() && networkImages != null && networkImages.size() > 1) {
+            cbBanner.startTurning(START_TURNING);
         }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

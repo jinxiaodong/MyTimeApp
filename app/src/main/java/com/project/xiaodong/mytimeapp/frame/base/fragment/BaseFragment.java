@@ -103,7 +103,7 @@ public abstract class BaseFragment extends Fragment {
         if (mContext == null) {
             mContext = getActivity();
         }
-        ButterKnife.inject(this, mRootView);
+        ButterKnife.bind(this, mRootView);
 
         isOnCreated = true;
         initValue();
@@ -122,9 +122,6 @@ public abstract class BaseFragment extends Fragment {
         super.onDestroy();
         if (mWaittingDialog != null) {
             dismissDialog();
-        }
-        if (mRootView != null) {
-            ButterKnife.reset(mRootView);
         }
     }
 
